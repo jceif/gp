@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" > 
+<mapper namespace="cn.jf.db.dao.CompanyMapper">
+<resultMap id="company" type="cn.jf.model.company.Company">
+	<result property="id" column="id"/>
+	<result property="code" column="code"/>
+	<result property="name" column="name"/>
+	<result property="type" column="type"/>
+	<result property="createTime" column="create_time"/>
+</resultMap>
+<insert id="insertCompany" parameterType="cn.jf.model.company.Company">
+insert into company
+(	id,
+	code,
+	name,
+	type,
+	create_time
+)values(
+	#{id},
+	#{code},
+	#{name},
+	#{type},
+	#{createTime}
+)
+</insert>
+<delete id="deleteCompanyById">
+	delete from company
+	where id=#{id}
+</delete>
+<delete id="deleteCompanyAll">
+	delete from company
+</delete>
+<select id="findCompanyById" resultMap="company">
+	select * from company
+	where id=#{id}
+</select>
+<select id="findCompanyList" resultMap="company">
+	select * from company
+</select>
+<update id="updateCompany" parameterType="cn.jf.model.company.Company">
+update company
+<set>
+	id=#{id},
+	code=#{code},
+	name=#{name},
+	type=#{type},
+	create_time=#{createTime}
+</set>
+<where>	
+id=#{id}
+</where>	
+</update>
+<delete id="deleteCompanyListByIds" parameterType ="java.lang.String">
+	delete from company
+	where id in
+	<foreach item="idItem" collection="array" open="(" separator="," close=")">#{idItem}</foreach>
+</delete>
+<delete id="deleteCompanyList" parameterType ="cn.jf.model.company.Company">
+	delete from company
+	where id in
+	<foreach collection="list" item="item" index= "index" open="(" separator="," close=")">#{item.id}</foreach>
+</delete>
+<insert id="insertCompanyList" parameterType="java.util.List">
+insert into company
+(	id,
+	code,
+	name,
+	type,
+	create_time
+)values<foreach collection="list" item="item" index= "index" separator="," >
+(	#{item.id},
+	#{item.code},
+	#{item.name},
+	#{item.type},
+	#{item.createTime}
+)</foreach>
+</insert>
+<update id="updateCompanyList" parameterType="java.util.List">
+<foreach collection="list" item="item" index= "index" separator=";" >
+update company
+set
+	id=#{item.id},
+	code=#{item.code},
+	name=#{item.name},
+	type=#{item.type},
+	create_time=#{item.createTime}
+
+where	
+id=#{item.id}	
+</foreach>
+</update>
+<select id="findCompanyQuery" resultMap="company">
+	select * from company
+	<where>
+	 <if test="id!=null and id!=''"> 
+		AND id=#{id}
+	</if>
+	 <if test="code!=null and code!=''"> 
+		AND code=#{code}
+	</if>
+	 <if test="name!=null and name!=''"> 
+		AND name=#{name}
+	</if>
+	 <if test="type!=null and type!=''"> 
+		AND type=#{type}
+	</if>
+	 <if test="createTime!=null and createTime!=''"> 
+		AND create_time=#{createTime}
+	</if>
+</where>
+	</select>
+<select id="findCompanyQueryPage" resultMap="company">
+	select * from company
+	<where>
+	 <if test="id!=null and id!=''"> 
+		AND id=#{id}
+	</if>
+	 <if test="code!=null and code!=''"> 
+		AND code=#{code}
+	</if>
+	 <if test="name!=null and name!=''"> 
+		AND name=#{name}
+	</if>
+	 <if test="type!=null and type!=''"> 
+		AND type=#{type}
+	</if>
+	 <if test="createTime!=null and createTime!=''"> 
+		AND create_time=#{createTime}
+	</if>
+</where>
+		limit #{startIndex},#{limit}
+
+</select>
+<select id="findCountCompanyQuery" resultType="java.lang.Integer">
+	select count(*) from company
+	<where>
+	 <if test="id!=null and id!=''"> 
+		AND id=#{id}
+	</if>
+	 <if test="code!=null and code!=''"> 
+		AND code=#{code}
+	</if>
+	 <if test="name!=null and name!=''"> 
+		AND name=#{name}
+	</if>
+	 <if test="type!=null and type!=''"> 
+		AND type=#{type}
+	</if>
+	 <if test="createTime!=null and createTime!=''"> 
+		AND create_time=#{createTime}
+	</if>
+</where>
+</select>
+
+</mapper>

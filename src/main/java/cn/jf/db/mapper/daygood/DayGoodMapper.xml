@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jf.db.dao.DayGoodMapper">
+  <resultMap id="dayGood" type="cn.jf.model.daygood.DayGood">
+    <result property="id" column="id"/>
+    <result property="companyCode" column="company_code"/>
+    <result property="price" column="price"/>
+    <result property="rate" column="rate"/>
+    <result property="mainMoney" column="main_money"/>
+    <result property="mainRate" column="main_rate"/>
+    <result property="chaodaMoney" column="chaoda_money"/>
+    <result property="chaodaRate" column="chaoda_rate"/>
+    <result property="daMoney" column="da_money"/>
+    <result property="daRate" column="da_rate"/>
+    <result property="date" column="date"/>
+    <result property="time" column="time"/>
+    <result property="marketWorth" column="market_worth"/>
+    <result property="originalTime" column="original_time"/>
+  </resultMap>
+
+  <resultMap id="dayGoodVo" type="cn.jf.model.daygood.DayGoodVo">
+    <result property="id" column="id"/>
+    <result property="companyCode" column="company_code"/>
+    <result property="price" column="price"/>
+    <result property="rate" column="rate"/>
+    <result property="mainMoney" column="main_money"/>
+    <result property="mainRate" column="main_rate"/>
+    <result property="chaodaMoney" column="chaoda_money"/>
+    <result property="chaodaRate" column="chaoda_rate"/>
+    <result property="daMoney" column="da_money"/>
+    <result property="daRate" column="da_rate"/>
+    <result property="date" column="date"/>
+    <result property="time" column="time"/>
+    <result property="originalTime" column="original_time"/>
+
+    <result property="marketWorth" column="market_worth"/>
+    <result property="companyName" column="company_name"/>
+    <result property="companyType" column="company_type"/>
+    <result property="preDayRate1" column="preDayRate1"/>
+    <result property="preDayRate2" column="preDayRate2"/>
+
+    <result property="preMainMoneyRate" column="preMainMoneyRate"/>
+    <result property="preMainMoneyCha" column="preMainMoneyCha"/>
+
+    <result property="preTimeMainMoney1" column="preTimeMainMoney1"/>
+    <result property="preTimeRate1" column="preTimeRate1"/>
+    <result property="preMainMoneyRate1" column="preMainMoneyRate1"/>
+    <result property="preMainMoneyCha1" column="preMainMoneyCha1"/>
+
+    <result property="preTimeMainMoney2" column="preTimeMainMoney2"/>
+    <result property="preTimeRate2" column="preTimeRate2"/>
+
+  </resultMap>
+  <insert id="insertDayGood" parameterType="cn.jf.model.daygood.DayGood">
+insert into day_good
+(	id,
+	company_code,
+	price,
+	rate,
+	main_money,
+	main_rate,
+	chaoda_money,
+	chaoda_rate,
+	da_money,
+	da_rate,
+	date,
+	time,
+	original_time
+)values(
+	#{id},
+	#{companyCode},
+	#{price},
+	#{rate},
+	#{mainMoney},
+	#{mainRate},
+	#{chaodaMoney},
+	#{chaodaRate},
+	#{daMoney},
+	#{daRate},
+	#{date},
+	#{time},
+	#{originalTime}
+)
+</insert>
+  <delete id="deleteDayGoodById">
+	delete from day_good
+	where id=#{id}
+</delete>
+  <delete id="deleteDayGoodAll">
+	delete from day_good
+</delete>
+  <select id="findDayGoodById" resultMap="dayGood">
+	select * from day_good
+	where id=#{id}
+</select>
+  <select id="findDayGoodList" resultMap="dayGood">
+	select * from day_good
+</select>
+  <update id="updateDayGood" parameterType="cn.jf.model.daygood.DayGood">
+    update day_good
+    <set>
+      id=#{id},
+      company_code=#{companyCode},
+      price=#{price},
+      rate=#{rate},
+      main_money=#{mainMoney},
+      main_rate=#{mainRate},
+      chaoda_money=#{chaodaMoney},
+      chaoda_rate=#{chaodaRate},
+      da_money=#{daMoney},
+      da_rate=#{daRate},
+      date=#{date},
+      time=#{time},
+      original_time=#{originalTime}
+    </set>
+    <where>
+      id=#{id}
+    </where>
+  </update>
+  <delete id="deleteDayGoodListByIds" parameterType="java.lang.String">
+    delete from day_good
+    where id in
+    <foreach item="idItem" collection="array" open="(" separator="," close=")">
+      #{idItem}
+    </foreach>
+  </delete>
+  <delete id="deleteDayGoodList" parameterType="cn.jf.model.daygood.DayGood">
+    delete from day_good
+    where id in
+    <foreach collection="list" item="item" index="index" open="(" separator=","
+      close=")">#{item.id}
+    </foreach>
+  </delete>
+  <insert id="insertDayGoodList" parameterType="java.util.List">
+    insert into day_good
+    ( id,
+    company_code,
+    price,
+    rate,
+    main_money,
+    main_rate,
+    chaoda_money,
+    chaoda_rate,
+    da_money,
+    da_rate,
+    date,
+    time,
+    original_time
+    )values
+    <foreach collection="list" item="item" index="index" separator=",">
+      ( #{item.id},
+      #{item.companyCode},
+      #{item.price},
+      #{item.rate},
+      #{item.mainMoney},
+      #{item.mainRate},
+      #{item.chaodaMoney},
+      #{item.chaodaRate},
+      #{item.daMoney},
+      #{item.daRate},
+      #{item.date},
+      #{item.time},
+      #{item.originalTime}
+      )
+    </foreach>
+  </insert>
+  <update id="updateDayGoodList" parameterType="java.util.List">
+    <foreach collection="list" item="item" index="index" separator=";">
+      update day_good
+      set
+      id=#{item.id},
+      company_code=#{item.companyCode},
+      price=#{item.price},
+      rate=#{item.rate},
+      main_money=#{item.mainMoney},
+      main_rate=#{item.mainRate},
+      chaoda_money=#{item.chaodaMoney},
+      chaoda_rate=#{item.chaodaRate},
+      da_money=#{item.daMoney},
+      da_rate=#{item.daRate},
+      date=#{item.date},
+      time=#{item.time},
+      original_time=#{item.originalTime}
+
+      where
+      id=#{item.id}
+    </foreach>
+  </update>
+  <select id="findDayGoodQuery" resultMap="dayGood">
+    select * from day_good
+    <where>
+      <if test="id!=null and id!=''">
+        AND id=#{id}
+      </if>
+      <if test="companyCode!=null and companyCode!=''">
+        AND company_code=#{companyCode}
+      </if>
+      <if test="price!=null and price!=''">
+        AND price=#{price}
+      </if>
+      <if test="rate!=null and rate!=''">
+        AND rate=#{rate}
+      </if>
+      <if test="mainMoney!=null and mainMoney!=''">
+        AND main_money=#{mainMoney}
+      </if>
+      <if test="mainRate!=null and mainRate!=''">
+        AND main_rate=#{mainRate}
+      </if>
+      <if test="chaodaMoney!=null and chaodaMoney!=''">
+        AND chaoda_money=#{chaodaMoney}
+      </if>
+      <if test="chaodaRate!=null and chaodaRate!=''">
+        AND chaoda_rate=#{chaodaRate}
+      </if>
+      <if test="daMoney!=null and daMoney!=''">
+        AND da_money=#{daMoney}
+      </if>
+      <if test="daRate!=null and daRate!=''">
+        AND da_rate=#{daRate}
+      </if>
+      <if test="date!=null and date!=''">
+        AND date=#{date}
+      </if>
+      <if test="time!=null and time!=''">
+        AND time=#{time}
+      </if>
+      <if test="originalTime!=null and originalTime!=''">
+        AND original_time=#{originalTime}
+      </if>
+    </where>
+  </select>
+  <select id="findDayGoodQueryPage" resultMap="dayGood">
+    select * from day_good
+    <where>
+      <if test="id!=null and id!=''">
+        AND id=#{id}
+      </if>
+      <if test="companyCode!=null and companyCode!=''">
+        AND company_code=#{companyCode}
+      </if>
+      <if test="price!=null and price!=''">
+        AND price=#{price}
+      </if>
+      <if test="rate!=null and rate!=''">
+        AND rate=#{rate}
+      </if>
+      <if test="mainMoney!=null and mainMoney!=''">
+        AND main_money=#{mainMoney}
+      </if>
+      <if test="mainRate!=null and mainRate!=''">
+        AND main_rate=#{mainRate}
+      </if>
+      <if test="chaodaMoney!=null and chaodaMoney!=''">
+        AND chaoda_money=#{chaodaMoney}
+      </if>
+      <if test="chaodaRate!=null and chaodaRate!=''">
+        AND chaoda_rate=#{chaodaRate}
+      </if>
+      <if test="daMoney!=null and daMoney!=''">
+        AND da_money=#{daMoney}
+      </if>
+      <if test="daRate!=null and daRate!=''">
+        AND da_rate=#{daRate}
+      </if>
+      <if test="date!=null and date!=''">
+        AND date=#{date}
+      </if>
+      <if test="time!=null and time!=''">
+        AND time=#{time}
+      </if>
+      <if test="originalTime!=null and originalTime!=''">
+        AND original_time=#{originalTime}
+      </if>
+    </where>
+    limit #{startIndex},#{limit}
+
+  </select>
+  <select id="findCountDayGoodQuery" resultType="java.lang.Integer">
+    select count(*) from day_good
+    <where>
+      <if test="id!=null and id!=''">
+        AND id=#{id}
+      </if>
+      <if test="companyCode!=null and companyCode!=''">
+        AND company_code=#{companyCode}
+      </if>
+      <if test="price!=null and price!=''">
+        AND price=#{price}
+      </if>
+      <if test="rate!=null and rate!=''">
+        AND rate=#{rate}
+      </if>
+      <if test="mainMoney!=null and mainMoney!=''">
+        AND main_money=#{mainMoney}
+      </if>
+      <if test="mainRate!=null and mainRate!=''">
+        AND main_rate=#{mainRate}
+      </if>
+      <if test="chaodaMoney!=null and chaodaMoney!=''">
+        AND chaoda_money=#{chaodaMoney}
+      </if>
+      <if test="chaodaRate!=null and chaodaRate!=''">
+        AND chaoda_rate=#{chaodaRate}
+      </if>
+      <if test="daMoney!=null and daMoney!=''">
+        AND da_money=#{daMoney}
+      </if>
+      <if test="daRate!=null and daRate!=''">
+        AND da_rate=#{daRate}
+      </if>
+      <if test="date!=null and date!=''">
+        AND date=#{date}
+      </if>
+      <if test="time!=null and time!=''">
+        AND time=#{time}
+      </if>
+      <if test="originalTime!=null and originalTime!=''">
+        AND original_time=#{originalTime}
+      </if>
+    </where>
+  </select>
+
+  <select id="findDayGoodNowQuery" resultMap="dayGoodVo">
+    select g.*,g.main_money/g1.main_money as preMainMoneyRate, g.main_money-g1.main_money as preMainMoneyCha, c.name as company_name,c.type as company_type,c.market_worth,
+    <choose>
+      <when test="preTime1!=null and preTime1!=''">
+        g1.main_money as preTimeMainMoney1,g1.rate as preTimeRate1,case when g2.main_money is null then 0 ELSE g1.main_money/g2.main_money END as preMainMoneyRate1,g1.main_money-g2.main_money as preMainMoneyCha1,
+      </when>
+      <otherwise>
+        '0' as preTimeMainMoney1,'0' as preTimeRate1,'0' as preMainMoneyRate1,
+      </otherwise>
+    </choose>
+    <choose>
+      <when test="preTime2!=null and preTime2!=''">
+        g2.main_money as preTimeMainMoney2,g2.rate as preTimeRate2,
+      </when>
+      <otherwise>
+        '0' as preTimeMainMoney2,'0' as preTimeRate2,
+      </otherwise>
+    </choose>
+    <choose>
+      <when test="preDayDate1!=null and preDayDate1!=''">
+        v1.rate as preDayRate1,
+      </when>
+      <otherwise>
+        '0' as preDayRate1,
+      </otherwise>
+    </choose>
+    <choose>
+      <when test="preDayDate2!=null and preDayDate2!=''">
+        v2.rate as preDayRate2
+      </when>
+      <otherwise>
+        '0' as preDayRate2
+      </otherwise>
+    </choose>
+    from day_good g
+    left JOIN company c on g.company_code=c.code
+    <if test="preDayDate1!=null and preDayDate1!=''">
+      LEFT JOIN (select * FROM day_value where `date`=#{preDayDate1}) v1 ON g.company_code=v1.company_code
+    </if>
+    <if test="preDayDate2!=null and preDayDate2!=''">
+      LEFT JOIN (select * FROM day_value where `date`=#{preDayDate2}) v2 ON g.company_code=v2.company_code
+    </if>
+    <if test="preTime1!=null and preTime1!=''">
+      LEFT JOIN (select * FROM day_good where `time`=#{preTime1}  AND date=#{date}) g1 ON g.company_code=g1.company_code
+    </if>
+    <if test="preTime2!=null and preTime2!=''">
+      LEFT JOIN (select * FROM day_good where `time`=#{preTime2}  AND date=#{date}) g2 ON g.company_code=g2.company_code
+    </if>
+    <where>
+      <if test="companyCode!=null and companyCode!=''">
+        AND g.company_code=#{companyCode}
+      </if>
+      <if test="price!=null and price!=''">
+        AND g.price &lt;=#{price}
+      </if>
+      <if test="rate!=null and rate!=''">
+        AND g.rate >=#{rate}
+      </if>
+      <if test="mainMoney!=null and mainMoney!=''">
+        AND g.main_money >=#{mainMoney}
+      </if>
+      <if test="mainRate!=null and mainRate!=''">
+        AND g.main_rate &gt;=#{mainRate}
+      </if>
+      <if test="chaodaMoney!=null and chaodaMoney!=''">
+        AND g.chaoda_money=#{chaodaMoney}
+      </if>
+      <if test="chaodaRate!=null and chaodaRate!=''">
+        AND g.chaoda_rate=#{chaodaRate}
+      </if>
+      <if test="date!=null and date!=''">
+        AND g.date=#{date}
+      </if>
+      <if test="time!=null and time!=''">
+        AND g.time=#{time}
+      </if>
+      <if test="preDayDate1!=null and preDayDate1!=''">
+        and v1.rate &lt;=#{preDayDate1}
+      </if>
+      <if test="preDayDate2!=null and preDayDate2!=''">
+        and v2.rate &lt;=#{preDayDate2}
+      </if>
+      <if test="type!=null and type!=''">
+        and c.type=#{type}
+      </if>
+      <if test="marketWorth1!=null and marketWorth1!=''and marketWorth2!=null and marketWorth2!=''">
+        and c.market_worth BETWEEN #{marketWorth1} and #{marketWorth2}
+      </if>
+      order by g.main_money desc,g.price asc,g.rate desc
+    </where>
+  </select>
+
+
+</mapper>
