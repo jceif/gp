@@ -141,15 +141,12 @@
                 <th>流入差</th>
                 <th>流入率</th>
                 <th>主占</th>
-
                 <th>-30入</th>
                 <th>-30入差</th>
                 <th>-30入率</th>
                 <%--<th>-30主占</th>--%>
-
                 <th>-60入</th>
                 <%--<th>-60主占</th>--%>
-
                 <th>昨涨</th>
                 <th>前涨</th>
                <%-- <th>日期</th>
@@ -186,7 +183,9 @@
                                 </c:otherwise>
                             </c:choose>
                         </td>
-                        <td>${item.companyName}</td>
+                                <td style="<c:if
+                                        test="${item.rate>4 && item.rate>item.preDayRate1 && item.preDayRate1>0 && item.rate>item.preDayRate2 && item.preMainMoneyCha1>0}">background: red;</c:if>">
+                                        ${item.companyName}</td>
                         <td>
                             <c:choose>
                                 <c:when test="${ fn:substring(item.companyCode ,0,3)=='600' or fn:substring(item.companyCode ,0,2)=='60'}">

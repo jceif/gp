@@ -36,7 +36,7 @@ public class DayGoodController {
     Map<String, Object> map = new HashMap<String, Object>();
     map.put("date", date);
     if (StringUtils.isEmpty(time)) {
-      time = "1000";
+      time = "1030";
     }
     map.put("time", time);
     if (StringUtils.isEmpty(time)) {
