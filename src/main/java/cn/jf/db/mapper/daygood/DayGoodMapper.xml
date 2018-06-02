@@ -378,7 +378,7 @@ insert into day_good
         AND g.price &lt;=#{price}
       </if>
       <if test="rate!=null and rate!=''">
-        AND g.rate >=#{rate}
+        AND g.rate &lt;=#{rate}
       </if>
       <if test="mainMoney!=null and mainMoney!=''">
         AND g.main_money >=#{mainMoney}

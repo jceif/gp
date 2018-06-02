@@ -48,24 +48,30 @@
                 <th>当前日期：
                     <select name="date">
                         <option value="">请选择</option>
-                        <c:forEach items="${formatDates}" var="item" varStatus="var">
-                            <option value="${item}" <c:if test="${item==date}">selected</c:if>>${item}</option>
+                        <c:forEach items="${formatDates}" var="item"
+                                   varStatus="var">
+                            <option value="${item}"
+                                    <c:if test="${item==date}">selected</c:if>>${item}</option>
                         </c:forEach>
                     </select>
                 </th>
                 <th>前一个交易日期：
                     <select name="preDate1">
                         <option value="">请选择</option>
-                        <c:forEach items="${formatDates1}" var="item" varStatus="var">
-                            <option value="${item}" <c:if test="${item==preDate1}">selected</c:if>>${item}</option>
+                        <c:forEach items="${formatDates1}" var="item"
+                                   varStatus="var">
+                            <option value="${item}"
+                                    <c:if test="${item==preDate1}">selected</c:if>>${item}</option>
                         </c:forEach>
                     </select>
                 </th>
                 <th>前二个交易日期：
                     <select name="preDate2">
                         <option value="">请选择</option>
-                        <c:forEach items="${formatDates2}" var="item" varStatus="var">
-                            <option value="${item}" <c:if test="${item==preDate2}">selected</c:if>>${item}</option>
+                        <c:forEach items="${formatDates2}" var="item"
+                                   varStatus="var">
+                            <option value="${item}"
+                                    <c:if test="${item==preDate2}">selected</c:if>>${item}</option>
                         </c:forEach>
                     </select>
                 </th>
@@ -74,17 +80,45 @@
             <tr>
                 <th>时间：
                     <select name="time">
-                        <option value="930" <c:if test="${time=='930'}">selected</c:if>>9:30</option>
-                        <option value="1000" <c:if test="${time=='1000'}">selected</c:if>>10:00</option>
-                        <option value="1030" <c:if test="${time=='1030'}">selected</c:if>>10:30</option>
-                        <option value="1100" <c:if test="${time=='1100'}">selected</c:if>>11:00</option>
-                        <option value="1130" <c:if test="${time=='1130'}">selected</c:if>>11:30</option>
-                        <option value="1200" <c:if test="${time=='1200'}">selected</c:if>>12:00</option>
-                        <option value="1300" <c:if test="${time=='1300'}">selected</c:if>>13:00</option>
-                        <option value="1330" <c:if test="${time=='1330'}">selected</c:if>>13:30</option>
-                        <option value="1400" <c:if test="${time=='1400'}">selected</c:if>>14:00</option>
-                        <option value="1430" <c:if test="${time=='1430'}">selected</c:if>>14:30</option>
-                        <option value="1500" <c:if test="${time=='1500'}">selected</c:if>>15:00</option>
+                        <option value="930"
+                                <c:if test="${time=='930'}">selected</c:if>>9:30
+                        </option>
+                        <option value="1000"
+                                <c:if test="${time=='1000'}">selected</c:if>>
+                            10:00
+                        </option>
+                        <option value="1030"
+                                <c:if test="${time=='1030'}">selected</c:if>>
+                            10:30
+                        </option>
+                        <option value="1100"
+                                <c:if test="${time=='1100'}">selected</c:if>>
+                            11:00
+                        </option>
+                        <option value="1130"
+                                <c:if test="${time=='1130'}">selected</c:if>>
+                            11:30
+                        </option>
+                        <option value="1300"
+                                <c:if test="${time=='1300'}">selected</c:if>>
+                            13:00
+                        </option>
+                        <option value="1330"
+                                <c:if test="${time=='1330'}">selected</c:if>>
+                            13:30
+                        </option>
+                        <option value="1400"
+                                <c:if test="${time=='1400'}">selected</c:if>>
+                            14:00
+                        </option>
+                        <option value="1430"
+                                <c:if test="${time=='1430'}">selected</c:if>>
+                            14:30
+                        </option>
+                        <option value="1500"
+                                <c:if test="${time=='1500'}">selected</c:if>>
+                            15:00
+                        </option>
                     </select>
                 </th>
                 <th>价格：<input type="number" name="price" value="${price}"></th>
@@ -111,138 +145,163 @@
                 <th>-30入</th>
                 <th>-30入差</th>
                 <th>-30入率</th>
-                <th>-30主占</th>
+                <%--<th>-30主占</th>--%>
 
                 <th>-60入</th>
-                <th>-60主占</th>
+                <%--<th>-60主占</th>--%>
 
                 <th>昨涨</th>
                 <th>前涨</th>
-                <th>日期</th>
-                <th>时间</th>
+               <%-- <th>日期</th>
+                <th>时间</th>--%>
                 <th>原日期</th>
             </tr>
             <c:forEach items="${dayGoods}" var="item" varStatus="var">
-                <tr>
-                        <%--当前--%>
-                    <td>${var.count}</td>
-                    <td>
+                <c:if test="${ fn:substring(item.companyCode ,0,3)!='300'}">
+                    <tr>
+                            <%--当前--%>
+                        <td>${var.count}</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${ fn:substring(item.companyCode ,0,3)=='600' or fn:substring(item.companyCode ,0,2)=='60'}">
+                                    沪A
+                                </c:when>
+                                <c:when test="${ fn:substring(item.companyCode ,0,3)=='000'}">
+                                    深主
+                                </c:when>
+                                <c:when test="${ fn:substring(item.companyCode ,0,3)=='002'}">
+                                    深中
+                                </c:when>
+                                <c:when test="${ fn:substring(item.companyCode ,0,3)=='900'}">
+                                    沪B
+                                </c:when>
+                                <c:when test="${ fn:substring(item.companyCode ,0,3)=='200'}">
+                                    深B
+                                </c:when>
+                                <c:when test="${ fn:substring(item.companyCode ,0,3)=='300'}">
+                                    创业板
+                                </c:when>
+                                <c:otherwise>
+                                    无
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
+                        <td>${item.companyName}</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${ fn:substring(item.companyCode ,0,3)=='600' or fn:substring(item.companyCode ,0,2)=='60'}">
+                                    <a href="http://quote.eastmoney.com/concept/sh${item.companyCode}.html?from=classic&eventcode=Web_quote_entrance2"
+                                       target="_blank">${item.companyCode}</a>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="http://quote.eastmoney.com/concept/sz${item.companyCode}.html?from=classic&eventcode=Web_quote_entrance2"
+                                       target="_blank">${item.companyCode}</a>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
+                        <td>${item.price}</td>
+                        <td style="<c:choose>
+                        <c:when test="${item.rate>=4}">
+                                background: red;
+                        </c:when>
+                        <c:when test="${item.rate>=3}">
+                                background: yellow;
+                        </c:when>
+                        <c:when test="${item.rate<2}">
+                                background: green;
+                        </c:when>
+                        </c:choose>">${item.rate}%</td>
+                        <td>${item.mainMoney}万</td>
+                        <td style="
                         <c:choose>
-                            <c:when test="${ fn:substring(item.companyCode ,0,3)=='600' or fn:substring(item.companyCode ,0,2)=='60'}">
-                                沪A
-                            </c:when>
-                            <c:when test="${ fn:substring(item.companyCode ,0,3)=='000'}">
-                                深主板
-                            </c:when>
-                            <c:when test="${ fn:substring(item.companyCode ,0,3)=='002'}">
-                                深中小版
-                            </c:when>
-                            <c:when test="${ fn:substring(item.companyCode ,0,3)=='900'}">
-                                沪B
-                            </c:when>
-                            <c:when test="${ fn:substring(item.companyCode ,0,3)=='200'}">
-                                深B
-                            </c:when>
-                            <c:when test="${ fn:substring(item.companyCode ,0,3)=='300'}">
-                                创业板
-                            </c:when>
-                            <c:otherwise>
-                            无
-                            </c:otherwise>
+                        <c:when test="${item.preMainMoneyCha>2000}">
+                                background: red;
+                        </c:when>
+                        <c:when test="${item.preMainMoneyCha>1000}">
+                                background: yellow;
+                        </c:when>
+                        <c:when test="${item.preMainMoneyCha>500}">
+                                background: green;
+                        </c:when>
                         </c:choose>
-                    </td>
-                    <td>${item.companyName}</td>
-                    <td>${item.companyCode}</td>
-                    <td>${item.price}</td>
-                    <td>${item.rate}%</td>
-                    <td>${item.mainMoney}万</td>
-                    <td style="
-                    <c:choose>
-                    <c:when test="${item.preMainMoneyCha>2000}">
-                            background: red;
-                    </c:when>
-                    <c:when test="${item.preMainMoneyCha>1000}">
-                            background: yellow;
-                    </c:when>
-                    <c:when test="${item.preMainMoneyCha>500}">
-                            background: green;
-                    </c:when>
-                    </c:choose>
-                            ">${item.preMainMoneyCha}万
-                    </td>
-                    <td
-                            style="
-                            <c:choose>
-                            <c:when test="${item.preMainMoneyRate>2}">
-                                    background: red;
-                            </c:when>
-                            <c:when test="${item.preMainMoneyRate>1}">
-                                    background: yellow;
-                            </c:when>
-                            <c:when test="${item.preMainMoneyRate>0.8}">
-                                    background: green;
-                            </c:when>
-                                    </c:choose>"
-                            <c:if test="${item.preMainMoneyRate<0}">style="background: red;" </c:if>>${item.preMainMoneyRate}%
-                    </td>
+                                ">${item.preMainMoneyCha}万
+                        </td>
+                        <td
+                                style="
+                                <c:choose>
+                                <c:when test="${item.preMainMoneyRate>2}">
+                                        background: red;
+                                </c:when>
+                                <c:when test="${item.preMainMoneyRate>1}">
+                                        background: yellow;
+                                </c:when>
+                                <c:when test="${item.preMainMoneyRate>0.8}">
+                                        background: green;
+                                </c:when>
+                                        </c:choose>"
+                                <c:if test="${item.preMainMoneyRate<0}">style="background: red;" </c:if>>${item.preMainMoneyRate}%
+                        </td>
 
-                    <td>${item.mainRate}%</td>
+                        <td>${item.mainRate}%</td>
 
-                        <%---0.5h--%>
-                    <td>${item.preTimeMainMoney1}万</td>
-                    <td
-                            <c:if test="${item.preMainMoneyCha1>500}">style="background: green;" </c:if>>${item.preMainMoneyCha1}万
-                    </td>
-                    <td
-                            style="
-                            <c:choose>
-                            <c:when test="${item.preMainMoneyRate1>2}">
-                                    background: red;
-                            </c:when>
-                            <c:when test="${item.preMainMoneyRate1>1}">
-                                    background: yellow;
-                            </c:when>
-                            <c:when test="${item.preMainMoneyRate1>0.8}">
-                                    background: green;
-                            </c:when>
-                                    </c:choose>"
-                            <c:if test="${item.preMainMoneyRate1<0}">style="background: red;" </c:if>>${item.preMainMoneyRate1}%
-                    </td>
+                            <%---0.5h--%>
+                        <td>${item.preTimeMainMoney1}万</td>
+                        <td
+                                <c:if test="${item.preMainMoneyCha1>500}">style="background: green;" </c:if>>${item.preMainMoneyCha1}万
+                        </td>
+                        <td
+                                style="
+                                <c:choose>
+                                <c:when test="${item.preMainMoneyRate1>2}">
+                                        background: red;
+                                </c:when>
+                                <c:when test="${item.preMainMoneyRate1>1}">
+                                        background: yellow;
+                                </c:when>
+                                <c:when test="${item.preMainMoneyRate1>0.8}">
+                                        background: green;
+                                </c:when>
+                                        </c:choose>"
+                                <c:if test="${item.preMainMoneyRate1<0}">style="background: red;" </c:if>>${item.preMainMoneyRate1}%
+                        </td>
 
-                    <td>${item.preTimeRate1}%</td>
+                        <%--<td>${item.preTimeRate1}%</td>--%>
 
-                    <td>${item.preTimeMainMoney2}万</td>
-                    <td>${item.preTimeRate2}%</td>
-                    <td style="
-                    <c:choose>
-                    <c:when test="${item.preDayRate1>3}">
-                            background: red;
-                    </c:when>
-                    <c:when test="${item.preDayRate1>2}">
-                            background: yellow;
-                    </c:when>
-                    <c:when test="${item.preDayRate1<0.3}">
-                            background: green;
-                    </c:when>
-                            </c:choose>">${item.preDayRate1}%
-                    </td>
-                    <td style="
-                    <c:choose>
-                    <c:when test="${item.preDayRate2>3}">
-                            background: red;
-                    </c:when>
-                    <c:when test="${item.preDayRate2>2}">
-                            background: yellow;
-                    </c:when>
-                    <c:when test="${item.preDayRate2<0.3}">
-                            background: green;
-                    </c:when>
-                            </c:choose>">${item.preDayRate2}%
-                    </td>
-                    <td>${item.date}</td>
-                    <td>${item.time}</td>
-                    <td><fmt:formatDate value="${item.originalTime}" pattern="yyyy-MM-dd HH:mm:ss" timeZone="0"/></td>
-                </tr>
+                        <td>${item.preTimeMainMoney2}万</td>
+                        <%--<td>${item.preTimeRate2}%</td>--%>
+                        <td style="
+                        <c:choose>
+                        <c:when test="${item.preDayRate1>3}">
+                                background: red;
+                        </c:when>
+                        <c:when test="${item.preDayRate1>2}">
+                                background: yellow;
+                        </c:when>
+                        <c:when test="${item.preDayRate1<0}">
+                                background: green;
+                        </c:when>
+                                </c:choose>">${item.preDayRate1}%
+                        </td>
+                        <td style="
+                        <c:choose>
+                        <c:when test="${item.preDayRate2>3}">
+                                background: red;
+                        </c:when>
+                        <c:when test="${item.preDayRate2>2}">
+                                background: yellow;
+                        </c:when>
+                        <c:when test="${item.preDayRate2<0}">
+                                background: green;
+                        </c:when>
+                                </c:choose>">${item.preDayRate2}%
+                        </td>
+                     <%--   <td>${item.date}</td>
+                        <td>${item.time}</td>--%>
+                        <td><fmt:formatDate value="${item.originalTime}"
+                                            pattern="yyyy-MM-dd HH:mm:ss"
+                                            timeZone="0"/></td>
+                    </tr>
+                </c:if>
             </c:forEach>
             </tbody>
         </table><!-- /.table -->
