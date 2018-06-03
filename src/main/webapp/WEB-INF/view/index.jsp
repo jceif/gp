@@ -137,20 +137,20 @@
                 <th>编码</th>
                 <th>价格</th>
                 <th>涨幅</th>
-                <th>净流入</th>
+                <th>流入</th>
                 <th>流入差</th>
                 <th>流入率</th>
                 <th>主占</th>
                 <th>-30入</th>
-                <th>-30入差</th>
-                <th>-30入率</th>
+                <th>-30差</th>
+                <th>-30率</th>
                 <%--<th>-30主占</th>--%>
                 <th>-60入</th>
                 <%--<th>-60主占</th>--%>
                 <th>昨涨</th>
                 <th>前涨</th>
-               <%-- <th>日期</th>
-                <th>时间</th>--%>
+                <%-- <th>日期</th>
+                 <th>时间</th>--%>
                 <th>原日期</th>
             </tr>
             <c:forEach items="${dayGoods}" var="item" varStatus="var">
@@ -183,9 +183,9 @@
                                 </c:otherwise>
                             </c:choose>
                         </td>
-                                <td style="<c:if
-                                        test="${item.rate>4 && item.rate>item.preDayRate1 && item.preDayRate1>0 && item.rate>item.preDayRate2 && item.preMainMoneyCha1>0}">background: red;</c:if>">
-                                        ${item.companyName}</td>
+                        <td style="<c:if
+                                test="${item.rate>4 && item.rate>item.preDayRate1 && item.preDayRate1>0 && item.rate>item.preDayRate2 && item.preMainMoneyCha1>0}">background: red;</c:if>">
+                                ${item.companyName}</td>
                         <td>
                             <c:choose>
                                 <c:when test="${ fn:substring(item.companyCode ,0,3)=='600' or fn:substring(item.companyCode ,0,2)=='60'}">
@@ -199,7 +199,8 @@
                             </c:choose>
                         </td>
                         <td>${item.price}</td>
-                        <td style="<c:choose>
+                        <td style="
+                        <c:choose>
                         <c:when test="${item.rate>=4}">
                                 background: red;
                         </c:when>
@@ -209,7 +210,8 @@
                         <c:when test="${item.rate<2}">
                                 background: green;
                         </c:when>
-                        </c:choose>">${item.rate}%</td>
+                                </c:choose>">${item.rate}%
+                        </td>
                         <td>${item.mainMoney}万</td>
                         <td style="
                         <c:choose>
@@ -245,8 +247,19 @@
 
                             <%---0.5h--%>
                         <td>${item.preTimeMainMoney1}万</td>
-                        <td
-                                <c:if test="${item.preMainMoneyCha1>500}">style="background: green;" </c:if>>${item.preMainMoneyCha1}万
+                        <td <td style="
+                    <c:choose>
+                        <c:when test="${item.preMainMoneyCha1>2000}">
+                            background: red;
+                        </c:when>
+                        <c:when test="${item.preMainMoneyCha1>1000}">
+                            background: yellow;
+                        </c:when>
+                        <c:when test="${item.preMainMoneyCha1>500}">
+                            background: green;
+                        </c:when>
+                    </c:choose>
+                    "> ${item.preMainMoneyCha1}万
                         </td>
                         <td
                                 style="
@@ -264,10 +277,10 @@
                                 <c:if test="${item.preMainMoneyRate1<0}">style="background: red;" </c:if>>${item.preMainMoneyRate1}%
                         </td>
 
-                        <%--<td>${item.preTimeRate1}%</td>--%>
+                            <%--<td>${item.preTimeRate1}%</td>--%>
 
                         <td>${item.preTimeMainMoney2}万</td>
-                        <%--<td>${item.preTimeRate2}%</td>--%>
+                            <%--<td>${item.preTimeRate2}%</td>--%>
                         <td style="
                         <c:choose>
                         <c:when test="${item.preDayRate1>3}">
@@ -294,8 +307,8 @@
                         </c:when>
                                 </c:choose>">${item.preDayRate2}%
                         </td>
-                     <%--   <td>${item.date}</td>
-                        <td>${item.time}</td>--%>
+                            <%--   <td>${item.date}</td>
+                               <td>${item.time}</td>--%>
                         <td><fmt:formatDate value="${item.originalTime}"
                                             pattern="yyyy-MM-dd HH:mm:ss"
                                             timeZone="0"/></td>
