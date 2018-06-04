@@ -34,7 +34,6 @@ public class DayGoodController {
     //获取日期属性
     getFormatDates(request);
     Map<String, Object> map = new HashMap<String, Object>();
-    map.put("date", date);
     if (StringUtils.isEmpty(time)) {
       time = "1030";
     }
@@ -85,6 +84,7 @@ public class DayGoodController {
     if (StringUtils.isEmpty(preDate2)) {
       preDate2 = pre2Dates.get(0);
     }
+    map.put("date", date);
     map.put("preDayDate1", preDate1);
     map.put("preDayDate2", preDate2);
     map.put("type", type);
