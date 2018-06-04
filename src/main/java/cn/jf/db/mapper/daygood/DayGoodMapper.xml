@@ -323,10 +323,10 @@ insert into day_good
   </select>
 
   <select id="findDayGoodNowQuery" resultMap="dayGoodVo">
-    select g.*,g.main_money/g1.main_money as preMainMoneyRate, g.main_money-g1.main_money as preMainMoneyCha, c.name as company_name,c.type as company_type,c.market_worth,
+    select g.*,convert(g.main_money/g1.main_money,decimal(10,2)) as preMainMoneyRate, g.main_money-g1.main_money as preMainMoneyCha, c.name as company_name,c.type as company_type,c.market_worth,
     <choose>
       <when test="preTime1!=null and preTime1!=''">
-        g1.main_money as preTimeMainMoney1,g1.rate as preTimeRate1,case when g2.main_money is null then 0 ELSE g1.main_money/g2.main_money END as preMainMoneyRate1,g1.main_money-g2.main_money as preMainMoneyCha1,
+        g1.main_money as preTimeMainMoney1,g1.rate as preTimeRate1,case when g2.main_money is null then 0 ELSE convert(g1.main_money/g2.main_money,decimal(10,2)) END as preMainMoneyRate1,g1.main_money-g2.main_money as preMainMoneyCha1,
       </when>
       <otherwise>
         '0' as preTimeMainMoney1,'0' as preTimeRate1,'0' as preMainMoneyRate1,

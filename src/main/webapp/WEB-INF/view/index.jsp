@@ -37,7 +37,7 @@
     </style>
 </head>
 <body>
-<form action="/dg/index" method="get">
+<form action="/gp1/dg/index" method="get">
     <div style="margin:0 auto; width: 90%;text-align: center;">
         <%-- <div style="margin:0 auto; width: 100%;text-align: center;height: 100px;margin: 10px;">--%>
         <table style="width: 100%;">
@@ -211,7 +211,7 @@
                         <c:when test="${item.rate>=3}">
                                 background: yellow;
                         </c:when>
-                        <c:when test="${item.rate<2}">
+                        <c:when test="${item.rate<0}">
                                 background: green;
                         </c:when>
                                 </c:choose>">${item.rate}%</td>
@@ -220,13 +220,13 @@
                         <%--流入差--%>
                         <td style="
                         <c:choose>
-                        <c:when test="${item.preMainMoneyCha>2000}">
+                        <c:when test="${item.preMainMoneyCha>2500}">
                                 background: red;
                         </c:when>
                         <c:when test="${item.preMainMoneyCha>1000}">
                                 background: yellow;
                         </c:when>
-                        <c:when test="${item.preMainMoneyCha>500}">
+                        <c:when test="${item.preMainMoneyCha<0}">
                                 background: green;
                         </c:when>
                         </c:choose>
@@ -240,11 +240,11 @@
                                 <c:when test="${item.preMainMoneyRate>1}">
                                         background: yellow;
                                 </c:when>
-                                <c:when test="${item.preMainMoneyRate>0.8}">
+                                <c:when test="${item.preMainMoneyRate<0}">
                                         background: green;
                                 </c:when>
                                         </c:choose>"
-                                <c:if test="${item.preMainMoneyRate<0}">style="background: red;" </c:if>>${item.preMainMoneyRate}%
+                                >${item.preMainMoneyRate}%
                         </td>
                         <%--主力流入占比--%>
                         <td>${item.mainRate}%</td>
@@ -254,13 +254,13 @@
                         <%--上半个小时的主流如差--%>
                         <td  style="
                         <c:choose>
-                            <c:when test="${item.preMainMoneyCha1>2000}">
+                            <c:when test="${item.preMainMoneyCha1>2500}">
                                 background: red;
                             </c:when>
                             <c:when test="${item.preMainMoneyCha1>1000}">
                                 background: yellow;
                             </c:when>
-                            <c:when test="${item.preMainMoneyCha1>500}">
+                            <c:when test="${item.preMainMoneyCha1<0}">
                                 background: green;
                             </c:when>
                         </c:choose>"> ${item.preMainMoneyCha1}万</td>
@@ -273,7 +273,7 @@
                         <c:when test="${item.preMainMoneyRate1>1}">
                                 background: yellow;
                         </c:when>
-                        <c:when test="${item.preMainMoneyRate1>0.8}">
+                        <c:when test="${item.preMainMoneyRate1<0}">
                                 background: green;
                         </c:when>
                                 </c:choose>">
@@ -281,16 +281,16 @@
                         </td>
 
                             <%--<td>${item.preTimeRate1}%</td>--%>
-                        <%--上一个半个小时的主流入--%>
+                        <%--上一个个小时的主流入--%>
                         <td  style="
                         <c:choose>
-                        <c:when test="${item.preMainMoneyRate1>2}">
+                        <c:when test="${item.preTimeMainMoney2>2}">
                                 background: red;
                         </c:when>
-                        <c:when test="${item.preMainMoneyRate1>1}">
+                        <c:when test="${item.preTimeMainMoney2>1}">
                                 background: yellow;
                         </c:when>
-                        <c:when test="${item.preMainMoneyRate1>0.8}">
+                        <c:when test="${item.preTimeMainMoney2<0}">
                                 background: green;
                         </c:when>
                                 </c:choose>"> ${item.preTimeMainMoney2}万</td>
