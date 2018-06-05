@@ -46,15 +46,15 @@
 
     <!--web.xml默认配置-->
     <welcome-file-list>
-        <welcome-file>/dg/index</welcome-file>
+        <welcome-file>/login/</welcome-file>
     </welcome-file-list>
 
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>*.js</url-pattern>
         <url-pattern>*.css</url-pattern>
-        <url-pattern>/images/*</url-pattern>
-        <url-pattern>/css/*</url-pattern>
-        <url-pattern>/js/*</url-pattern>
+        <url-pattern>/images/*/*</url-pattern>
+        <url-pattern>/css/*/*</url-pattern>
+        <url-pattern>/js/*/*</url-pattern>
     </servlet-mapping>
 </web-app>

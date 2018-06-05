@@ -52,17 +52,5 @@
 
     <mvc:default-servlet-handler/>
 
-    <!-- 将配置文件读取到容器中，交给Spring管理 -->
-<!--    <bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-        <property name="locations">
-            <list>
-                <value>classpath:properties/file.properties</value>
-            </list>
-        </property>
-    </bean>-->
-
-    <!-- 启用aop代理 -->
-    <!--<aop:aspectj-autoproxy proxy-target-class="true"/>-->
-
 
 </beans>
