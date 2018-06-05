@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
 <head>
-    <title>Good</title>
+    <title>data-my-center</title>
     <style>
         td {
             padding: 6px 5px;
@@ -37,7 +37,7 @@
     </style>
 </head>
 <body>
-<form action="/gp1/dg/index" method="get">
+<form action="/data/" method="get">
     <div style="margin:0 auto; width: 90%;text-align: center;">
         <%-- <div style="margin:0 auto; width: 100%;text-align: center;height: 100px;margin: 10px;">--%>
         <table style="width: 100%;">

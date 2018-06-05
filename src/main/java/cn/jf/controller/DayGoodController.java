@@ -16,7 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/dg")
+@RequestMapping("/data/")
 public class DayGoodController {
 
   @Autowired
@@ -28,9 +28,13 @@ public class DayGoodController {
   List<String> pre1Dates = new ArrayList<String>();
   List<String> pre2Dates = new ArrayList<String>();
 
-  @RequestMapping("/index")
+  @RequestMapping("/")
   public String index(HttpServletRequest request, String date, String time, String price, String mainMoney, String rate,
       String preDate1, String preDate2, String type, String marketWorth1, String marketWorth2) {
+    if(request.getSession().getAttribute("user")==null){
+      return "redirect:/login";
+    }
+
     //获取日期属性
     getFormatDates(request);
     Map<String, Object> map = new HashMap<String, Object>();
@@ -106,6 +110,7 @@ public class DayGoodController {
     return "index";
   }
 
+  /*日期函数*/
   private void getFormatDates(HttpServletRequest request) {
    preDates = new ArrayList<String>();
    pre1Dates = new ArrayList<String>();
