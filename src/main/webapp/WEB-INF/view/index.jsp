@@ -13,7 +13,6 @@
             min-width: 10px;
             text-align: center;
         }
-
         th {
             border: 1px solid #ddd;
             height: 45px;
@@ -138,17 +137,17 @@
                 <th>价格</th>
                 <th>涨幅</th>
                 <th>流入</th>
-                <th>流入差</th>
-                <th>流入率</th>
+                <th>入差</th>
+                <th>入率</th>
                 <th>主占</th>
-                <th>-30入</th>
-                <th>-30差</th>
-                <th>-30率</th>
+                <th>上入</th>
+                <th>上入差</th>
+                <th>上入率</th>
                 <%--<th>-30主占</th>--%>
                 <th>-60入</th>
                 <%--<th>-60主占</th>--%>
-                <th>昨涨</th>
-                <th>前涨</th>
+                <th>上值</th>
+                <th>上上值</th>
                 <%-- <th>日期</th>
                  <th>时间</th>--%>
                 <th>原日期</th>
@@ -184,8 +183,17 @@
                             </c:choose>
                         </td>
                         <%--公司名称--%>
-                        <td style="<c:if
-                                test="${item.rate>4 && item.rate>item.preDayRate1 && item.preDayRate1>0 && item.rate>item.preDayRate2 && item.preMainMoneyCha1>0}">background: red;</c:if>">
+                        <td style="
+                        <c:if test="${item.rate>4.1 && item.rate>item.preDayRate1 }">
+                            <c:if test="${item.preDayRate1>0  && item.preMainMoneyCha1>0}">
+                                <c:if test="${item.preMainMoneyCha>0 && item.preMainMoneyRate>1.37}">
+                                    <c:if test="${item.preDayRate2>-3.99}">
+                                    background: green;
+                                    </c:if>
+                                </c:if>
+                            </c:if>
+                        </c:if>
+                                ">
                                 ${item.companyName}</td>
                         <%--公司编码--%>
                         <td>
@@ -205,7 +213,7 @@
                         <%--涨跌幅度--%>
                         <td style="
                         <c:choose>
-                        <c:when test="${item.rate>=4}">
+                        <c:when test="${item.rate>=4.4}">
                                 background: red;
                         </c:when>
                         <c:when test="${item.rate>=3}">
@@ -237,7 +245,7 @@
                                 <c:when test="${item.preMainMoneyRate>2}">
                                         background: red;
                                 </c:when>
-                                <c:when test="${item.preMainMoneyRate>1}">
+                                <c:when test="${item.preMainMoneyRate>1.05}">
                                         background: yellow;
                                 </c:when>
                                 <c:when test="${item.preMainMoneyRate<0}">
