@@ -185,10 +185,12 @@
                         <%--公司名称--%>
                         <td style="
                         <c:if test="${item.rate>4.1 && item.rate>item.preDayRate1 }">
-                            <c:if test="${item.preDayRate1>0  && item.preMainMoneyCha1>0}">
-                                <c:if test="${item.preMainMoneyCha>0 && item.preMainMoneyRate>1.37}">
-                                    <c:if test="${item.preDayRate2>-3.99}">
-                                    background: green;
+                            <c:if test="${item.preDayRate1-item.preDayRate2>-2}">
+                                <c:if test="${(item.preDayRate1>0 && item.preDayRate1<3.37) || item.preDayRate1>8.9}">
+                                    <c:if test="${(item.preMainMoneyCha>300  && item.preMainMoneyCha1>0) || item.mainMoney>3999}">
+                                        <c:if test="${item.preDayRate2>-3.79}">
+                                        background: green;
+                                        </c:if>
                                     </c:if>
                                 </c:if>
                             </c:if>
@@ -272,7 +274,7 @@
                                 background: green;
                             </c:when>
                         </c:choose>"> ${item.preMainMoneyCha1}万</td>
-                        <%--主流入占比--%>
+                        <%--上半个小时主流入占比--%>
                         <td  style="
                         <c:choose>
                         <c:when test="${item.preMainMoneyRate1>2}">
