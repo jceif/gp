@@ -2,9 +2,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<c:set var="ctx" value="${pageContext.request.contextPath}/"/>
 <html>
 <head>
     <title>data-my-center</title>
+    <link rel="stylesheet" type="text/css" href="${ctx}assets/css/common/bootstrap.min.css">
     <style>
         td {
             padding: 6px 5px;
@@ -13,11 +15,13 @@
             min-width: 10px;
             text-align: center;
         }
+
         th {
             border: 1px solid #ddd;
             height: 45px;
             background: azure;
             padding: 8px 6px;
+            text-align: center;
         }
 
         input {
@@ -136,20 +140,18 @@
                 <th>编码</th>
                 <th>价格</th>
                 <th>涨幅</th>
+                <th>30涨</th>
+                <th>60涨</th>
                 <th>流入</th>
                 <th>入差</th>
                 <th>入率</th>
                 <th>主占</th>
-                <th>上入</th>
-                <th>上入差</th>
-                <th>上入率</th>
-                <%--<th>-30主占</th>--%>
-                <th>-60入</th>
-                <%--<th>-60主占</th>--%>
+                <th>30入</th>
+                <th>30入差</th>
+                <th>30入率</th>
+                <th>60入</th>
                 <th>上值</th>
                 <th>上上值</th>
-                <%-- <th>日期</th>
-                 <th>时间</th>--%>
                 <th>原日期</th>
             </tr>
             <c:forEach items="${dayGoods}" var="item" varStatus="var">
@@ -182,22 +184,32 @@
                                 </c:otherwise>
                             </c:choose>
                         </td>
-                        <%--公司名称--%>
+                            <%--公司名称--%>
                         <td style="
                         <c:if test="${item.rate>4.1 && item.rate>item.preDayRate1 }">
                             <c:if test="${item.preDayRate1-item.preDayRate2>-2}">
                                 <c:if test="${(item.preDayRate1>0 && item.preDayRate1<3.37) || item.preDayRate1>8.9}">
                                     <c:if test="${(item.preMainMoneyCha>300  && item.preMainMoneyCha1>0) || item.mainMoney>3999}">
-                                        <c:if test="${item.preDayRate2>-3.79}">
-                                        background: green;
+                                        <c:if test="${item.preTimeMainMoney2>0}">
+                                            <c:if test="${item.preDayRate2>-3.79}">
+                                                    background: green;
+                                            </c:if>
                                         </c:if>
                                     </c:if>
                                 </c:if>
                             </c:if>
                         </c:if>
                                 ">
+                            <c:choose>
+                                <c:when test="${item.rate>item.preTimeRate1 && item.preTimeRate1>item.preTimeRate2}">
+                                    <span class="glyphicon glyphicon-arrow-up" style="padding: 0px;margin: 0px;"
+                                          aria-hidden="true"></span>
+                                </c:when>
+                                <c:otherwise>
+                                </c:otherwise>
+                            </c:choose>
                                 ${item.companyName}</td>
-                        <%--公司编码--%>
+                            <%--公司编码--%>
                         <td>
                             <c:choose>
                                 <c:when test="${ fn:substring(item.companyCode ,0,3)=='600' or fn:substring(item.companyCode ,0,2)=='60'}">
@@ -210,9 +222,9 @@
                                 </c:otherwise>
                             </c:choose>
                         </td>
-                        <%--当前价格--%>
+                            <%--当前价格--%>
                         <td>${item.price}</td>
-                        <%--涨跌幅度--%>
+                            <%--涨跌幅度--%>
                         <td style="
                         <c:choose>
                         <c:when test="${item.rate>=4.4}">
@@ -224,10 +236,16 @@
                         <c:when test="${item.rate<0}">
                                 background: green;
                         </c:when>
-                                </c:choose>">${item.rate}%</td>
-                        <%--当前净流入--%>
+                                </c:choose>">${item.rate}%
+                        </td>
+                            <%--半小时之前的涨幅--%>
+                        <td>${item.preTimeRate1}%</td>
+                            <%--一小时之前的涨幅--%>
+                        <td>${item.preTimeRate2}%</td>
+
+                            <%--当前净流入--%>
                         <td>${item.mainMoney}万</td>
-                        <%--流入差--%>
+                            <%--流入差--%>
                         <td style="
                         <c:choose>
                         <c:when test="${item.preMainMoneyCha>2500}">
@@ -240,42 +258,45 @@
                                 background: green;
                         </c:when>
                         </c:choose>
-                                ">${item.preMainMoneyCha}万</td>
-                        <%--流入率--%>
-                        <td style="
-                                <c:choose>
-                                <c:when test="${item.preMainMoneyRate>2}">
-                                        background: red;
-                                </c:when>
-                                <c:when test="${item.preMainMoneyRate>1.05}">
-                                        background: yellow;
-                                </c:when>
-                                <c:when test="${item.preMainMoneyRate<0}">
-                                        background: green;
-                                </c:when>
-                                        </c:choose>"
-                                >${item.preMainMoneyRate}%
+                                ">${item.preMainMoneyCha}万
                         </td>
-                        <%--主力流入占比--%>
-                        <td>${item.mainRate}%</td>
-                            <%---0.5h--%>
-                        <%--上半个小时的主流入--%>
-                        <td>${item.preTimeMainMoney1}万</td>
-                        <%--上半个小时的主流如差--%>
-                        <td  style="
+                            <%--流入率--%>
+                        <td style="
                         <c:choose>
-                            <c:when test="${item.preMainMoneyCha1>2500}">
+                        <c:when test="${item.preMainMoneyRate>2}">
                                 background: red;
-                            </c:when>
-                            <c:when test="${item.preMainMoneyCha1>1000}">
+                        </c:when>
+                        <c:when test="${item.preMainMoneyRate>1.05}">
                                 background: yellow;
-                            </c:when>
-                            <c:when test="${item.preMainMoneyCha1<0}">
+                        </c:when>
+                        <c:when test="${item.preMainMoneyRate<0}">
                                 background: green;
-                            </c:when>
-                        </c:choose>"> ${item.preMainMoneyCha1}万</td>
-                        <%--上半个小时主流入占比--%>
-                        <td  style="
+                        </c:when>
+                                </c:choose>"
+                        >${item.preMainMoneyRate}%
+                        </td>
+                            <%--主力流入占比--%>
+                        <td>${item.mainRate}%</td>
+
+                            <%---0.5h--%>
+                            <%--上半个小时的主流入--%>
+                        <td>${item.preTimeMainMoney1}万</td>
+                            <%--上半个小时的主流如差--%>
+                        <td style="
+                        <c:choose>
+                        <c:when test="${item.preMainMoneyCha1>2500}">
+                                background: red;
+                        </c:when>
+                        <c:when test="${item.preMainMoneyCha1>1000}">
+                                background: yellow;
+                        </c:when>
+                        <c:when test="${item.preMainMoneyCha1<0}">
+                                background: green;
+                        </c:when>
+                                </c:choose>"> ${item.preMainMoneyCha1}万
+                        </td>
+                            <%--上半个小时主流入占比--%>
+                        <td style="
                         <c:choose>
                         <c:when test="${item.preMainMoneyRate1>2}">
                                 background: red;
@@ -287,25 +308,14 @@
                                 background: green;
                         </c:when>
                                 </c:choose>">
-                        ${item.preMainMoneyRate1}%
+                                ${item.preMainMoneyRate1}%
                         </td>
 
-                            <%--<td>${item.preTimeRate1}%</td>--%>
-                        <%--上一个个小时的主流入--%>
-                        <td  style="
-                        <c:choose>
-                        <c:when test="${item.preTimeMainMoney2>2}">
-                                background: red;
-                        </c:when>
-                        <c:when test="${item.preTimeMainMoney2>1}">
-                                background: yellow;
-                        </c:when>
-                        <c:when test="${item.preTimeMainMoney2<0}">
-                                background: green;
-                        </c:when>
-                                </c:choose>"> ${item.preTimeMainMoney2}万</td>
-                            <%--<td>${item.preTimeRate2}%</td>--%>
-                        <%--昨天涨幅--%>
+
+                            <%--上一个个小时的主流入--%>
+                        <td style=""> ${item.preTimeMainMoney2}万</td>
+
+                            <%--昨天涨幅--%>
                         <td style="
                         <c:choose>
                         <c:when test="${item.preDayRate1>3}">
@@ -317,8 +327,9 @@
                         <c:when test="${item.preDayRate1<0}">
                                 background: green;
                         </c:when>
-                                </c:choose>">${item.preDayRate1}%</td>
-                        <%--前天涨幅--%>
+                                </c:choose>">${item.preDayRate1}%
+                        </td>
+                            <%--前天涨幅--%>
                         <td style="
                         <c:choose>
                         <c:when test="${item.preDayRate2>3}">
@@ -330,10 +341,11 @@
                         <c:when test="${item.preDayRate2<0}">
                                 background: green;
                         </c:when>
-                                </c:choose>">${item.preDayRate2}%</td>
+                                </c:choose>">${item.preDayRate2}%
+                        </td>
                             <%--   <td>${item.date}</td>
                                <td>${item.time}</td>--%>
-                        <%--数据时间--%>
+                            <%--数据时间--%>
                         <td>
                             <fmt:formatDate value="${item.originalTime}"
                                             pattern="yyyy-MM-dd HH:mm:ss"

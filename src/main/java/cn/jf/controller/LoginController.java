@@ -13,6 +13,9 @@ public class LoginController {
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
     @RequestMapping("/login")
     public String login(HttpServletRequest request,String userName, String userPwd) {
+        if(request.getSession().getAttribute("user")!=null){
+            return "redirect:/data/";
+        }
         if(userName==null || userPwd==null){
             return "login";
         }
@@ -21,6 +24,15 @@ public class LoginController {
             return "redirect:/data/";
         } else {
             return "login";
+        }
+    }
+
+    @RequestMapping("/")
+    public String index(HttpServletRequest request) {
+        if(request.getSession().getAttribute("user")!=null){
+            return "redirect:/data/";
+        }else {
+            return "redirect:/login/";
         }
     }
 }
