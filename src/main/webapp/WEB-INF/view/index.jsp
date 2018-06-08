@@ -342,6 +342,9 @@
                                 background: green;
                         </c:when>
                                 </c:choose>">${item.preDayRate2}%
+                            <c:if test="${item.preDayRate1<item.preDayRate2}">
+                                -
+                            </c:if>
                         </td>
                             <%--   <td>${item.date}</td>
                                <td>${item.time}</td>--%>
