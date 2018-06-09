@@ -189,7 +189,7 @@
                         <c:if test="${item.rate>4.1 && item.rate>item.preDayRate1 }">
                             <c:if test="${item.preDayRate1-item.preDayRate2>-2}">
                                 <c:if test="${(item.preDayRate1>0 && item.preDayRate1<3.37) || item.preDayRate1>8.9}">
-                                    <c:if test="${(item.preMainMoneyCha>300  && item.preMainMoneyCha1>0) || item.mainMoney>3999}">
+                                    <c:if test="${(item.preMainMoneyCha>300  && item.preMainMoneyCha1>=0) || item.mainMoney>3999}">
                                         <c:if test="${item.preTimeMainMoney2>0}">
                                             <c:if test="${item.preDayRate2>-3.79}">
                                                     background: green;
@@ -228,7 +228,7 @@
                             </c:choose>
                         </td>
                             <%--当前价格--%>
-                        <td>${item.price}</td>
+                                <td><span id="price-${item.companyCode}">${item.price}</span></td>
                             <%--涨跌幅度--%>
                         <td style="
                         <c:choose>
