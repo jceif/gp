@@ -370,7 +370,7 @@
                 </c:if>
             </c:forEach>
             </tbody>
-        </table><!-- /.table -->G
+        </table><!-- /.table -->
     </div>
 </form>
 
