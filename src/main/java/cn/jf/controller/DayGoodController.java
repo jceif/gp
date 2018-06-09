@@ -14,6 +14,7 @@ import cn.jf.service.daygood.DayGoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/data/")
@@ -116,7 +117,7 @@ public class DayGoodController {
    pre1Dates = new ArrayList<String>();
    pre2Dates = new ArrayList<String>();
     Calendar calendar = Calendar.getInstance();
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 28; i++) {
       if (calendar.get(Calendar.DAY_OF_WEEK) != 7 && calendar.get(Calendar.DAY_OF_WEEK) != 1) {
         preDates.add(simpleDateFormat.format(calendar.getTime()));
         if (i > 0 && (preDates.size()-pre1Dates.size())>1) {
@@ -131,6 +132,13 @@ public class DayGoodController {
     request.setAttribute("formatDates", preDates);
     request.setAttribute("formatDates1", pre1Dates);
     request.setAttribute("formatDates2", pre2Dates);
+  }
+
+
+  @RequestMapping("/top")
+  @ResponseBody
+  public void dayGoodTop5(String companyCode){
+
   }
 
 }

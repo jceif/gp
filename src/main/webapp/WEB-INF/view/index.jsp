@@ -185,7 +185,7 @@
                             </c:choose>
                         </td>
                             <%--公司名称--%>
-                        <td style="
+                        <td  style="
                         <c:if test="${item.rate>4.1 && item.rate>item.preDayRate1 }">
                             <c:if test="${item.preDayRate1-item.preDayRate2>-2}">
                                 <c:if test="${(item.preDayRate1>0 && item.preDayRate1<3.37) || item.preDayRate1>8.9}">
@@ -198,26 +198,31 @@
                                     </c:if>
                                 </c:if>
                             </c:if>
-                        </c:if>
-                                ">
+                        </c:if>" class="companyName" id="${item.companyCode}">
                             <c:choose>
                                 <c:when test="${item.rate>item.preTimeRate1 && item.preTimeRate1>item.preTimeRate2}">
                                     <span class="glyphicon glyphicon-arrow-up" style="padding: 0px;margin: 0px;"
                                           aria-hidden="true"></span>
                                 </c:when>
+                                <c:when test="${item.rate<item.preTimeRate1}">
+                                    <span class="glyphicon glyphicon-arrow-down" style="padding: 0px;margin: 0px;"
+                                          aria-hidden="true"></span>
+                                </c:when>
                                 <c:otherwise>
                                 </c:otherwise>
                             </c:choose>
-                                ${item.companyName}</td>
+                                ${item.companyName}
+                            <button type="button" id="info${item.companyCode}" style="display: none" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="right" data-content=""></button>
+                        </td>
                             <%--公司编码--%>
-                        <td>
+                        <td >
                             <c:choose>
                                 <c:when test="${ fn:substring(item.companyCode ,0,3)=='600' or fn:substring(item.companyCode ,0,2)=='60'}">
-                                    <a href="http://quote.eastmoney.com/concept/sh${item.companyCode}.html?from=classic&eventcode=Web_quote_entrance2"
+                                    <a  href="http://quote.eastmoney.com/concept/sh${item.companyCode}.html?from=classic&eventcode=Web_quote_entrance2"
                                        target="_blank">${item.companyCode}</a>
                                 </c:when>
                                 <c:otherwise>
-                                    <a href="http://quote.eastmoney.com/concept/sz${item.companyCode}.html?from=classic&eventcode=Web_quote_entrance2"
+                                    <a  href="http://quote.eastmoney.com/concept/sz${item.companyCode}.html?from=classic&eventcode=Web_quote_entrance2"
                                        target="_blank">${item.companyCode}</a>
                                 </c:otherwise>
                             </c:choose>
@@ -280,7 +285,11 @@
 
                             <%---0.5h--%>
                             <%--上半个小时的主流入--%>
-                        <td>${item.preTimeMainMoney1}万</td>
+                        <td style="<c:choose>
+                        <c:when test="${item.preTimeMainMoney1<0}">
+                                background: green;
+                        </c:when>
+                                </c:choose>">${item.preTimeMainMoney1}万</td>
                             <%--上半个小时的主流如差--%>
                         <td style="
                         <c:choose>
@@ -313,7 +322,11 @@
 
 
                             <%--上一个个小时的主流入--%>
-                        <td style=""> ${item.preTimeMainMoney2}万</td>
+                        <td style="<c:choose>
+                        <c:when test="${item.preTimeMainMoney2<0}">
+                                background: green;
+                        </c:when>
+                                </c:choose>"> ${item.preTimeMainMoney2}万</td>
 
                             <%--昨天涨幅--%>
                         <td style="
@@ -357,8 +370,13 @@
                 </c:if>
             </c:forEach>
             </tbody>
-        </table><!-- /.table -->
+        </table><!-- /.table -->G
     </div>
 </form>
+
+
+<script type="text/javascript" src="${ctx}assets/js/common/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="${ctx}assets/js/common/bootstrap.min.js"></script>
+<script type="text/javascript" src="${ctx}assets/js/dayGood/index.js"></script>
 </body>
 </html>

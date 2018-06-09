@@ -5,6 +5,8 @@ package cn.jf.db.dao;
 import java.util.List;
 import java.util.Map;
 import cn.jf.model.dayvalue.DayValue;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 public interface DayValueMapper {
@@ -34,5 +36,9 @@ public interface DayValueMapper {
 	 List<DayValue> findDayValueQueryPage(Map map);
 
 	 int findCountDayValueQuery(Map map);
+
+	List<DayValue> dayValueTop5(@Param("companyCode") String companyCode,@Param("date") int date);
+
+	Double dayValueAverage(@Param("companyCode") String companyCode,@Param("date") int date);
 
 }

@@ -216,4 +216,13 @@ id=#{item.id}
 	</if>
 </where>
 </select>
+
+
+	<select id="dayValueTop5" resultMap="dayValue">
+		select * from day_value where company_code=#{companyCode} and `date` &gt;= #{date} ORDER  by end_price desc limit 2
+	</select>
+
+	<select id="dayValueAverage" resultType="java.lang.Double">
+		select FORMAT(AVG(end_price),2)  from day_value where company_code=#{companyCode} and `date` &gt;= #{date} ORDER  by id  desc
+	</select>
 </mapper>
