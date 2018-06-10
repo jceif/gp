@@ -178,14 +178,14 @@
         var rate = ec.init(document.getElementById('rate'));
         option = {
           title : {
-            text: '价格趋势-${date}',
+            text: '涨幅趋势-${date}',
             subtext: '${companyName}-${companyCode}'
           },
           tooltip : {
             trigger: 'axis'
           },
           legend: {
-            data:['价格']
+            data:['涨幅']
           },
           toolbox: {
             show : true,
@@ -212,10 +212,10 @@
           ],
           series : [
             {
-              name:'价格',
+              name:'涨幅',
               type:'line',
               stack: '总量',
-              data:${prices},
+              data:${rates},
               itemStyle:{
                 normal:{
                   label:{show:true}
