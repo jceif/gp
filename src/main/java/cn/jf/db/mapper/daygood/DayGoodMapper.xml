@@ -228,7 +228,9 @@ insert into day_good
       <if test="originalTime!=null and originalTime!=''">
         AND original_time=#{originalTime}
       </if>
+      order by id asc
     </where>
+
   </select>
   <select id="findDayGoodQueryPage" resultMap="dayGood">
     select * from day_good
@@ -409,7 +411,7 @@ insert into day_good
       <if test="marketWorth1!=null and marketWorth1!=''and marketWorth2!=null and marketWorth2!=''">
         and c.market_worth BETWEEN #{marketWorth1} and #{marketWorth2}
       </if>
-      order by g.main_money desc,g.price asc,g.rate desc
+      order by g.main_money desc,g.rate desc
     </where>
   </select>
 

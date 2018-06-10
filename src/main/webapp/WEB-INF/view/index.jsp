@@ -211,7 +211,8 @@
                                 <c:otherwise>
                                 </c:otherwise>
                             </c:choose>
-                                ${item.companyName}
+                            <a  href="/data/chart?companyCode=${item.companyCode}&date=${date}" target="_blank" style="color: black;">${item.companyName}</a>
+
                             <button type="button" id="info${item.companyCode}" style="display: none" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="right" data-content=""></button>
                         </td>
                             <%--公司编码--%>
