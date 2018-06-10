@@ -6,6 +6,8 @@ import cn.jf.service.dayvalue.DayValueService;
 import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.druid.util.StringUtils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.print.attribute.standard.DateTimeAtCompleted;
@@ -35,7 +37,7 @@ public class DayGoodController {
   @RequestMapping("/")
   public String index(HttpServletRequest request, String date, String time, String price, String mainMoney, String rate,
       String preDate1, String preDate2, String type, String marketWorth1, String marketWorth2) {
-    if(request.getSession().getAttribute("user")==null){
+    if (request.getSession().getAttribute("user") == null) {
       return "redirect:/login";
     }
 
@@ -116,17 +118,17 @@ public class DayGoodController {
 
   /*日期函数*/
   private void getFormatDates(HttpServletRequest request) {
-   preDates = new ArrayList<String>();
-   pre1Dates = new ArrayList<String>();
-   pre2Dates = new ArrayList<String>();
+    preDates = new ArrayList<String>();
+    pre1Dates = new ArrayList<String>();
+    pre2Dates = new ArrayList<String>();
     Calendar calendar = Calendar.getInstance();
     for (int i = 0; i < 28; i++) {
       if (calendar.get(Calendar.DAY_OF_WEEK) != 7 && calendar.get(Calendar.DAY_OF_WEEK) != 1) {
         preDates.add(simpleDateFormat.format(calendar.getTime()));
-        if (i > 0 && (preDates.size()-pre1Dates.size())>1) {
+        if (i > 0 && (preDates.size() - pre1Dates.size()) > 1) {
           pre1Dates.add(simpleDateFormat.format(calendar.getTime()));
         }
-        if (i > 1 &&   (pre1Dates.size()-pre2Dates.size())>1) {
+        if (i > 1 && (pre1Dates.size() - pre2Dates.size()) > 1) {
           pre2Dates.add(simpleDateFormat.format(calendar.getTime()));
         }
       }
@@ -139,23 +141,23 @@ public class DayGoodController {
 
 
   @RequestMapping("/chart")
-  public  String echart(HttpServletRequest request,String companyCode,String date){
+  public String echart(HttpServletRequest request, String companyCode, String date) {
     Map<String, Object> map = new HashMap<String, Object>();
     map.put("date", date);
     map.put("companyCode", companyCode);
-    List<DayGood> dayGoods=dayGoodService.findDayGoodQuery(map);
-    List<String> times=new ArrayList<String>();
-    List<Double> prices=new ArrayList<Double>();
-    List<Double> rates=new ArrayList<Double>();
-    List<Double> moneys=new ArrayList<Double>();
-    double nowPrice=0;
-    if(dayGoods!=null && dayGoods.size()>0){
+    List<DayGood> dayGoods = dayGoodService.findDayGoodQuery(map);
+    List<String> times = new ArrayList<String>();
+    List<Double> prices = new ArrayList<Double>();
+    List<Double> rates = new ArrayList<Double>();
+    List<Double> moneys = new ArrayList<Double>();
+    double nowPrice = 0;
+    if (dayGoods != null && dayGoods.size() > 0) {
       for (DayGood dayGood : dayGoods) {
         times.add(dayGood.getTime());
         rates.add(dayGood.getPrice());
         prices.add(dayGood.getRate());
         moneys.add(dayGood.getMainMoney());
-        nowPrice=dayGood.getPrice();
+        nowPrice = dayGood.getPrice();
       }
     }
     request.setAttribute("times", JSONUtils.toJSONString(times));
@@ -163,20 +165,24 @@ public class DayGoodController {
     request.setAttribute("prices", JSONUtils.toJSONString(prices));
     request.setAttribute("moneys", JSONUtils.toJSONString(moneys));
 
-
-    List<DayValue> dayValues =dayValueService.dayValueTop5(companyCode);
-    Double avgValue  =dayValueService.dayValueAverage(companyCode);
-    List<String> topNames=new ArrayList<String>();
-    List<Double> topValues=new ArrayList<Double>();
-    List<Double> avgValues=new ArrayList<Double>();
-    if(dayValues!=null && dayValues.size()>0) {
+    List<DayValue> dayValues = dayValueService.dayValueTop5(companyCode);
+    Double avgValue = dayValueService.dayValueAverage(companyCode);
+    List<String> topNames = new ArrayList<String>();
+    List<Double> topValues = new ArrayList<Double>();
+    List<Double> avgValues = new ArrayList<Double>();
+    BigDecimal chaRate = BigDecimal.valueOf(0);
+    if (dayValues != null && dayValues.size() > 0) {
       for (DayValue dayValue : dayValues) {
         topValues.add(dayValue.getEndPrice());
         topNames.add("top-" + dayValue.getDate());
         avgValues.add(avgValue);
+        if (topValues.size() == 1) {
+          double cha = (nowPrice - dayValue.getEndPrice()) * 100 / nowPrice;
+          chaRate = (new BigDecimal(cha)).setScale(2, RoundingMode.HALF_UP);
+        }
       }
     }
-    topNames.add("now-"+date);
+    topNames.add("now-" + date);
     topValues.add(nowPrice);
     avgValues.add(avgValue);
 
@@ -185,8 +191,9 @@ public class DayGoodController {
     request.setAttribute("avgValues", JSONUtils.toJSONString(avgValues));
     request.setAttribute("companyCode", companyCode);
     request.setAttribute("date", date);
+    request.setAttribute("chaRate", chaRate);
 
-    return  "chart";
+    return "chart";
 
   }
 

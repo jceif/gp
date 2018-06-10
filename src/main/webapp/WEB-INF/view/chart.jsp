@@ -41,7 +41,7 @@
             trigger: 'axis'
           },
           legend: {
-            data:['top','平均值']
+            data:['top ${chaRate}%','平均值']
           },
           toolbox: {
             show : true,
@@ -68,7 +68,7 @@
           ],
           series : [
             {
-              name:'top',
+              name:'top ${chaRate}%',
               type:'bar',
               stack: 'top',
               data:${topValues}
