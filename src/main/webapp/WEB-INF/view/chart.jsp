@@ -165,6 +165,7 @@
   require(
       [
         'echarts',
+        'echarts/chart/line', // 使用柱状图就加载bar模块，按需加载
         'echarts/chart/bar' // 使用柱状图就加载bar模块，按需加载
       ],
       function (ec) {
