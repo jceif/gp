@@ -71,7 +71,12 @@
               name:'top ${chaRate}%',
               type:'bar',
               stack: 'top',
-              data:${topValues}
+              data:${topValues},
+              itemStyle:{
+                normal:{
+                  label:{show:true}
+                }
+              }
             },
             {
               name:'平均值',
@@ -144,7 +149,12 @@
               type:'line',
               smooth:true,
               itemStyle: {normal: {areaStyle: {type: 'default'}}},
-              data:${moneys}
+              data:${moneys},
+              itemStyle:{
+                normal:{
+                  label:{show:true}
+                }
+              }
             }
           ]
         };
@@ -210,8 +220,14 @@
               name:'价格',
               type:'line',
               stack: '总量',
-              data:${prices}
+              data:${prices},
+              itemStyle:{
+                normal:{
+                  label:{show:true}
+                }
+              }
             }
+
           ]
         };
 
