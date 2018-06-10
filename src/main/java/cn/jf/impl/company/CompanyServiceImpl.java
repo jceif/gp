@@ -41,7 +41,12 @@ public class CompanyServiceImpl implements CompanyService {
 		return this.companyMapper.findCompanyById(companyId);
 	}
 
-	
+	@Override
+	public Company findCompanyByCode(String companyCode) {
+		return this.companyMapper.findCompanyByCode(companyCode);
+	}
+
+
 	public List<Company> findCompanyList()	{
 		return this.companyMapper.findCompanyList();
 	}

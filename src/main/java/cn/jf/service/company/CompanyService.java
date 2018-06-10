@@ -19,6 +19,7 @@ public interface CompanyService {
 	 void updateCompany(Company company);
 
 	 Company findCompanyById(String companyId);
+	Company findCompanyByCode(String companyCode);
 
 	 List<Company> findCompanyList();
 

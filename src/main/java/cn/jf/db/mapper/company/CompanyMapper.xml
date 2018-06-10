@@ -35,6 +35,10 @@ insert into company
 	select * from company
 	where id=#{id}
 </select>
+	<select id="findCompanyByCode" resultMap="company">
+		select * from company
+		where code=#{code}
+	</select>
 <select id="findCompanyList" resultMap="company">
 	select * from company
 </select>

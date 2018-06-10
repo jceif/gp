@@ -3,7 +3,7 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}/"/>
 <html>
 <head>
-    <title>echart</title>
+    <title>${companyName}-${companyCode}</title>
 </head>
 <body>
 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
@@ -35,7 +35,7 @@
         option = {
           title : {
             text: '历史top-${date}',
-            subtext: '${companyCode}'
+            subtext: '${companyName}-${companyCode}'
           },
           tooltip : {
             trigger: 'axis'
@@ -107,7 +107,7 @@
         option = {
           title : {
             text: '流入趋势-${date}',
-            subtext: '${companyCode}'
+            subtext: '${companyName}-${companyCode}'
           },
           tooltip : {
             trigger: 'axis'
@@ -174,7 +174,7 @@
         option = {
           title : {
             text: '价格趋势-${date}',
-            subtext: '${companyCode}'
+            subtext: '${companyName}-${companyCode}'
           },
           tooltip : {
             trigger: 'axis'

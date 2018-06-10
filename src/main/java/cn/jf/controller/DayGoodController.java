@@ -1,7 +1,9 @@
 package cn.jf.controller;
 
+import cn.jf.model.company.Company;
 import cn.jf.model.daygood.DayGoodVo;
 import cn.jf.model.dayvalue.DayValue;
+import cn.jf.service.company.CompanyService;
 import cn.jf.service.dayvalue.DayValueService;
 import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.druid.util.StringUtils;
@@ -29,6 +31,9 @@ public class DayGoodController {
   private DayGoodService dayGoodService;
   @Autowired
   private DayValueService dayValueService;
+  @Autowired
+  private CompanyService companyService;
+
   SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
   List<String> preDates = new ArrayList<String>();
   List<String> pre1Dates = new ArrayList<String>();
@@ -142,6 +147,9 @@ public class DayGoodController {
 
   @RequestMapping("/chart")
   public String echart(HttpServletRequest request, String companyCode, String date) {
+
+    Company company= companyService.findCompanyByCode(companyCode);
+
     Map<String, Object> map = new HashMap<String, Object>();
     map.put("date", date);
     map.put("companyCode", companyCode);
@@ -192,6 +200,9 @@ public class DayGoodController {
     request.setAttribute("companyCode", companyCode);
     request.setAttribute("date", date);
     request.setAttribute("chaRate", chaRate);
+    if(company!=null){
+      request.setAttribute("companyName", company.getName());
+    }
 
     return "chart";
 
