@@ -162,8 +162,8 @@ public class DayGoodController {
     if (dayGoods != null && dayGoods.size() > 0) {
       for (DayGood dayGood : dayGoods) {
         times.add(dayGood.getTime());
-        rates.add(dayGood.getPrice());
-        prices.add(dayGood.getRate());
+        prices.add(dayGood.getPrice());
+        rates.add(dayGood.getRate());
         moneys.add(dayGood.getMainMoney());
         nowPrice = dayGood.getPrice();
       }

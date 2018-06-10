@@ -10,7 +10,7 @@
 
 <div id="top" style="height:400px"></div>
 <div id="money" style="height:400px"></div>
-<div id="price" style="height:400px"></div>
+<div id="rate" style="height:400px"></div>
 
 <!-- ECharts单文件引入 -->
 <script src="${ctx}assets/js/echart/echarts.js" type="text/javascript"></script>
@@ -149,12 +149,7 @@
               type:'line',
               smooth:true,
               itemStyle: {normal: {areaStyle: {type: 'default'}}},
-              data:${moneys},
-              itemStyle:{
-                normal:{
-                  label:{show:true}
-                }
-              }
+              data:${moneys}
             }
           ]
         };
@@ -163,7 +158,7 @@
       }
   );
 </script>
-<%--价格趋势--%>
+<%--涨幅趋势--%>
 <script type="text/javascript">
   // 路径配置
   require.config({
@@ -180,7 +175,7 @@
       ],
       function (ec) {
         // 基于准备好的dom，初始化echarts图表
-        var price = ec.init(document.getElementById('price'));
+        var rate = ec.init(document.getElementById('rate'));
         option = {
           title : {
             text: '价格趋势-${date}',
@@ -232,7 +227,7 @@
         };
 
         // 为echarts对象加载数据
-        price.setOption(option);
+        rate.setOption(option);
       }
   );
 </script>
