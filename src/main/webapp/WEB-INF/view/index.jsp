@@ -250,14 +250,23 @@
                         <td>${item.preTimeRate2}%</td>
 
                             <%--当前净流入--%>
-                        <td>${item.mainMoney}万</td>
+                        <td style="
+                        <c:choose>
+                        <c:when test="${item.mainMoney>7000}">
+                                background: red;
+                        </c:when>
+                        <c:when test="${item.mainMoney>5000}">
+                                background: yellow;
+                        </c:when>
+                        </c:choose>
+                                ">${item.mainMoney}万</td>
                             <%--流入差--%>
                         <td style="
                         <c:choose>
-                        <c:when test="${item.preMainMoneyCha>2500}">
+                        <c:when test="${item.preMainMoneyCha>3000}">
                                 background: red;
                         </c:when>
-                        <c:when test="${item.preMainMoneyCha>1000}">
+                        <c:when test="${item.preMainMoneyCha>2000}">
                                 background: yellow;
                         </c:when>
                         <c:when test="${item.preMainMoneyCha<0}">
