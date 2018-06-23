@@ -82,7 +82,7 @@ public class DayGoodController {
     }
     map.put("price", price);
     if (StringUtils.isEmpty(mainMoney)) {
-      mainMoney = "1500";
+      mainMoney = "3500";
     }
     map.put("mainMoney", mainMoney);    //主要资金
     if (StringUtils.isEmpty(rate)) {
