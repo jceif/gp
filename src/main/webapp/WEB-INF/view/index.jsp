@@ -189,10 +189,12 @@
                         <c:if test="${item.rate>4.1 && item.rate>item.preDayRate1 }">
                             <c:if test="${item.preDayRate1-item.preDayRate2>-2}">
                                 <c:if test="${(item.preDayRate1>0 && item.preDayRate1<3.37) || item.preDayRate1>8.9}">
-                                    <c:if test="${(item.preMainMoneyCha>300  && item.preMainMoneyCha1>=0) || item.mainMoney>3999}">
+                                    <c:if test="${(item.preMainMoneyCha>300  && item.preMainMoneyCha1>=0) || item.mainMoney>6300}">
                                         <c:if test="${item.preTimeMainMoney2>0}">
-                                            <c:if test="${item.preDayRate2>-3.79}">
-                                                    background: green;
+                                            <c:if test="${item.mainMoney>6900}">
+                                                <c:if test="${item.preDayRate2>-3.79}">
+                                                        background: green;
+                                                </c:if>
                                             </c:if>
                                         </c:if>
                                     </c:if>
