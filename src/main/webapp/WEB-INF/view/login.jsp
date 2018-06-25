@@ -6,6 +6,23 @@
 <html>
 <head>
     <title>data-my-login</title>
+    <style>
+        .copy-footer{
+            clear:both;
+            background:#efefef;
+            margin:0px;
+            height:50px;
+            padding-top:10px;
+            text-align:center;
+            color:#999;
+        }
+
+        .copy-footer p{
+            line-height:22px;
+            font-family:"Microsoft YaHei";
+        }
+
+    </style>
     <link rel="stylesheet" type="text/css" href="${ctx}assets/css/login/styles.css">
 </head>
 <body>
@@ -34,7 +51,11 @@
         </ul>
     </div>
 </div>
+<div class="copy-footer" style="top: 500px;">
+    <p> Copyright©2018-2019 31jf.cn All Rights Reserved <a href="http://www.miitbeian.gov.cn"> 豫ICP备16002117号-1</a>&nbsp;</p>
+</div>
 <div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';color:#000000">
+
     <h1>数 据 中 心</h1>
 </div>
 <script src="${ctx}assets/js/common/jquery-2.1.1.min.js" type="text/javascript"></script>
@@ -46,5 +67,7 @@
         $('.wrapper').addClass('form-success');
     });*/
 </script>
+
+
 </body>
 </html>
