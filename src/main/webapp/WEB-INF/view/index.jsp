@@ -189,10 +189,12 @@
                         <c:if test="${item.rate>4.1 && item.rate>item.preDayRate1 }">
                             <c:if test="${item.preDayRate1-item.preDayRate2>-2}">
                                 <c:if test="${(item.preDayRate1>0 && item.preDayRate1<3.37) || item.preDayRate1>8.9}">
-                                    <c:if test="${(item.preMainMoneyCha>300  && item.preMainMoneyCha1>=0) || item.mainMoney>3999}">
+                                    <c:if test="${(item.preMainMoneyCha>300  && item.preMainMoneyCha1>=0) || item.mainMoney>5299}">
                                         <c:if test="${item.preTimeMainMoney2>0}">
-                                            <c:if test="${item.preDayRate2>-3.79}">
-                                                    background: green;
+                                            <c:if test="${item.mainMoney>6900}">
+                                                <c:if test="${item.preDayRate2>-3.79}">
+                                                        background: green;
+                                                </c:if>
                                             </c:if>
                                         </c:if>
                                     </c:if>
@@ -250,14 +252,23 @@
                         <td>${item.preTimeRate2}%</td>
 
                             <%--当前净流入--%>
-                        <td>${item.mainMoney}万</td>
+                        <td style="
+                        <c:choose>
+                        <c:when test="${item.mainMoney>7000}">
+                                background: red;
+                        </c:when>
+                        <c:when test="${item.mainMoney>5000}">
+                                background: yellow;
+                        </c:when>
+                        </c:choose>
+                                ">${item.mainMoney}万</td>
                             <%--流入差--%>
                         <td style="
                         <c:choose>
-                        <c:when test="${item.preMainMoneyCha>2500}">
+                        <c:when test="${item.preMainMoneyCha>3000}">
                                 background: red;
                         </c:when>
-                        <c:when test="${item.preMainMoneyCha>1000}">
+                        <c:when test="${item.preMainMoneyCha>2000}">
                                 background: yellow;
                         </c:when>
                         <c:when test="${item.preMainMoneyCha<0}">
