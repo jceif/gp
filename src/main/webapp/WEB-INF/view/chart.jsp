@@ -11,6 +11,7 @@
 <div id="top" style="height:400px"></div>
 <div id="money" style="height:400px"></div>
 <div id="rate" style="height:400px"></div>
+<div id="price" style="height:400px"></div>
 
 <!-- ECharts单文件引入 -->
 <script src="${ctx}assets/js/echart/echarts.js" type="text/javascript"></script>
@@ -231,6 +232,78 @@
       }
   );
 </script>
+<%--价格趋势--%>
+<script type="text/javascript">
+    // 路径配置
+    require.config({
+        paths: {
+            echarts: '${ctx}assets/js/echart/'
+        }
+    });
+    // 使用
+    require(
+        [
+            'echarts',
+            'echarts/chart/line', // 使用柱状图就加载bar模块，按需加载
+            'echarts/chart/bar' // 使用柱状图就加载bar模块，按需加载
+        ],
+        function (ec) {
+            // 基于准备好的dom，初始化echarts图表
+            var price = ec.init(document.getElementById('price'));
+            option = {
+                title : {
+                    text: '价格趋势-${date}',
+                    subtext: '${companyName}-${companyCode}'
+                },
+                tooltip : {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data:['价格']
+                },
+                toolbox: {
+                    show : true,
+                    feature : {
+                        mark : {show: true},
+                        dataView : {show: true, readOnly: false},
+                        magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                        restore : {show: true},
+                        saveAsImage : {show: true}
+                    }
+                },
+                calculable : true,
+                xAxis : [
+                    {
+                        type : 'category',
+                        boundaryGap : false,
+                        data : ${times}
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'value'
+                    }
+                ],
+                series : [
+                    {
+                        name:'价格',
+                        type:'line',
+                        stack: '总量',
+                        data:${prices},
+                        itemStyle:{
+                            normal:{
+                                label:{show:true}
+                            }
+                        }
+                    }
 
+                ]
+            };
+
+            // 为echarts对象加载数据
+            price.setOption(option);
+        }
+    );
+</script>
 </body>
 </html>
