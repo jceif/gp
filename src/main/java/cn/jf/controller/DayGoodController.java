@@ -86,7 +86,7 @@ public class DayGoodController {
     }
     map.put("mainMoney", mainMoney);    //主要资金
     if (StringUtils.isEmpty(rate)) {
-      rate = "10";
+      rate = "11";
     }
     map.put("rate", rate);
 
@@ -127,7 +127,7 @@ public class DayGoodController {
     pre1Dates = new ArrayList<String>();
     pre2Dates = new ArrayList<String>();
     Calendar calendar = Calendar.getInstance();
-    for (int i = 0; i < 28; i++) {
+    for (int i = 0; i < 31; i++) {
       if (calendar.get(Calendar.DAY_OF_WEEK) != 7 && calendar.get(Calendar.DAY_OF_WEEK) != 1) {
         preDates.add(simpleDateFormat.format(calendar.getTime()));
         if (i > 0 && (preDates.size() - pre1Dates.size()) > 1) {
