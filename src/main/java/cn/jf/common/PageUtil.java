@@ -12,7 +12,7 @@ public class PageUtil<T> implements Serializable {
     private int nextPage;         //下一页
     private int startRecord;      //开始页
     private int endRecord;        //结束页
-    private List<T> records;
+    private List<T> records;//对象
 
     /**
      * 默认组页数
