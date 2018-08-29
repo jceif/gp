@@ -399,12 +399,6 @@ insert into day_good
       <if test="time!=null and time!=''">
         AND g.time=#{time}
       </if>
-      <if test="preDayDate1!=null and preDayDate1!=''">
-        and v1.rate &lt;=#{preDayDate1}
-      </if>
-      <if test="preDayDate2!=null and preDayDate2!=''">
-        and v2.rate &lt;=#{preDayDate2}
-      </if>
       <if test="type!=null and type!=''">
         and c.type=#{type}
       </if>

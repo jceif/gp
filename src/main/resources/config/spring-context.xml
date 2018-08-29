@@ -14,7 +14,6 @@
 
     <!-- 引入外部properties文件 -->
     <context:property-placeholder location="classpath:properties/*.properties" ignore-unresolvable="true"/>
-    <context:property-placeholder location="classpath:properties/log4j.properties" ignore-unresolvable="true"/>
 
     <!-- 添加注解驱动 -->
     <mvc:annotation-driven />
