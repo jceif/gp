@@ -156,7 +156,7 @@
                 <th>原日期</th>
             </tr>
             <c:forEach items="${dayGoods}" var="item" varStatus="var">
-                <%--<c:if test="${ fn:substring(item.companyCode ,0,3)!='300'}">--%>
+                <c:if test="${ fn:substring(item.companyCode ,0,3)!='300'}">
                     <tr>
                             <%--当前--%>
                         <td>${var.count}</td>
@@ -397,7 +397,7 @@
                                             pattern="yyyy-MM-dd HH:mm:ss"
                                             timeZone="0"/></td>
                     </tr>
-                <%--</c:if>--%>
+                </c:if>
             </c:forEach>
             </tbody>
         </table><!-- /.table -->
