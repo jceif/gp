@@ -155,14 +155,14 @@ public class DayGoodController {
     map.put("companyCode", companyCode);
     List<DayGood> dayGoods = dayGoodService.findDayGoodQuery(map);
     List<String> times = new ArrayList<String>();
-    List<Double> prices = new ArrayList<Double>();
+    //List<Double> prices = new ArrayList<Double>();
     List<Double> rates = new ArrayList<Double>();
     List<Double> moneys = new ArrayList<Double>();
     double nowPrice = 0;
     if (dayGoods != null && dayGoods.size() > 0) {
       for (DayGood dayGood : dayGoods) {
         times.add(dayGood.getTime());
-        prices.add(dayGood.getPrice());
+        //prices.add(dayGood.getPrice());
         rates.add(dayGood.getRate());
         moneys.add(dayGood.getMainMoney());
         nowPrice = dayGood.getPrice();
@@ -170,7 +170,7 @@ public class DayGoodController {
     }
     request.setAttribute("times", JSONUtils.toJSONString(times));
     request.setAttribute("rates", JSONUtils.toJSONString(rates));
-    request.setAttribute("prices", JSONUtils.toJSONString(prices));
+    //request.setAttribute("prices", JSONUtils.toJSONString(prices));
     request.setAttribute("moneys", JSONUtils.toJSONString(moneys));
 
     List<DayValue> dayValues = dayValueService.dayValueTop5(companyCode);

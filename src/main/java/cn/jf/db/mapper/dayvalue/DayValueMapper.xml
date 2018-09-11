@@ -9,9 +9,20 @@
 	<result property="endPrice" column="end_price"/>
 	<result property="rate" column="rate"/>
 	<result property="totalMoney" column="total_money"/>
-	<result property="huanShou" column="huan_shou"/>
 	<result property="date" column="date"/>
 	<result property="createTime" column="create_time"/>
+
+	<result property="circulationMoney" column="circulation_money"/>
+	<result property="maxPrice" column="max_price"/>
+	<result property="minPrice" column="min_price"/>
+	<result property="volume" column="volume"/>
+	<result property="amount" column="amount"/>
+	<result property="diff" column="diff"/>
+	<result property="dea" column="dea"/>
+	<result property="macd" column="macd"/>
+	<result property="k" column="k"/>
+	<result property="d" column="d"/>
+	<result property="j" column="j"/>
 </resultMap>
 <insert id="insertDayValue" parameterType="cn.jf.model.dayvalue.DayValue">
 insert into day_value
@@ -21,7 +32,6 @@ insert into day_value
 	end_price,
 	rate,
 	total_money,
-	huan_shou,
 	date,
 	create_time
 )values(
@@ -31,7 +41,6 @@ insert into day_value
 	#{endPrice},
 	#{rate},
 	#{totalMoney},
-	#{huanShou},
 	#{date},
 	#{createTime}
 )
@@ -59,7 +68,6 @@ update day_value
 	end_price=#{endPrice},
 	rate=#{rate},
 	total_money=#{totalMoney},
-	huan_shou=#{huanShou},
 	date=#{date},
 	create_time=#{createTime}
 </set>
@@ -85,7 +93,6 @@ insert into day_value
 	end_price,
 	rate,
 	total_money,
-	huan_shou,
 	date,
 	create_time
 )values<foreach collection="list" item="item" index= "index" separator="," >
@@ -95,7 +102,6 @@ insert into day_value
 	#{item.endPrice},
 	#{item.rate},
 	#{item.totalMoney},
-	#{item.huanShou},
 	#{item.date},
 	#{item.createTime}
 )</foreach>
@@ -110,7 +116,6 @@ set
 	end_price=#{item.endPrice},
 	rate=#{item.rate},
 	total_money=#{item.totalMoney},
-	huan_shou=#{item.huanShou},
 	date=#{item.date},
 	create_time=#{item.createTime}
 
@@ -139,9 +144,6 @@ id=#{item.id}
 	 <if test="totalMoney!=null and totalMoney!=''"> 
 		AND total_money=#{totalMoney}
 	</if>
-	 <if test="huanShou!=null and huanShou!=''"> 
-		AND huan_shou=#{huanShou}
-	</if>
 	 <if test="date!=null and date!=''"> 
 		AND date=#{date}
 	</if>
@@ -150,6 +152,7 @@ id=#{item.id}
 	</if>
 </where>
 	</select>
+
 <select id="findDayValueQueryPage" resultMap="dayValue">
 	select * from day_value
 	<where>
@@ -171,17 +174,17 @@ id=#{item.id}
 	 <if test="totalMoney!=null and totalMoney!=''"> 
 		AND total_money=#{totalMoney}
 	</if>
-	 <if test="huanShou!=null and huanShou!=''"> 
-		AND huan_shou=#{huanShou}
-	</if>
+
 	 <if test="date!=null and date!=''"> 
 		AND date=#{date}
 	</if>
+
 	 <if test="createTime!=null and createTime!=''"> 
 		AND create_time=#{createTime}
 	</if>
+
 </where>
-		limit #{startIndex},#{limit}
+	order by id desc  limit #{startIndex},#{limit}
 
 </select>
 <select id="findCountDayValueQuery" resultType="java.lang.Integer">
@@ -205,9 +208,6 @@ id=#{item.id}
 	 <if test="totalMoney!=null and totalMoney!=''"> 
 		AND total_money=#{totalMoney}
 	</if>
-	 <if test="huanShou!=null and huanShou!=''"> 
-		AND huan_shou=#{huanShou}
-	</if>
 	 <if test="date!=null and date!=''"> 
 		AND date=#{date}
 	</if>
@@ -221,6 +221,8 @@ id=#{item.id}
 	<select id="dayValueTop5" resultMap="dayValue">
 		select * from day_value where company_code=#{companyCode} and `date` &gt;= #{date} ORDER  by end_price desc limit 3
 	</select>
+
+
 
 	<select id="dayValueAverage" resultType="java.lang.Double">
 		select FORMAT(AVG(end_price),2)  from day_value where company_code=#{companyCode} and `date` &gt;= #{date} ORDER  by id  desc

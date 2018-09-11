@@ -159,7 +159,7 @@
                 <c:if test="${ fn:substring(item.companyCode ,0,3)!='300'}">
                     <tr>
                             <%--当前--%>
-                        <td>${var.count}</td>
+                        <td> <a href="/day/index?companyCode=${item.companyCode}"> ${var.count}</a></td>
                         <td>
                             <c:choose>
                                 <c:when test="${ fn:substring(item.companyCode ,0,3)=='600' or fn:substring(item.companyCode ,0,2)=='60'}">

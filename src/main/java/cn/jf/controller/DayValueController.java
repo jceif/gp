@@ -1,7 +1,10 @@
 package cn.jf.controller;
 
+import cn.jf.common.PageUtil;
+import cn.jf.model.company.Company;
 import cn.jf.model.daygood.DayGoodVo;
 import cn.jf.model.dayvalue.DayValue;
+import cn.jf.service.company.CompanyService;
 import cn.jf.service.daygood.DayGoodService;
 import cn.jf.service.dayvalue.DayValueService;
 import com.alibaba.druid.support.json.JSONUtils;
@@ -28,25 +31,25 @@ public class DayValueController {
   @Autowired
   private DayValueService dayValueService;
 
+  @Autowired
+  private CompanyService companyService;
+
   /**
    * 72天内的最高值
    * @param companyCode
    */
-  @RequestMapping("/top")
-  @ResponseBody
-  public void dayValueTop5(HttpServletRequest request,String companyCode){
-    List<DayValue> dayValues =dayValueService.dayValueTop5(companyCode);
+  @RequestMapping("/index")
+  public String dayValueTop5(HttpServletRequest request,String companyCode){
+    Company company= companyService.findCompanyByCode(companyCode);
+    Map<String,Object> map=new HashMap<String, Object>();
+    map.put("companyCode",companyCode);
+    PageUtil<DayValue> pageUtil =dayValueService.findDayValueQueryPage(map,"0","30");
+    request.setAttribute("company",company);
+    request.setAttribute("dayValues", pageUtil.getRecords());
+    return "dayValue";
   }
 
-  /**
-   * 72天内的平均值
-   * @param companyCode
-   */
-  @RequestMapping("/average")
-  @ResponseBody
-  public void dayValueAverage(HttpServletRequest request,String companyCode){
-    double avgValue  =dayValueService.dayValueAverage(companyCode);
-  }
+
 
   /**
    * 72天内的平均值
