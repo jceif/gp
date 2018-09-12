@@ -48,7 +48,44 @@ public class DayValueController {
         PageUtil<DayValue> pageUtil = dayValueService.findDayValueQueryPage(map, "0", count);
         request.setAttribute("company", company);
         List<DayValue> dayValues = pageUtil.getRecords();
+
+
+        List<Integer> dates = new ArrayList<Integer>();
+
+        List<Float> diffs= new ArrayList<Float>();
+        List<Float> deas = new ArrayList<Float>();
+        List<Float> macds = new ArrayList<Float>();
+
+        List<Float> ks = new ArrayList<Float>();
+        List<Float> ds = new ArrayList<Float>();
+        List<Float> js = new ArrayList<Float>();
+
+        if (dayValues != null && dayValues.size() > 0) {
+            for (DayValue dayValue : dayValues) {
+                dates.add(dayValue.getDate());
+                diffs.add(dayValue.getDiff());
+                deas.add(dayValue.getDea());
+                macds.add(dayValue.getMacd());
+                ks.add(dayValue.getK());
+                ds.add(dayValue.getD());
+                js.add(dayValue.getJ());
+
+            }
+        }
         request.setAttribute("dayValues", dayValues);
+        request.setAttribute("dates", JSONUtils.toJSONString(dates));
+        request.setAttribute("diffs", JSONUtils.toJSONString(diffs));
+        request.setAttribute("deas", JSONUtils.toJSONString(deas));
+        request.setAttribute("macds", JSONUtils.toJSONString(macds));
+        request.setAttribute("ks", JSONUtils.toJSONString(ks));
+        request.setAttribute("ds", JSONUtils.toJSONString(ds));
+        request.setAttribute("js", JSONUtils.toJSONString(js));
+
+
+
+
+
+
         return "dayValue";
     }
 
