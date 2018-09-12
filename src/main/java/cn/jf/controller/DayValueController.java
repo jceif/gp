@@ -26,86 +26,79 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/day/")
 public class DayValueController {
 
-    @Autowired
-    private DayValueService dayValueService;
+  @Autowired
+  private DayValueService dayValueService;
 
-    @Autowired
-    private CompanyService companyService;
+  @Autowired
+  private CompanyService companyService;
 
-    /**
-     * 72天内的最高值
-     *
-     * @param companyCode
-     */
-    @RequestMapping("/index")
-    public String dayValueTop5(HttpServletRequest request, String companyCode, String count) {
-        if (request.getSession().getAttribute("user") == null) {
-            return "redirect:/login";
-        }
-        Company company = companyService.findCompanyByCode(companyCode);
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("companyCode", companyCode);
-        PageUtil<DayValue> pageUtil = dayValueService.findDayValueQueryPage(map, "0", count);
-        request.setAttribute("company", company);
-        List<DayValue> dayValues = pageUtil.getRecords();
+  /**
+   * 72天内的最高值
+   */
+  @RequestMapping("/index")
+  public String dayValueTop5(HttpServletRequest request, String companyCode, String count) {
+    if (request.getSession().getAttribute("user") == null) {
+      return "redirect:/login";
+    }
+    Company company = companyService.findCompanyByCode(companyCode);
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("companyCode", companyCode);
+    PageUtil<DayValue> pageUtil = dayValueService.findDayValueQueryPage(map, "0", count);
+    request.setAttribute("company", company);
 
+    List<DayValue> dayValues = pageUtil.getRecords();
+    request.setAttribute("dayValues", pageUtil.getRecords());
 
-        List<Integer> dates = new ArrayList<Integer>();
+    List<Integer> dates = new ArrayList<Integer>();
 
-        List<Float> diffs= new ArrayList<Float>();
-        List<Float> deas = new ArrayList<Float>();
-        List<Float> macds = new ArrayList<Float>();
+    List<Float> diffs = new ArrayList<Float>();
+    List<Float> deas = new ArrayList<Float>();
+    List<Float> macds = new ArrayList<Float>();
 
-        List<Float> ks = new ArrayList<Float>();
-        List<Float> ds = new ArrayList<Float>();
-        List<Float> js = new ArrayList<Float>();
+    List<Float> ks = new ArrayList<Float>();
+    List<Float> ds = new ArrayList<Float>();
+    List<Float> js = new ArrayList<Float>();
 
-        if (dayValues != null && dayValues.size() > 0) {
-            for (DayValue dayValue : dayValues) {
-                dates.add(dayValue.getDate());
-                diffs.add(dayValue.getDiff());
-                deas.add(dayValue.getDea());
-                macds.add(dayValue.getMacd());
-                ks.add(dayValue.getK());
-                ds.add(dayValue.getD());
-                js.add(dayValue.getJ());
-
-            }
-        }
-        request.setAttribute("dayValues", dayValues);
-        request.setAttribute("dates", JSONUtils.toJSONString(dates));
-        request.setAttribute("diffs", JSONUtils.toJSONString(diffs));
-        request.setAttribute("deas", JSONUtils.toJSONString(deas));
-        request.setAttribute("macds", JSONUtils.toJSONString(macds));
-        request.setAttribute("ks", JSONUtils.toJSONString(ks));
-        request.setAttribute("ds", JSONUtils.toJSONString(ds));
-        request.setAttribute("js", JSONUtils.toJSONString(js));
-
-
-
-
-
-
-        return "dayValue";
+    if (dayValues != null && dayValues.size() > 0) {
+      DayValue dayValue = null;
+      for (int i = dayValues.size() - 1; i > -1; i--) {
+        dayValue = dayValues.get(i);
+        dates.add(dayValue.getDate());
+        diffs.add(dayValue.getDiff());
+        deas.add(dayValue.getDea());
+        macds.add(dayValue.getMacd());
+        ks.add(dayValue.getK());
+        ds.add(dayValue.getD());
+        js.add(dayValue.getJ());
+      }
     }
 
+    request.setAttribute("dates", JSONUtils.toJSONString(dates));
+    request.setAttribute("diffs", JSONUtils.toJSONString(diffs));
+    request.setAttribute("deas", JSONUtils.toJSONString(deas));
+    request.setAttribute("macds", JSONUtils.toJSONString(macds));
+    request.setAttribute("ks", JSONUtils.toJSONString(ks));
+    request.setAttribute("ds", JSONUtils.toJSONString(ds));
+    request.setAttribute("js", JSONUtils.toJSONString(js));
 
-    /**
-     * 72天内的平均值
-     *
-     * @param companyCode
-     */
-    @RequestMapping("/info")
-    @ResponseBody
-    public String dayValueInfo(HttpServletRequest request, String companyCode) {
-        List<DayValue> dayValues = dayValueService.dayValueTop5(companyCode);
-        Double avgValue = dayValueService.dayValueAverage(companyCode);
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("avg", avgValue);
-        map.put("topValue", dayValues);
-        String json = JSONObject.valueToString(map);
-        return json;
-    }
+    return "dayValue";
+  }
+
+
+  /**
+   * 72天内的平均值
+   */
+  @RequestMapping("/info")
+  @ResponseBody
+  public String dayValueInfo(HttpServletRequest request, String companyCode) {
+    List<DayValue> dayValues = dayValueService.dayValueTop5(companyCode);
+    Double avgValue = dayValueService.dayValueAverage(companyCode);
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("avg", avgValue);
+    map.put("topValue", dayValues);
+    String json = JSONObject.valueToString(map);
+    return json;
+  }
 
 
 }
