@@ -10,13 +10,11 @@ import cn.jf.service.dayvalue.DayValueService;
 import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.druid.util.StringUtils;
 import com.mysql.cj.xdevapi.JsonParser;
+
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.servlet.http.HttpServletRequest;
+
 import org.json.JSONObject;
 import org.json.JSONString;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,45 +26,49 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/day/")
 public class DayValueController {
 
-  @Autowired
-  private DayValueService dayValueService;
+    @Autowired
+    private DayValueService dayValueService;
 
-  @Autowired
-  private CompanyService companyService;
+    @Autowired
+    private CompanyService companyService;
 
-  /**
-   * 72天内的最高值
-   * @param companyCode
-   */
-  @RequestMapping("/index")
-  public String dayValueTop5(HttpServletRequest request,String companyCode){
-    Company company= companyService.findCompanyByCode(companyCode);
-    Map<String,Object> map=new HashMap<String, Object>();
-    map.put("companyCode",companyCode);
-    PageUtil<DayValue> pageUtil =dayValueService.findDayValueQueryPage(map,"0","30");
-    request.setAttribute("company",company);
-    request.setAttribute("dayValues", pageUtil.getRecords());
-    return "dayValue";
-  }
+    /**
+     * 72天内的最高值
+     *
+     * @param companyCode
+     */
+    @RequestMapping("/index")
+    public String dayValueTop5(HttpServletRequest request, String companyCode, String count) {
+        if (request.getSession().getAttribute("user") == null) {
+            return "redirect:/login";
+        }
+        Company company = companyService.findCompanyByCode(companyCode);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("companyCode", companyCode);
+        PageUtil<DayValue> pageUtil = dayValueService.findDayValueQueryPage(map, "0", count);
+        request.setAttribute("company", company);
+        List<DayValue> dayValues = pageUtil.getRecords();
+        request.setAttribute("dayValues", dayValues);
+        return "dayValue";
+    }
 
 
-
-  /**
-   * 72天内的平均值
-   * @param companyCode
-   */
-  @RequestMapping("/info")
-  @ResponseBody
-  public String dayValueInfo(HttpServletRequest request,String companyCode){
-    List<DayValue> dayValues =dayValueService.dayValueTop5(companyCode);
-    Double avgValue  =dayValueService.dayValueAverage(companyCode);
-    Map<String,Object> map=new HashMap<String, Object>();
-    map.put("avg",avgValue);
-    map.put("topValue",dayValues);
-    String json=JSONObject.valueToString(map);
-    return json;
-  }
-
+    /**
+     * 72天内的平均值
+     *
+     * @param companyCode
+     */
+    @RequestMapping("/info")
+    @ResponseBody
+    public String dayValueInfo(HttpServletRequest request, String companyCode) {
+        List<DayValue> dayValues = dayValueService.dayValueTop5(companyCode);
+        Double avgValue = dayValueService.dayValueAverage(companyCode);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("avg", avgValue);
+        map.put("topValue", dayValues);
+        String json = JSONObject.valueToString(map);
+        return json;
+    }
 
 
 }

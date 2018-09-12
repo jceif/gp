@@ -159,7 +159,7 @@
                 <c:if test="${ fn:substring(item.companyCode ,0,3)!='300'}">
                     <tr>
                             <%--当前--%>
-                        <td> <a href="/day/index?companyCode=${item.companyCode}"> ${var.count}</a></td>
+                        <td>${var.count}</td>
                         <td>
                             <c:choose>
                                 <c:when test="${ fn:substring(item.companyCode ,0,3)=='600' or fn:substring(item.companyCode ,0,2)=='60'}">
@@ -217,8 +217,7 @@
                                 <c:otherwise>
                                 </c:otherwise>
                             </c:choose>
-                            <a href="/data/chart?companyCode=${item.companyCode}&date=${date}"
-                               target="_blank"
+                            <a href="/day/index?companyCode=${item.companyCode}&count=80" target="_blank"
                                style="color: black;">${item.companyName}</a>
 
                             <button type="button" id="info${item.companyCode}"
