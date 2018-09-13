@@ -271,6 +271,10 @@
     </div>
 
 
+    <p style="color: red">01.dea在上不能买</p>
+    <p style="color: red">02.第三天依旧跌 ，坚决卖掉</p>
+
+
     <p style="color: red">1.当天不能跌</p>
     <p style="color: red">2.前一天资金流入量 大于-100万</p>
     <p style="color: red">3.当天资金交易量 大于2亿</p>
