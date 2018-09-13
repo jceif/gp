@@ -242,7 +242,6 @@ id=#{item.id}
         and d.j>d1.j
         and d.macd>d1.macd
         and d.diff>d.dea
-        order by d.id desc
     </select>
 
 </mapper>
