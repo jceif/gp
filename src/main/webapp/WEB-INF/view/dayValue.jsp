@@ -122,8 +122,11 @@
                     <c:choose>
                         <%--1. 当DIF,DEA两数值位于0轴上方时，说明大势处于多头市场，投资者应当以持股为主要策略。若DIF由下向上与DEA产生交叉，并不代表是一种买入信号，
                         而此时的大盘走势，已是一个短期高点，应当采用高抛低吸的策略--%>
-                        <c:when test="${item.diff>=0 && item.dea>=0 && item.diff>item.dea && item.diff>itemNext.dea}">
+                        <c:when test="${item.diff>=0 && item.dea>=0 && item.diff>item.dea && item.diff>itemNext.dea && item.diff<itemNext.diff}">
                             top live
+                        </c:when>
+                        <c:when test="${item.diff>itemNext.diff && item.dea>=itemNext.dea && item.macd>item.macd}">
+                            come
                         </c:when>
                         <%--在此介绍一种利用MACD与30日均线配合起来寻找底部的办法，可剔除绝大多数的无效信号，留下最真最纯的买入信号。
                         其使用法则：MACD指标中DIF线在0轴以下与DEA线金叉后没有上升至0轴以上，而是很快又与DEA线死叉，此时投资者可等待两线何时再重新金叉，若两线再度金叉（在0轴以下）前后，
@@ -132,7 +135,7 @@
                             <%--<span style="color: red;">come</span>--%>
                         <%--</c:when>--%>
 
-                        <c:when test="${item.diff>itemNext.diff && item.dea>=itemNext.dea && item.macd>=itemNext.macd && item.diff>-8.5 }">
+                        <c:when test="${item.diff>itemNext.diff && item.dea>=itemNext.dea && item.macd>itemNext.macd && item.diff>-8.5 }">
                             <span style="color: red;">up</span>
                         </c:when>
 
@@ -184,17 +187,17 @@
                     <c:choose>
 
                         <%--如果整体处于80以上的话则代表市场显示为超买区；在这之间的话则显示买卖平衡，变化趋势不是很明显。--%>
-                        <c:when test="${item.k>=85 &&  item.d>=85 &&  item.j>=85}">
+                        <c:when test="${item.k>=85 &&  item.d>=85 &&  item.j>=85 && item.k>itemNext.k}">
                             <span style="color: red;">超买区</span>
                         </c:when>
 
                         <%--2.当K值由较小逐渐大于D值，在图形上显示K线从下方上穿D线，所以在图形上K线向上突破D线时，俗称金叉，即为买进的讯号。--%>
-                        <c:when test="${item.k>itemNext.k && itemNext.k<itemNext.d && item.k>item.d}">
+                        <c:when test="${item.k>=itemNext.k && item.d>=itemNext.d && item.j>=itemNext.j}">
                             <span style="color: red;">买入</span>
                         </c:when>
 
                         <%--实战时当K，D线在20以下交叉向上，此时的短期买入的信号较为准确；如果K值在50以下，由下往上接连两次上穿D值，形成右底比左底高的“W底”形态时，后市股价可能会有相当的涨幅。--%>
-                        <c:when test="${item.k<=20 &&  item.d<=20 && item.d>itemNext.d && item.k>itemNext.k  && item.k>item.d  }">
+                        <c:when test="${item.k<=20 &&  item.d<=20 &&  item.k>itemNext.k  && item.d>itemNext.d && item.j>itemNext.j && item.k>item.d  }">
                             <span style="color: red;">up</span>
                         </c:when>
 
@@ -353,7 +356,7 @@
         var top = ec.init(document.getElementById('ddm'));
         option = {
           title : {
-            text: 'kdj-value',
+            text: 'ddm-value',
             subtext: '${companyName}-${companyCode}'
           },
           tooltip : {
