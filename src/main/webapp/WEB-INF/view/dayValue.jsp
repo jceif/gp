@@ -55,6 +55,8 @@
     <p style="color: red">03.第二天 或者第三天 出现跌幅出现2% 卖掉</p>
     <p style="color: red">04 第二第三天跌幅累加总和 超过2% 坚决卖掉</p>
 
+    <p style="color: red">05 DDM走势太平坦不购买</p>
+
 
     <div style="margin:0 auto; width: 90%;text-align: center;">
         <table style="width: 100%;">
