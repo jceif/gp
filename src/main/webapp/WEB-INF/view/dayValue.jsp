@@ -45,6 +45,12 @@
 
 
 <form action="/day/index" method="get">
+    <div id="rate" style="height:400px"></div>
+    <div id="kdj" style="height:400px"></div>
+    <div id="ddm" style="height:400px"></div>
+    <div id="inflow" style="height:400px"></div>
+
+
     <div style="margin:0 auto; width: 90%;text-align: center;">
         <table style="width: 100%;">
             <tbody>
@@ -271,12 +277,10 @@
     <p style="color: red">4.dem除了自己前三行必须有一个或者多个up</p>
     <p style="color: red">5.本行有绿色 坚决不买</p>
     <p style="color: red">6.当出现 live-80 坚决卖掉</p>
-    <p style="color: red">7.如果涨到了9%以上 还是不要买了吧</p>
 
 
 
-    <div id="kdj" style="height:400px"></div>
-    <div id="ddm" style="height:400px"></div>
+
 
 </form>
 
@@ -447,6 +451,140 @@
         top.setOption(option);
       }
   );
+</script>
+
+<%--rate趋势--%>
+<script type="text/javascript">
+    // 路径配置
+    require.config({
+        paths: {
+            echarts: '${ctx}assets/js/echart/'
+        }
+    });
+    // 使用
+    require(
+        [
+            'echarts',
+            'echarts/chart/line', // 使用柱状图就加载bar模块，按需加载
+            'echarts/chart/bar' // 使用柱状图就加载bar模块，按需加载
+        ],
+        function (ec) {
+            // 基于准备好的dom，初始化echarts图表
+            var top = ec.init(document.getElementById('rate'));
+            option = {
+                title : {
+                    text: 'rate-value',
+                    subtext: '${companyName}-${companyCode}'
+                },
+                tooltip : {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data:['rate']
+                },
+                toolbox: {
+                    show : true,
+                    feature : {
+                        mark : {show: true},
+                        dataView : {show: true, readOnly: false},
+                        magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                        restore : {show: true},
+                        saveAsImage : {show: true}
+                    }
+                },
+                calculable : true,
+                xAxis : [
+                    {
+                        type : 'category',
+                        boundaryGap : false,
+                        data : ${dates}
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'value'
+                    }
+                ],
+                series : [
+                    {
+                        name:'rate',
+                        type:'line',
+                        stack: '值',
+                        data:${rates}
+                    }
+                ]
+            };
+
+            // 为echarts对象加载数据
+            top.setOption(option);
+        }
+    );
+</script>
+<%--资金趋势--%>
+<script type="text/javascript">
+    // 路径配置
+    require.config({
+        paths: {
+            echarts: '${ctx}assets/js/echart/'
+        }
+    });
+    // 使用
+    require(
+        [
+            'echarts',
+            'echarts/chart/line' // 使用柱状图就加载bar模块，按需加载
+        ],
+        function (ec) {
+            // 基于准备好的dom，初始化echarts图表
+            var money = ec.init(document.getElementById('inflow'));
+            option = {
+                title : {
+                    text: 'inflow-value',
+                    subtext: '${companyName}-${companyCode}'
+                },
+                tooltip : {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data:['流入']
+                },
+                toolbox: {
+                    show : true,
+                    feature : {
+                        mark : {show: true},
+                        dataView : {show: true, readOnly: false},
+                        magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                        restore : {show: true},
+                        saveAsImage : {show: true}
+                    }
+                },
+                calculable : true,
+                xAxis : [
+                    {
+                        type : 'category',
+                        boundaryGap : false,
+                        data:${dates}
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'value'
+                    }
+                ],
+                series : [
+                    {
+                        name:'流入',
+                        type:'line',
+                        smooth:true,
+                        itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                        data:${inflows}
+                    }
+                ]
+            };
+            // 为echarts对象加载数据
+            money.setOption(option);
+        }
+    );
 </script>
 </body>
 </html>
