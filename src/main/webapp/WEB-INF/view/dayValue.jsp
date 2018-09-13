@@ -90,9 +90,31 @@
                         </c:otherwise>
                     </c:choose>
                 </td>
-                <td>${item.totalMoney}</td>
-                <td>${item.volume/10000}</td>
-                <td>${item.amount/10000}</td>
+                <td style="
+                    <c:choose>
+                <c:when test="${item.totalMoney>0 && item.totalMoney>itemNext.totalMoney}">
+                        color:red;
+                        </c:when>
+                <c:when test="${item.totalMoney<-70}">
+                        color:green;
+                </c:when>
+                        </c:choose>">${item.totalMoney}</td>
+                <td style="
+                <c:choose>
+                <c:when test="${item.volume/10000<2000}">
+                        color:green;
+                </c:when>
+                        </c:choose>"> <fmt:formatNumber type="number" value="${item.volume/10000}" pattern="0.0" maxFractionDigits="1"/> </td>
+                <td style="
+                <c:choose>
+                <c:when test="${item.amount/10000>60000 }">
+                        color:red;
+                </c:when>
+                <c:when test="${item.amount/10000<2000 }">
+                        color:green;
+                </c:when>
+
+                        </c:choose>"><fmt:formatNumber type="number" value="${ item.amount/10000}" pattern="0.0" maxFractionDigits="1"/></td>
                     <%--半小时之前的涨幅--%>
                 <td>${item.startPrice}</td>
                     <%--一小时之前的涨幅--%>
@@ -109,7 +131,7 @@
                 <c:when test="${item.rate>=3}">
                         background: yellow;
                 </c:when>
-                <c:when test="${item.rate<0}">
+                <c:when test="${item.rate<=0}">
                         background: green;
                 </c:when>
                         </c:choose>">${item.rate}%</td>
@@ -193,7 +215,7 @@
 
                         <%--2.当K值由较小逐渐大于D值，在图形上显示K线从下方上穿D线，所以在图形上K线向上突破D线时，俗称金叉，即为买进的讯号。--%>
                         <c:when test="${item.k>=itemNext.k && item.d>=itemNext.d && item.j>=itemNext.j}">
-                            <span style="color: red;">买入</span>
+                            <span style="color: red;">come</span>
                         </c:when>
 
                         <%--实战时当K，D线在20以下交叉向上，此时的短期买入的信号较为准确；如果K值在50以下，由下往上接连两次上穿D值，形成右底比左底高的“W底”形态时，后市股价可能会有相当的涨幅。--%>
@@ -243,8 +265,19 @@
     </div>
 
 
+    <p style="color: red">1.当天不能跌</p>
+    <p style="color: red">2.前一天资金流入量 大于-100万</p>
+    <p style="color: red">3.当天资金交易量 大于2亿</p>
+    <p style="color: red">4.dem除了自己前三行必须有一个或者多个up</p>
+    <p style="color: red">5.本行有绿色 坚决不买</p>
+    <p style="color: red">6.当出现 live-80 坚决卖掉</p>
+    <p style="color: red">7.如果涨到了9%以上 还是不要买了吧</p>
+
+
+
     <div id="kdj" style="height:400px"></div>
     <div id="ddm" style="height:400px"></div>
+
 </form>
 
 
