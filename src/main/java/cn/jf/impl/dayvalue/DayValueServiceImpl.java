@@ -112,4 +112,9 @@ public class DayValueServiceImpl implements DayValueService {
 
   }
 
+  @Override
+  public List<DayValue> dayValueUpList() {
+    return dayValueMapper.dayValueUpList();
+  }
+
 }

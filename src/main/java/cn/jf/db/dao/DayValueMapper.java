@@ -41,4 +41,7 @@ public interface DayValueMapper {
 
 	Double dayValueAverage(@Param("companyCode") String companyCode,@Param("date") int date);
 
+	List<DayValue> dayValueUpList();
+
+
 }

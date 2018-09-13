@@ -127,7 +127,7 @@
                 </th>
                 <th>价格：<input type="number" name="price" value="${price}"></th>
                 <th>涨跌：<input type="text" name="rate" value="${rate}"></th>
-                <th><input type="submit" value="查询（ST垃圾，60几开头蓝筹）"></th>
+                <th><input type="submit" value="查询（ST垃圾，60几开头蓝筹）">&nbsp;<a href="/day/index" target="_blank">秘笈</a> </th>
             </tr>
         </table>
         <%--</div>--%>
@@ -217,7 +217,7 @@
                                 <c:otherwise>
                                 </c:otherwise>
                             </c:choose>
-                            <a href="/day/index?companyCode=${item.companyCode}&count=30" target="_blank"
+                            <a href="/day/detail?companyCode=${item.companyCode}&count=30" target="_blank"
                                style="color: black;">${item.companyName}</a>
 
                             <button type="button" id="info${item.companyCode}"

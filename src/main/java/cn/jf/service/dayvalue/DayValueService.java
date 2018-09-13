@@ -40,5 +40,7 @@ public interface DayValueService {
 
   Double dayValueAverage(String companyCode);
 
+  List<DayValue> dayValueUpList();
+
 
 }

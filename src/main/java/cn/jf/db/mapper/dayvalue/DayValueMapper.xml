@@ -227,4 +227,22 @@ id=#{item.id}
 	<select id="dayValueAverage" resultType="java.lang.Double">
 		select FORMAT(AVG(end_price),2)  from day_value where company_code=#{companyCode} and `date` &gt;= #{date} ORDER  by id  desc
 	</select>
+
+
+
+
+
+    <select id="dayValueUpList" resultMap="dayValue">
+        select d.* from day_value d
+        LEFT JOIN (select * FROM day_value where `date`=(select date from day_value GROUP BY date order by date desc LIMIT 1,1)) d1 ON d.company_code=d1.company_code
+        where
+        d.date=(select date from day_value GROUP BY date order by date desc LIMIT 0,1)
+        and d.k>d1.k
+        and d.d>d1.d
+        and d.j>d1.j
+        and d.macd>d1.macd
+        and d.diff>d.dea
+        order by d.id desc
+    </select>
+
 </mapper>

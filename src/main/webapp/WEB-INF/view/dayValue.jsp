@@ -50,6 +50,11 @@
     <div id="ddm" style="height:400px"></div>
     <div id="inflow" style="height:400px"></div>
 
+    <p style="color: red">01.dea在上不能买</p>
+    <p style="color: red">02.买完之后连着两天下跌，处理掉</p>
+    <p style="color: red">03.第二天 或者第三天 出现跌幅出现2% 卖掉</p>
+    <p style="color: red">04 第二第三天跌幅累加总和 超过2% 坚决卖掉</p>
+
 
     <div style="margin:0 auto; width: 90%;text-align: center;">
         <table style="width: 100%;">
@@ -271,8 +276,8 @@
     </div>
 
 
-    <p style="color: red">01.dea在上不能买</p>
-    <p style="color: red">02.第三天依旧跌 ，坚决卖掉</p>
+
+<%--
 
 
     <p style="color: red">1.当天不能跌</p>
@@ -281,6 +286,7 @@
     <p style="color: red">4.dem除了自己前三行必须有一个或者多个up</p>
     <p style="color: red">5.本行有绿色 坚决不买</p>
     <p style="color: red">6.当出现 live-80 坚决卖掉</p>
+--%>
 
 
 

@@ -36,7 +36,15 @@ public class DayValueController {
      * 72天内的最高值
      */
     @RequestMapping("/index")
-    public String dayValueTop5(HttpServletRequest request, String companyCode, String count) {
+    public String index(HttpServletRequest request) {
+        dayValueService.dayValueUpList();
+        List<DayValue> dayValues=dayValueService.dayValueUpList();
+        request.setAttribute("dayValues",dayValues);
+        return "dayIndex";
+    }
+
+    @RequestMapping("/detail")
+    public String detail(HttpServletRequest request, String companyCode, String count){
         if (request.getSession().getAttribute("user") == null) {
             return "redirect:/login";
         }
@@ -65,7 +73,6 @@ public class DayValueController {
             DayValue dayValue = null;
             for (int i = dayValues.size() - 1; i > -1; i--) {
                 dayValue = dayValues.get(i);
-
                 dates.add(dayValue.getDate());
                 rates.add(dayValue.getRate());
                 inflows.add(dayValue.getTotalMoney());
@@ -87,9 +94,9 @@ public class DayValueController {
         request.setAttribute("ks", JSONUtils.toJSONString(ks));
         request.setAttribute("ds", JSONUtils.toJSONString(ds));
         request.setAttribute("js", JSONUtils.toJSONString(js));
-
         return "dayValue";
     }
+
 
 
     /**
