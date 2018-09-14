@@ -233,16 +233,18 @@ id=#{item.id}
 
 
     <select id="dayValueUpList" resultMap="dayValue">
+
+
         select d.* from day_value d
-        LEFT JOIN (select * FROM day_value where `date`=(select date from day_value GROUP BY date order by date desc LIMIT 1,1)) d1 ON d.company_code=d1.company_code
-        where
-        d.date=(select date from day_value GROUP BY date order by date desc LIMIT 0,1)
-        and d.k>d1.k
-        and d.d>d1.d
-        and d.j>d1.j
-        and d.macd>d1.macd
-        and d.diff>d.dea
-        and d.macd>d.dea
+LEFT JOIN (select * FROM day_value where `date`=(select date from day_value GROUP BY date order by date desc LIMIT 1,1)) d1 ON d.company_code=d1.company_code
+LEFT JOIN (select * FROM day_value where `date`=(select date from day_value GROUP BY date order by date desc LIMIT 2,1)) d2 ON d.company_code=d2.company_code
+where
+d.date=(select date from day_value GROUP BY date order by date desc LIMIT 0,1)
+and d.k>d.d
+and d.macd>d.dea
+and d.macd>d1.macd
+and (d2.k-d1.k)>4 and (d.k-d1.k)>4
+
     </select>
 
 </mapper>
