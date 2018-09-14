@@ -362,19 +362,19 @@
             {
               name:'k',
               type:'line',
-              stack: '值',
+
               data:${ks}
             },
             {
               name:'d',
               type:'line',
-              stack: '值',
+
               data:${ds}
             },
             {
               name:'j',
               type:'line',
-              stack: '值',
+
               data:${js}
             }
           ]
@@ -441,19 +441,19 @@
             {
               name:'diff',
               type:'line',
-              stack: '值',
+
               data:${diffs}
             },
             {
               name:'dea',
               type:'line',
-              stack: '值',
+
               data:${deas}
             },
             {
               name:'macd',
               type:'line',
-              stack: '值',
+
               data:${macds}
             }
           ]
@@ -521,7 +521,7 @@
                     {
                         name:'rate',
                         type:'line',
-                        stack: '值',
+
                         data:${rates}
                     }
                 ]
