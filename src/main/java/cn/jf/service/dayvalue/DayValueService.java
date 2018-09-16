@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import cn.jf.common.PageUtil;
 import cn.jf.model.dayvalue.DayValue;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -42,5 +43,9 @@ public interface DayValueService {
 
   List<DayValue> dayValueUpList();
 
+
+  List<DayValue> findTotalMoneyTopList();
+
+  DayValue findDayValueByIdAndDate( String companyCode,int date);
 
 }

@@ -56,6 +56,11 @@ insert into day_value
 	select * from day_value
 	where id=#{id}
 </select>
+
+	<select id="findDayValueByIdAndDate" resultMap="dayValue">
+		select *  from day_value where date=#{date} and company_code=#{companyCode} limit 1
+ </select>
+
 <select id="findDayValueList" resultMap="dayValue">
 	select * from day_value
 </select>
@@ -247,4 +252,9 @@ and (d2.k-d1.k)>4 and (d.k-d1.k)>4
 
     </select>
 
+
+
+	<select id="findTotalMoneyTopList" resultMap="dayValue">
+		select * from (select * from day_value GROUP BY date ORDER BY total_money desc) d order by date desc
+ </select>
 </mapper>

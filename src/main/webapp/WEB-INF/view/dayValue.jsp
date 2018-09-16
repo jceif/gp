@@ -75,11 +75,11 @@
                 <th>diff</th>
                 <th>dea</th>
                 <th>macd</th>
-                <th>dem-r</th>
+                <%--<th>dem-r</th>--%>
                 <th>k</th>
                 <th>d</th>
                 <th>j</th>
-                <th>kdj-r</th>
+                <%--<th>kdj-r</th>--%>
                 <th>date</th>
             </tr>
     <c:forEach items="${dayValues}" var="itemNext" varStatus="var">
@@ -153,29 +153,29 @@
                 <td>${item.dea}</td>
                 <td>${item.macd}</td>
                     <%--dem-结果分析--%>
-                <td>
+       <%--         <td>
                     <c:choose>
-                        <%--1. 当DIF,DEA两数值位于0轴上方时，说明大势处于多头市场，投资者应当以持股为主要策略。若DIF由下向上与DEA产生交叉，并不代表是一种买入信号，
-                        而此时的大盘走势，已是一个短期高点，应当采用高抛低吸的策略--%>
+                        &lt;%&ndash;1. 当DIF,DEA两数值位于0轴上方时，说明大势处于多头市场，投资者应当以持股为主要策略。若DIF由下向上与DEA产生交叉，并不代表是一种买入信号，
+                        而此时的大盘走势，已是一个短期高点，应当采用高抛低吸的策略&ndash;%&gt;
                         <c:when test="${item.diff>=0 && item.dea>=0 && item.diff>item.dea && item.diff>itemNext.dea && item.diff<itemNext.diff}">
                             top live
                         </c:when>
                         <c:when test="${item.diff>itemNext.diff && item.dea>=itemNext.dea && item.macd>item.macd}">
                             come
                         </c:when>
-                        <%--在此介绍一种利用MACD与30日均线配合起来寻找底部的办法，可剔除绝大多数的无效信号，留下最真最纯的买入信号。
+                        &lt;%&ndash;在此介绍一种利用MACD与30日均线配合起来寻找底部的办法，可剔除绝大多数的无效信号，留下最真最纯的买入信号。
                         其使用法则：MACD指标中DIF线在0轴以下与DEA线金叉后没有上升至0轴以上，而是很快又与DEA线死叉，此时投资者可等待两线何时再重新金叉，若两线再度金叉（在0轴以下）前后，
-                        30日平均线亦拐头上行，这表明底部构筑成功，随后出现一波行情的可能性较大。--%>
-                        <%--<c:when test="${(item.diff<0 || itemNext.diff<0) && item.dea<0 && item.diff>item.dea && item.diff>itemNext.diff}">--%>
-                            <%--<span style="color: red;">come</span>--%>
-                        <%--</c:when>--%>
+                        30日平均线亦拐头上行，这表明底部构筑成功，随后出现一波行情的可能性较大。&ndash;%&gt;
+                        &lt;%&ndash;<c:when test="${(item.diff<0 || itemNext.diff<0) && item.dea<0 && item.diff>item.dea && item.diff>itemNext.diff}">&ndash;%&gt;
+                            &lt;%&ndash;<span style="color: red;">come</span>&ndash;%&gt;
+                        &lt;%&ndash;</c:when>&ndash;%&gt;
 
                         <c:when test="${item.diff>itemNext.diff && item.dea>=itemNext.dea && item.macd>itemNext.macd && item.diff>-8.5 }">
                             <span style="color: red;">up</span>
                         </c:when>
 
                     </c:choose>
-                </td>
+                </td>--%>
 
 
                 <td style="
@@ -218,52 +218,52 @@
                         </c:choose>">${item.j}</td>
 
                     <%--kdj 结果分析--%>
-                <td>
+          <%--      <td>
                     <c:choose>
 
-                        <%--如果整体处于80以上的话则代表市场显示为超买区；在这之间的话则显示买卖平衡，变化趋势不是很明显。--%>
+                        &lt;%&ndash;如果整体处于80以上的话则代表市场显示为超买区；在这之间的话则显示买卖平衡，变化趋势不是很明显。&ndash;%&gt;
                         <c:when test="${item.k>=85 &&  item.d>=85 &&  item.j>=85 && item.k>itemNext.k}">
                             <span style="color: red;">超买区</span>
                         </c:when>
 
-                        <%--2.当K值由较小逐渐大于D值，在图形上显示K线从下方上穿D线，所以在图形上K线向上突破D线时，俗称金叉，即为买进的讯号。--%>
+                        &lt;%&ndash;2.当K值由较小逐渐大于D值，在图形上显示K线从下方上穿D线，所以在图形上K线向上突破D线时，俗称金叉，即为买进的讯号。&ndash;%&gt;
                         <c:when test="${item.k>=itemNext.k && item.d>=itemNext.d && item.j>=itemNext.j}">
                             <span style="color: red;">come</span>
                         </c:when>
 
-                        <%--实战时当K，D线在20以下交叉向上，此时的短期买入的信号较为准确；如果K值在50以下，由下往上接连两次上穿D值，形成右底比左底高的“W底”形态时，后市股价可能会有相当的涨幅。--%>
+                        &lt;%&ndash;实战时当K，D线在20以下交叉向上，此时的短期买入的信号较为准确；如果K值在50以下，由下往上接连两次上穿D值，形成右底比左底高的“W底”形态时，后市股价可能会有相当的涨幅。&ndash;%&gt;
                         <c:when test="${item.k<=20 &&  item.d<=20 &&  item.k>itemNext.k  && item.d>itemNext.d && item.j>itemNext.j && item.k>item.d  }">
                             <span style="color: red;">up</span>
                         </c:when>
 
-                        <%--实战时当K，D线在80以上交叉向下，此时的短期卖出的信号较为准确；如果K值在50以上，由上往下接连两次下穿D值，形成右头比左头低的“M头”形态时，后市股价可能会有相当的跌幅。--%>
+                        &lt;%&ndash;实战时当K，D线在80以上交叉向下，此时的短期卖出的信号较为准确；如果K值在50以上，由上往下接连两次下穿D值，形成右头比左头低的“M头”形态时，后市股价可能会有相当的跌幅。&ndash;%&gt;
                         <c:when test="${item.k>=79 && item.d>=79 && item.k<itemNext.k }">
                             live-80
                         </c:when>
 
-                        <%--当K值由较大逐渐小于D值，在图形上显示K线从上方下穿D线，显示趋势是向下的，所以在图形上K线向下突破D线时，俗称死叉，即为卖出的讯号。--%>
+                        &lt;%&ndash;当K值由较大逐渐小于D值，在图形上显示K线从上方下穿D线，显示趋势是向下的，所以在图形上K线向下突破D线时，俗称死叉，即为卖出的讯号。&ndash;%&gt;
                         <c:when test="${(item.k+1)<itemNext.k &&  item.d<itemNext.d}">
                             live
                         </c:when>
 
-                        <%--2.如果KDJ三者的值都位于50以上的话，则市场此时显示为多头市场，行情有上涨的趋势；--%>
-                      <%--  <c:when test="${item.k>50 &&  item.d>50 &&  item.j>50}">
+                        &lt;%&ndash;2.如果KDJ三者的值都位于50以上的话，则市场此时显示为多头市场，行情有上涨的趋势；&ndash;%&gt;
+                      &lt;%&ndash;  <c:when test="${item.k>50 &&  item.d>50 &&  item.j>50}">
                             <span style="color: red;">up</span>
-                        </c:when>--%>
+                        </c:when>&ndash;%&gt;
 
-                        <%--如果三者都位于50以下的话，则显示为空头市场，行情有下降的趋势。--%>
+                        &lt;%&ndash;如果三者都位于50以下的话，则显示为空头市场，行情有下降的趋势。&ndash;%&gt;
                         <c:when test="${item.k<=40 &&  item.d<=40 &&  item.j<=40 && item.k<itemNext.k}">
                             down
                         </c:when>
 
-                        <%--当KDJ三个值整体处于20以下的话，显示市场为超卖区；--%>
+                        &lt;%&ndash;当KDJ三个值整体处于20以下的话，显示市场为超卖区；&ndash;%&gt;
                         <c:when test="${item.k<=20 && item.k<=20 && item.j<=20 && (item.k<itemNext.d || item.d<itemNext.d) }">
                             超卖中
                         </c:when>
 
                     </c:choose>
 
-                </td>
+                </td>--%>
                 <td>${item.date}</td>
                     <%--<fmt:formatDate value="${item.date}"--%>
                     <%--pattern="yyyy-MM-dd HH:mm:ss"--%>

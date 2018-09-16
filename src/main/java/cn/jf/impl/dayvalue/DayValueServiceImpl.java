@@ -117,4 +117,14 @@ public class DayValueServiceImpl implements DayValueService {
     return dayValueMapper.dayValueUpList();
   }
 
+  @Override
+  public List<DayValue> findTotalMoneyTopList() {
+    return  dayValueMapper.findTotalMoneyTopList();
+  }
+
+  @Override
+  public DayValue findDayValueByIdAndDate(String companyCode, int date) {
+    return dayValueMapper.findDayValueByIdAndDate(companyCode,date);
+  }
+
 }
