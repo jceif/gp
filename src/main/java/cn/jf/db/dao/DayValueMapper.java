@@ -48,4 +48,7 @@ public interface DayValueMapper {
 	DayValue findDayValueByIdAndDate(@Param("companyCode") String companyCode,@Param("date") int date);
 
 
+	Integer findCountByCompanyCode(@Param("companyCode") String companyCode,@Param("date") Integer date);
+
+
 }

@@ -1,27 +1,17 @@
 package cn.jf.controller;
 
-import cn.jf.model.company.Company;
 import cn.jf.model.daygood.DayGoodVo;
-import cn.jf.model.dayvalue.DayValue;
 import cn.jf.service.company.CompanyService;
-import cn.jf.service.dayvalue.DayValueService;
-import com.alibaba.druid.support.json.JSONUtils;
-import com.alibaba.druid.util.StringUtils;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import javax.print.attribute.standard.DateTimeAtCompleted;
-import javax.servlet.http.HttpServletRequest;
-
-import cn.jf.model.daygood.DayGood;
 import cn.jf.service.daygood.DayGoodService;
-import org.json.JSONObject;
+import cn.jf.service.dayvalue.DayValueService;
+import com.alibaba.druid.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 @RequestMapping("/data/")
@@ -45,7 +35,6 @@ public class DayGoodController {
     if (request.getSession().getAttribute("user") == null) {
       return "redirect:/login";
     }
-
     //获取日期属性
     getFormatDates(request);
     Map<String, Object> map = new HashMap<String, Object>();
@@ -107,6 +96,12 @@ public class DayGoodController {
     map.put("marketWorth2", marketWorth2);
 
     List<DayGoodVo> dayGoods = dayGoodService.findDayGoodNowQuery(map);
+    for (DayGoodVo dayGood : dayGoods) {
+      Integer count=dayValueService.findCountByCompanyCode(dayGood.getCompanyCode(),dayGood.getDate());
+      if(count!=null && count<23){
+        dayGood.setCompanyName(dayGood.getCompanyName()+"-n");
+      }
+    }
     request.setAttribute("dayGoods", dayGoods);
     request.setAttribute("date", date);
     request.setAttribute("time", time);
@@ -145,67 +140,6 @@ public class DayGoodController {
   }
 
 
-  @RequestMapping("/chart")
-  public String echart(HttpServletRequest request, String companyCode, String date) {
 
-    Company company= companyService.findCompanyByCode(companyCode);
-
-    Map<String, Object> map = new HashMap<String, Object>();
-    map.put("date", date);
-    map.put("companyCode", companyCode);
-    List<DayGood> dayGoods = dayGoodService.findDayGoodQuery(map);
-    List<String> times = new ArrayList<String>();
-    //List<Double> prices = new ArrayList<Double>();
-    List<Double> rates = new ArrayList<Double>();
-    List<Double> moneys = new ArrayList<Double>();
-    double nowPrice = 0;
-    if (dayGoods != null && dayGoods.size() > 0) {
-      for (DayGood dayGood : dayGoods) {
-        times.add(dayGood.getTime());
-        //prices.add(dayGood.getPrice());
-        rates.add(dayGood.getRate());
-        moneys.add(dayGood.getMainMoney());
-        nowPrice = dayGood.getPrice();
-      }
-    }
-    request.setAttribute("times", JSONUtils.toJSONString(times));
-    request.setAttribute("rates", JSONUtils.toJSONString(rates));
-    //request.setAttribute("prices", JSONUtils.toJSONString(prices));
-    request.setAttribute("moneys", JSONUtils.toJSONString(moneys));
-
-    List<DayValue> dayValues = dayValueService.dayValueTop5(companyCode);
-    Double avgValue = dayValueService.dayValueAverage(companyCode);
-    List<String> topNames = new ArrayList<String>();
-    List<Double> topValues = new ArrayList<Double>();
-    List<Double> avgValues = new ArrayList<Double>();
-    BigDecimal chaRate = BigDecimal.valueOf(0);
-    if (dayValues != null && dayValues.size() > 0) {
-      for (DayValue dayValue : dayValues) {
-        topValues.add(dayValue.getEndPrice());
-        topNames.add("top-" + dayValue.getDate());
-        avgValues.add(avgValue);
-        if (topValues.size() == 1) {
-          double cha = (nowPrice - dayValue.getEndPrice()) * 100 / nowPrice;
-          chaRate = (new BigDecimal(cha)).setScale(2, RoundingMode.HALF_UP);
-        }
-      }
-    }
-    topNames.add("now-" + date);
-    topValues.add(nowPrice);
-    avgValues.add(avgValue);
-
-    request.setAttribute("topNames", JSONUtils.toJSONString(topNames));
-    request.setAttribute("topValues", JSONUtils.toJSONString(topValues));
-    request.setAttribute("avgValues", JSONUtils.toJSONString(avgValues));
-    request.setAttribute("companyCode", companyCode);
-    request.setAttribute("date", date);
-    request.setAttribute("chaRate", chaRate);
-    if(company!=null){
-      request.setAttribute("companyName", company.getName());
-    }
-
-    return "chart";
-
-  }
 
 }

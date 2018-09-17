@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <title>data-my-center</title>
+    <title>data-day-index</title>
     <link rel="stylesheet" type="text/css"
           href="${ctx}assets/css/common/bootstrap.min.css">
     <style>

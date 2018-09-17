@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <title>income-(${rateSum})</title>
+    <title>${rateAllSum}|${rateCheckSum}</title>
     <link rel="stylesheet" type="text/css"
           href="${ctx}assets/css/common/bootstrap.min.css">
     <style>

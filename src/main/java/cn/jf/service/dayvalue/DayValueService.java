@@ -1,12 +1,10 @@
 package cn.jf.service.dayvalue;
 
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
 import cn.jf.common.PageUtil;
 import cn.jf.model.dayvalue.DayValue;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
+import java.util.Map;
 
 
 public interface DayValueService {
@@ -47,5 +45,7 @@ public interface DayValueService {
   List<DayValue> findTotalMoneyTopList();
 
   DayValue findDayValueByIdAndDate( String companyCode,int date);
+
+  Integer findCountByCompanyCode(String companyCode,Integer date);
 
 }

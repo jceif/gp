@@ -127,7 +127,7 @@
                 </th>
                 <th>价格：<input type="number" name="price" value="${price}"></th>
                 <th>涨跌：<input type="text" name="rate" value="${rate}"></th>
-                <th><input type="submit" value="查询（ST垃圾，60几开头蓝筹）">&nbsp;<a href="/day/topList" target="_blank">秘笈</a> </th>
+                <th><input type="submit" value="查询">&nbsp;<a href="/day/index" target="_blank">kdj</a> &nbsp;<a href="/day/topList" target="_blank">tj</a> </th>
             </tr>
         </table>
         <%--</div>--%>

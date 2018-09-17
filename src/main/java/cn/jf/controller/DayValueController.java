@@ -29,132 +29,142 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/day/")
 public class DayValueController {
 
-  @Autowired
-  private DayValueService dayValueService;
+    @Autowired
+    private DayValueService dayValueService;
 
-  @Autowired
-  private CompanyService companyService;
+    @Autowired
+    private CompanyService companyService;
 
-  /**
-   * 72天内的最高值
-   */
-  @RequestMapping("/index")
-  public String index(HttpServletRequest request) {
-    dayValueService.dayValueUpList();
-    List<DayValue> dayValues = dayValueService.dayValueUpList();
-    request.setAttribute("dayValues", dayValues);
-    return "dayIndex";
-  }
-
-  @RequestMapping("/detail")
-  public String detail(HttpServletRequest request, String companyCode, String count) {
-    if (request.getSession().getAttribute("user") == null) {
-      return "redirect:/login";
-    }
-    Company company = companyService.findCompanyByCode(companyCode);
-    Map<String, Object> map = new HashMap<String, Object>();
-    map.put("companyCode", companyCode);
-    PageUtil<DayValue> pageUtil = dayValueService.findDayValueQueryPage(map, "0", count);
-    request.setAttribute("company", company);
-
-    List<DayValue> dayValues = pageUtil.getRecords();
-    request.setAttribute("dayValues", pageUtil.getRecords());
-
-    List<Integer> dates = new ArrayList<Integer>();
-
-    List<Double> rates = new ArrayList<Double>();
-    List<Double> inflows = new ArrayList<Double>();
-    List<Float> diffs = new ArrayList<Float>();
-    List<Float> deas = new ArrayList<Float>();
-    List<Float> macds = new ArrayList<Float>();
-
-    List<Float> ks = new ArrayList<Float>();
-    List<Float> ds = new ArrayList<Float>();
-    List<Float> js = new ArrayList<Float>();
-
-    if (dayValues != null && dayValues.size() > 0) {
-      DayValue dayValue = null;
-      for (int i = dayValues.size() - 1; i > -1; i--) {
-        dayValue = dayValues.get(i);
-        dates.add(dayValue.getDate());
-        rates.add(dayValue.getRate());
-        inflows.add(dayValue.getTotalMoney());
-        diffs.add(dayValue.getDiff());
-        deas.add(dayValue.getDea());
-        macds.add(dayValue.getMacd());
-        ks.add(dayValue.getK());
-        ds.add(dayValue.getD());
-        js.add(dayValue.getJ());
-      }
+    /**
+     * 统计最近kdj macd diff dea 连续三天上涨的值
+     */
+    @RequestMapping("/index")
+    public String index(HttpServletRequest request) {
+        dayValueService.dayValueUpList();
+        List<DayValue> dayValues = dayValueService.dayValueUpList();
+        request.setAttribute("dayValues", dayValues);
+        return "dayIndex";
     }
 
-    request.setAttribute("dates", JSONUtils.toJSONString(dates));
-    request.setAttribute("rates", JSONUtils.toJSONString(rates));
-    request.setAttribute("inflows", JSONUtils.toJSONString(inflows));
-    request.setAttribute("diffs", JSONUtils.toJSONString(diffs));
-    request.setAttribute("deas", JSONUtils.toJSONString(deas));
-    request.setAttribute("macds", JSONUtils.toJSONString(macds));
-    request.setAttribute("ks", JSONUtils.toJSONString(ks));
-    request.setAttribute("ds", JSONUtils.toJSONString(ds));
-    request.setAttribute("js", JSONUtils.toJSONString(js));
-    return "dayValue";
-  }
+    @RequestMapping("/detail")
+    public String detail(HttpServletRequest request, String companyCode, String count) {
+        if (request.getSession().getAttribute("user") == null) {
+            return "redirect:/login";
+        }
+        Company company = companyService.findCompanyByCode(companyCode);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("companyCode", companyCode);
+        PageUtil<DayValue> pageUtil = dayValueService.findDayValueQueryPage(map, "0", count);
+        request.setAttribute("company", company);
+        List<DayValue> dayValues = pageUtil.getRecords();
+        request.setAttribute("dayValues", pageUtil.getRecords());
+        List<Integer> dates = new ArrayList<Integer>();
 
+        List<Double> rates = new ArrayList<Double>();
+        List<Double> inflows = new ArrayList<Double>();
+        List<Float> diffs = new ArrayList<Float>();
+        List<Float> deas = new ArrayList<Float>();
+        List<Float> macds = new ArrayList<Float>();
 
-  /**
-   * 72天内的平均值
-   */
-  @RequestMapping("/info")
-  @ResponseBody
-  public String dayValueInfo(HttpServletRequest request, String companyCode) {
-    List<DayValue> dayValues = dayValueService.dayValueTop5(companyCode);
-    Double avgValue = dayValueService.dayValueAverage(companyCode);
-    Map<String, Object> map = new HashMap<String, Object>();
-    map.put("avg", avgValue);
-    map.put("topValue", dayValues);
-    String json = JSONObject.valueToString(map);
-    return json;
-  }
+        List<Float> ks = new ArrayList<Float>();
+        List<Float> ds = new ArrayList<Float>();
+        List<Float> js = new ArrayList<Float>();
 
+        if (dayValues != null && dayValues.size() > 0) {
+            DayValue dayValue = null;
+            for (int i = dayValues.size() - 1; i > -1; i--) {
+                dayValue = dayValues.get(i);
+                dates.add(dayValue.getDate());
+                rates.add(dayValue.getRate());
+                inflows.add(dayValue.getTotalMoney());
+                diffs.add(dayValue.getDiff());
+                deas.add(dayValue.getDea());
+                macds.add(dayValue.getMacd());
+                ks.add(dayValue.getK());
+                ds.add(dayValue.getD());
+                js.add(dayValue.getJ());
+            }
+        }
 
-  @RequestMapping("/topList")
-  public String findTotalMoneyTopList(HttpServletRequest request) {
-    List<DayValueVO> dayValueList = new ArrayList<DayValueVO>();
-    List<DayValue> dayValues = dayValueService.findTotalMoneyTopList();
-    DayValueVO dayValueVO = null;
-    DayValue preDay = null;
-    DayValue nextDay = null;
-    BigDecimal rateSum=BigDecimal.valueOf(0);
-    for (int i = 1; i < dayValues.size(); i++) {
-      dayValueVO = new DayValueVO();
-      preDay = dayValues.get(i);
-      if(preDay.getTotalMoney()==0){continue;}
-      nextDay = dayValueService.findDayValueByIdAndDate(preDay.getCompanyCode(), dayValues.get(i-1).getDate());
-      if (nextDay != null && nextDay.getId() > 0) {
-        dayValueVO.setCompanyCode(preDay.getCompanyCode());
-        dayValueVO.setDate(preDay.getDate());
-        dayValueVO.setId(preDay.getId());
-
-        dayValueVO.setNextEndPrice(nextDay.getEndPrice());
-        dayValueVO.setNextMaxPrice(nextDay.getMaxPrice());
-        dayValueVO.setNextMinPrice(nextDay.getMinPrice());
-        dayValueVO.setNextStartPrice(nextDay.getStartPrice());
-        dayValueVO.setNextRate(nextDay.getRate());
-        dayValueVO.setNextTotalMoney(nextDay.getTotalMoney());
-
-        dayValueVO.setPreEndPrice(preDay.getEndPrice());
-        dayValueVO.setPreMaxPrice(preDay.getMaxPrice());
-        dayValueVO.setPreMinPrice(preDay.getMinPrice());
-        dayValueVO.setPreStartPrice(preDay.getStartPrice());
-        dayValueVO.setPreRate(preDay.getRate());
-        dayValueVO.setPreTotalMoney(preDay.getTotalMoney());
-        rateSum=rateSum.add(BigDecimal.valueOf(nextDay.getRate()));
-        dayValueList.add(dayValueVO);
-      }
+        request.setAttribute("dates", JSONUtils.toJSONString(dates));
+        request.setAttribute("rates", JSONUtils.toJSONString(rates));
+        request.setAttribute("inflows", JSONUtils.toJSONString(inflows));
+        request.setAttribute("diffs", JSONUtils.toJSONString(diffs));
+        request.setAttribute("deas", JSONUtils.toJSONString(deas));
+        request.setAttribute("macds", JSONUtils.toJSONString(macds));
+        request.setAttribute("ks", JSONUtils.toJSONString(ks));
+        request.setAttribute("ds", JSONUtils.toJSONString(ds));
+        request.setAttribute("js", JSONUtils.toJSONString(js));
+        return "dayValue";
     }
-    request.setAttribute("dayValues", dayValueList);
-    request.setAttribute("rateSum", rateSum);
-    return "topList";
-  }
+
+
+    /**
+     * 72天内的平均值
+     */
+    @RequestMapping("/info")
+    @ResponseBody
+    public String dayValueInfo(HttpServletRequest request, String companyCode) {
+        List<DayValue> dayValues = dayValueService.dayValueTop5(companyCode);
+        Double avgValue = dayValueService.dayValueAverage(companyCode);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("avg", avgValue);
+        map.put("topValue", dayValues);
+        String json = JSONObject.valueToString(map);
+        return json;
+    }
+
+
+    @RequestMapping("/topList")
+    public String findTotalMoneyTopList(HttpServletRequest request) {
+        if (request.getSession().getAttribute("user") == null) {
+            return "redirect:/login";
+        }
+        List<DayValueVO> dayValueList = new ArrayList<DayValueVO>();
+        List<DayValue> dayValues = dayValueService.findTotalMoneyTopList();
+        DayValueVO dayValueVO = null;
+        DayValue preDay = null;
+        DayValue nextDay = null;
+        BigDecimal rateAllSum = BigDecimal.valueOf(0);
+        BigDecimal rateCheckSum = BigDecimal.valueOf(0);
+        for (int i = 1; i < dayValues.size(); i++) {
+            dayValueVO = new DayValueVO();
+            preDay = dayValues.get(i);
+            if (preDay.getTotalMoney() == 0) {
+                continue;
+            }
+            nextDay = dayValueService.findDayValueByIdAndDate(preDay.getCompanyCode(), dayValues.get(i - 1).getDate());
+            if (nextDay != null && nextDay.getId() > 0) {
+
+                dayValueVO.setCompanyCode(preDay.getCompanyCode());
+                dayValueVO.setDate(preDay.getDate());
+                dayValueVO.setId(preDay.getId());
+                dayValueVO.setNextEndPrice(nextDay.getEndPrice());
+                dayValueVO.setNextMaxPrice(nextDay.getMaxPrice());
+                dayValueVO.setNextMinPrice(nextDay.getMinPrice());
+                dayValueVO.setNextStartPrice(nextDay.getStartPrice());
+                dayValueVO.setNextRate(nextDay.getRate());
+                dayValueVO.setNextTotalMoney(nextDay.getTotalMoney());
+
+                dayValueVO.setPreEndPrice(preDay.getEndPrice());
+                dayValueVO.setPreMaxPrice(preDay.getMaxPrice());
+                dayValueVO.setPreMinPrice(preDay.getMinPrice());
+                dayValueVO.setPreStartPrice(preDay.getStartPrice());
+                dayValueVO.setPreRate(preDay.getRate());
+                dayValueVO.setPreTotalMoney(preDay.getTotalMoney());
+                dayValueList.add(dayValueVO);
+                rateAllSum = rateAllSum.add(BigDecimal.valueOf(nextDay.getRate()));
+                Integer count = dayValueService.findCountByCompanyCode(preDay.getCompanyCode(), preDay.getDate());
+                if (count != null && count > 23) {
+                    rateCheckSum = rateCheckSum.add(BigDecimal.valueOf(nextDay.getRate()));
+                }
+            }
+
+        }
+        request.setAttribute("dayValues", dayValueList);
+        request.setAttribute("rateAllSum", rateAllSum);
+        request.setAttribute("rateCheckSum", rateCheckSum);
+        return "topList";
+    }
 
 }
