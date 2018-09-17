@@ -46,6 +46,67 @@
 
 <form action="/day/topList" method="get">
     <div style="margin:0 auto; width: 90%;text-align: center;">
+
+        <table style="width: 100%;">
+            <tr>
+                <th>开始日期：
+                    <select name="dateStart">
+                        <option value="">请选择</option>
+                        <c:forEach items="${dateStarts}" var="item" varStatus="var">
+                            <option value="${item}"
+                                    <c:if test="${item==dateStart}">selected</c:if>>${item}</option>
+                        </c:forEach>
+                    </select>
+                </th>
+                <th>结束日期：
+                    <select name="dateEnd">
+                        <option value="">请选择</option>
+                        <c:forEach items="${dateEnds}" var="item" varStatus="var">
+                            <option value="${item}" <c:if test="${item==dateEnd}">selected</c:if>>${item}</option>
+                        </c:forEach>
+                    </select>
+                </th>
+
+                <th>新股天：
+                    <select name="day">
+                        <option value="">请选择</option>
+                            <option value="35" <c:if test="${day==35}">selected</c:if>>35天</option>
+                            <option value="34" <c:if test="${day==34}">selected</c:if> >34天</option>
+                            <option value="33" <c:if test="${day==33}">selected</c:if> >33天</option>
+                            <option value="32" <c:if test="${day==32}">selected</c:if> >32天</option>
+                            <option value="31" <c:if test="${day==31}">selected</c:if> >31天</option>
+                            <option value="30" <c:if test="${day==30}">selected</c:if> >30天</option>
+                            <option value="29" <c:if test="${day==29}">selected</c:if> >29天</option>
+                            <option value="28" <c:if test="${day==28}">selected</c:if> >28天</option>
+                            <option value="27" <c:if test="${day==27}">selected</c:if> >27天</option>
+                            <option value="26" <c:if test="${day==26}">selected</c:if> >26天</option>
+                            <option value="25" <c:if test="${day==25}">selected</c:if> >25天</option>
+                            <option value="24" <c:if test="${day==24}">selected</c:if> >24天</option>
+                            <option value="23" <c:if test="${day==23}">selected</c:if> >23天</option>
+                            <option value="22" <c:if test="${day==22}">selected</c:if> >22天</option>
+                            <option value="21" <c:if test="${day==21}">selected</c:if> >21天</option>
+                            <option value="20" <c:if test="${day==20}">selected</c:if> >20天</option>
+                            <option value="19" <c:if test="${day==19}">selected</c:if> >19天</option>
+                            <option value="18" <c:if test="${day==18}">selected</c:if> >18天</option>
+                            <option value="17" <c:if test="${day==17}">selected</c:if> >17天</option>
+                            <option value="16" <c:if test="${day==16}">selected</c:if> >16天</option>
+                            <option value="15" <c:if test="${day==15}">selected</c:if> >15天</option>
+                            <option value="14" <c:if test="${day==14}">selected</c:if> >14天</option>
+                            <option value="13" <c:if test="${day==13}">selected</c:if> >13天</option>
+                            <option value="12" <c:if test="${day==12}">selected</c:if> >12天</option>
+                            <option value="11" <c:if test="${day==11}">selected</c:if> >11天</option>
+                            <option value="10" <c:if test="${day==10}">selected</c:if> >10天</option>
+                            <option value="9" <c:if test="${day==9}">selected</c:if>>9天</option>
+                            <option value="8" <c:if test="${day==8}">selected</c:if>>8天</option>
+                            <option value="7" <c:if test="${day==7}">selected</c:if>>7天</option>
+                            <option value="6" <c:if test="${day==6}">selected</c:if>>6天</option>
+                    </select>
+                </th>
+
+                <th><input type="submit" value="查询"></th>
+            </tr>
+        </table>
+
         <table style="width: 100%;">
             <tbody>
             <tr>
@@ -88,6 +149,7 @@
                                        target="_blank">${item.companyCode}</a>
                                 </c:otherwise>
                             </c:choose>
+                            <c:if test="${item.isNew==1}"><span style="color: red">n</span></c:if>
                         </td>
                 <td>${item.preEndPrice}</td>
                 <td>${item.nextStartPrice}</td>
@@ -95,10 +157,10 @@
                 <td>${item.preRate}</td>
                 <td  style="<c:choose>
                 <c:when test="${item.nextRate>0}">
-                        background: red;
+                        color: red;
                 </c:when>
                 <c:when test="${item.nextRate<0}">
-                        background: green;
+                        color: green;
                 </c:when>
                         </c:choose>">${item.nextRate}</td>
                 <td>${item.nextEndPrice}</td>

@@ -42,7 +42,7 @@ public interface DayValueService {
   List<DayValue> dayValueUpList();
 
 
-  List<DayValue> findTotalMoneyTopList();
+  List<DayValue> findTotalMoneyTopList(int dateStart, int dateEnd);
 
   DayValue findDayValueByIdAndDate( String companyCode,int date);
 

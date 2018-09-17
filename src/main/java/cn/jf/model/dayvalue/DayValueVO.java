@@ -26,6 +26,10 @@ public class DayValueVO implements Serializable {
   private float nextMinPrice;
 
 
+
+  private int isNew;//是否为新股 1 是，0否
+
+
   public int getId() {
     return id;
   }
@@ -144,6 +148,14 @@ public class DayValueVO implements Serializable {
 
   public void setNextMinPrice(float nextMinPrice) {
     this.nextMinPrice = nextMinPrice;
+  }
+
+  public int getIsNew() {
+    return isNew;
+  }
+
+  public void setIsNew(int isNew) {
+    this.isNew = isNew;
   }
 
 

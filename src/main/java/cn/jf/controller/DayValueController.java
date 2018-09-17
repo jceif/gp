@@ -35,6 +35,7 @@ public class DayValueController {
     @Autowired
     private CompanyService companyService;
 
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
     /**
      * 统计最近kdj macd diff dea 连续三天上涨的值
      */
@@ -116,12 +117,22 @@ public class DayValueController {
 
 
     @RequestMapping("/topList")
-    public String findTotalMoneyTopList(HttpServletRequest request) {
+    public String findTotalMoneyTopList(HttpServletRequest request,String dateStart,String dateEnd,String day) {
+
         if (request.getSession().getAttribute("user") == null) {
             return "redirect:/login";
         }
+        if(StringUtils.isEmpty(dateStart)){
+            dateStart="20180503";
+        }
+        if(StringUtils.isEmpty(dateEnd)){
+            dateEnd=simpleDateFormat.format(Calendar.getInstance().getTime());
+        }
+        if(StringUtils.isEmpty(day)){
+            day="15";
+        }
         List<DayValueVO> dayValueList = new ArrayList<DayValueVO>();
-        List<DayValue> dayValues = dayValueService.findTotalMoneyTopList();
+        List<DayValue> dayValues = dayValueService.findTotalMoneyTopList(Integer.parseInt(dateStart), Integer.parseInt(dateEnd));
         DayValueVO dayValueVO = null;
         DayValue preDay = null;
         DayValue nextDay = null;
@@ -135,7 +146,6 @@ public class DayValueController {
             }
             nextDay = dayValueService.findDayValueByIdAndDate(preDay.getCompanyCode(), dayValues.get(i - 1).getDate());
             if (nextDay != null && nextDay.getId() > 0) {
-
                 dayValueVO.setCompanyCode(preDay.getCompanyCode());
                 dayValueVO.setDate(preDay.getDate());
                 dayValueVO.setId(preDay.getId());
@@ -145,26 +155,54 @@ public class DayValueController {
                 dayValueVO.setNextStartPrice(nextDay.getStartPrice());
                 dayValueVO.setNextRate(nextDay.getRate());
                 dayValueVO.setNextTotalMoney(nextDay.getTotalMoney());
-
                 dayValueVO.setPreEndPrice(preDay.getEndPrice());
                 dayValueVO.setPreMaxPrice(preDay.getMaxPrice());
                 dayValueVO.setPreMinPrice(preDay.getMinPrice());
                 dayValueVO.setPreStartPrice(preDay.getStartPrice());
                 dayValueVO.setPreRate(preDay.getRate());
                 dayValueVO.setPreTotalMoney(preDay.getTotalMoney());
-                dayValueList.add(dayValueVO);
+
                 rateAllSum = rateAllSum.add(BigDecimal.valueOf(nextDay.getRate()));
                 Integer count = dayValueService.findCountByCompanyCode(preDay.getCompanyCode(), preDay.getDate());
-                if (count != null && count > 23) {
+                if (count != null && count>Integer.parseInt(day)) {
                     rateCheckSum = rateCheckSum.add(BigDecimal.valueOf(nextDay.getRate()));
+                    dayValueVO.setIsNew(0);
+                }else{
+                    dayValueVO.setIsNew(1);
                 }
+                dayValueList.add(dayValueVO);
             }
-
         }
+        getFormatDates(request);
         request.setAttribute("dayValues", dayValueList);
         request.setAttribute("rateAllSum", rateAllSum);
         request.setAttribute("rateCheckSum", rateCheckSum);
+        request.setAttribute("dateStart", dateStart);
+        request.setAttribute("dateEnd", dateEnd);
+        request.setAttribute("day", day);
         return "topList";
+    }
+
+
+
+    /*日期函数*/
+    private void getFormatDates(HttpServletRequest request) {
+        List<String> dateStarts = new ArrayList<String>();
+        List<String> dateEnds = new ArrayList<String>();
+        Calendar calendar = Calendar.getInstance();
+        for (int i = 0; i < 40; i++) {
+            if (calendar.get(Calendar.DAY_OF_WEEK) != 7 && calendar.get(Calendar.DAY_OF_WEEK) != 1) {
+                dateStarts.add(simpleDateFormat.format(calendar.getTime()));
+                if (i > 0 && (dateStarts.size() - dateEnds.size()) > 1) {
+                    dateEnds.add(simpleDateFormat.format(calendar.getTime()));
+                }
+                calendar.add(Calendar.DATE, -7);
+            }else{
+                calendar.add(Calendar.DATE, -1);
+            }
+        }
+        request.setAttribute("dateStarts", dateStarts);
+        request.setAttribute("dateEnds", dateEnds);
     }
 
 }

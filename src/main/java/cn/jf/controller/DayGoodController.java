@@ -98,7 +98,7 @@ public class DayGoodController {
     List<DayGoodVo> dayGoods = dayGoodService.findDayGoodNowQuery(map);
     for (DayGoodVo dayGood : dayGoods) {
       Integer count=dayValueService.findCountByCompanyCode(dayGood.getCompanyCode(),dayGood.getDate());
-      if(count!=null && count<23){
+      if(count!=null && count<15){
         dayGood.setCompanyName(dayGood.getCompanyName()+"-n");
       }
     }

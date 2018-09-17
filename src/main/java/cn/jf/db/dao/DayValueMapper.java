@@ -43,7 +43,7 @@ public interface DayValueMapper {
 
 	List<DayValue> dayValueUpList();
 
-	List<DayValue> findTotalMoneyTopList();
+	List<DayValue> findTotalMoneyTopList(@Param("dateStart") int dateStart,@Param("dateEnd") int dateEnd);
 
 	DayValue findDayValueByIdAndDate(@Param("companyCode") String companyCode,@Param("date") int date);
 

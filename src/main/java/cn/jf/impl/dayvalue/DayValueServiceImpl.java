@@ -118,8 +118,8 @@ public class DayValueServiceImpl implements DayValueService {
   }
 
   @Override
-  public List<DayValue> findTotalMoneyTopList() {
-    return  dayValueMapper.findTotalMoneyTopList();
+  public List<DayValue> findTotalMoneyTopList(int dateStart, int dateEnd) {
+    return  dayValueMapper.findTotalMoneyTopList( dateStart,  dateEnd);
   }
 
   @Override
