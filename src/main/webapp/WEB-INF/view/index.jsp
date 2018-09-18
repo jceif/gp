@@ -400,11 +400,11 @@
             </c:forEach>
             </tbody>
         </table><!-- /.table -->
-            <p style="color: red;text-align: left;">1.rate<0: 小于10亿 一定不买</p>
+            <p style="color: red;text-align: left;">1.rate<0&小于10亿:不买</p>
             <p></p>
             <p style="color: red;text-align: left;">2.next rate<-2: execute</p>
             <p></p>
-            <p style="color: red;text-align: left;">3.next rate>6 or (3&lt;rate&lt;4): wait three</p>
+            <p style="color: red;text-align: left;">3.next rate>6: wait three</p>
             <p></p>
             <p style="color: red;text-align: left;">4.three rate<-1.5: execute</p>
             <p></p>
