@@ -406,6 +406,7 @@
             <p></p>
             <p style="color: red;text-align: left;">3.three show rate<-1.5 execute</p>
             <p></p>
+            <p style="color: red;text-align: left;">4.rate<0 ,金额小于100000万(10亿) 一定不买</p>
     </div>
 
 

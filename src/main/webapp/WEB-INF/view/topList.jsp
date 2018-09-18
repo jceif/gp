@@ -132,13 +132,13 @@
                     <%--当前--%>
                 <td style="<c:choose>
                         <c:when test="${item.nextRate>0}">
-                            background: red;
+                            color: red;
                         </c:when>
                         <c:when test="${item.nextMaxPrice>item.preEndPrice}">
-                            background: yellow;
+
                         </c:when>
                 <c:when test="${item.nextMaxPrice<item.preEndPrice}">
-                        background: green;
+                        color: green;
                         </c:when>
                         </c:choose>">${var.count}</td>
                         <td>
@@ -161,10 +161,10 @@
                 <td>${item.preRate}</td>
                 <td  style="<c:choose>
                 <c:when test="${item.nextRate>0}">
-                        color: red;
+                        background: red;
                 </c:when>
                 <c:when test="${item.nextRate<0}">
-                        color: green;
+                        background: green;
                 </c:when>
                         </c:choose>">${item.nextRate}</td>
                 <td  style="<c:choose>

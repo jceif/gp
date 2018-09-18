@@ -142,7 +142,7 @@ public class DayValueController {
         for (int i = 1; i < dayValues.size(); i++) {
             dayValueVO = new DayValueVO();
             preDay = dayValues.get(i);
-            if (preDay.getTotalMoney() == 0) {
+            if (preDay.getTotalMoney() <= 0 || (preDay.getRate()<0 && preDay.getTotalMoney()<100000)) {
                 continue;
             }
             nextDay = dayValueService.findDayValueByIdAndDate(preDay.getCompanyCode(), dayValues.get(i - 1).getDate());
