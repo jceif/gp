@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <title>${rateAllSumThree}|${rateAllSum}</title>
+    <title>${twoRateSum}|${oneRateSum}</title>
     <link rel="stylesheet" type="text/css"
           href="${ctx}assets/css/common/bootstrap.min.css">
     <style>

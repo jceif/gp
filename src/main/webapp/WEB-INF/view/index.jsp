@@ -400,7 +400,15 @@
             </c:forEach>
             </tbody>
         </table><!-- /.table -->
+            <p style="color: red;text-align: left;">1.next show rate<-2 execute</p>
+            <p></p>
+            <p style="color: red;text-align: left;">2.next show rate>6   wait three</p>
+            <p></p>
+            <p style="color: red;text-align: left;">3.three show rate<-1.5 execute</p>
+            <p></p>
     </div>
+
+
 </form>
 
 
