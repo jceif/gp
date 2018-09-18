@@ -136,8 +136,9 @@ public class DayValueController {
         DayValueVO dayValueVO = null;
         DayValue preDay = null;
         DayValue nextDay = null;
+        DayValue threeDay = null;
         BigDecimal rateAllSum = BigDecimal.valueOf(0);
-        BigDecimal rateCheckSum = BigDecimal.valueOf(0);
+        BigDecimal rateAllSumThree = BigDecimal.valueOf(0);
         for (int i = 1; i < dayValues.size(); i++) {
             dayValueVO = new DayValueVO();
             preDay = dayValues.get(i);
@@ -161,14 +162,29 @@ public class DayValueController {
                 dayValueVO.setPreStartPrice(preDay.getStartPrice());
                 dayValueVO.setPreRate(preDay.getRate());
                 dayValueVO.setPreTotalMoney(preDay.getTotalMoney());
-
-                rateAllSum = rateAllSum.add(BigDecimal.valueOf(nextDay.getRate()));
-                Integer count = dayValueService.findCountByCompanyCode(preDay.getCompanyCode(), preDay.getDate());
-                if (count != null && count>Integer.parseInt(day)) {
-                    rateCheckSum = rateCheckSum.add(BigDecimal.valueOf(nextDay.getRate()));
-                    dayValueVO.setIsNew(0);
+                if(nextDay.getRate()<-3) {
+                    rateAllSum = rateAllSum.add(BigDecimal.valueOf(-3.5));
+                    rateAllSumThree = rateAllSumThree.add(BigDecimal.valueOf(-3.5));
                 }else{
-                    dayValueVO.setIsNew(1);
+                    rateAllSum = rateAllSum.add(BigDecimal.valueOf(nextDay.getRate()));
+                    rateAllSumThree = rateAllSumThree.add(BigDecimal.valueOf(nextDay.getRate()));
+                }
+                dayValueVO.setIsNew(0);
+                if(i>1) {
+                    threeDay = dayValueService.findDayValueByIdAndDate(preDay.getCompanyCode(), dayValues.get(i - 2).getDate());
+                    if(threeDay!=null && threeDay.getId()>0) {
+                        if (nextDay.getRate() > 2) {
+                            if(threeDay.getRate()<-3) {
+                                rateAllSumThree = rateAllSumThree.add(BigDecimal.valueOf(-3.5));
+                            }
+                            else{
+                                rateAllSumThree = rateAllSumThree.add(BigDecimal.valueOf(threeDay.getRate()));
+                            }
+                        }
+                        dayValueVO.setThreeEndPrice(threeDay.getEndPrice());
+                        dayValueVO.setThreeMaxPrice(threeDay.getMaxPrice());
+                        dayValueVO.setThreeRate(threeDay.getRate());
+                    }
                 }
                 dayValueList.add(dayValueVO);
             }
@@ -176,7 +192,7 @@ public class DayValueController {
         getFormatDates(request);
         request.setAttribute("dayValues", dayValueList);
         request.setAttribute("rateAllSum", rateAllSum);
-        request.setAttribute("rateCheckSum", rateCheckSum);
+        request.setAttribute("rateAllSumThree", rateAllSumThree);
         request.setAttribute("dateStart", dateStart);
         request.setAttribute("dateEnd", dateEnd);
         request.setAttribute("day", day);

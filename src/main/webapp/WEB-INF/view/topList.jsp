@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <title>${rateAllSum}|${rateCheckSum}</title>
+    <title>${rateAllSumThree}|${rateAllSum}</title>
     <link rel="stylesheet" type="text/css"
           href="${ctx}assets/css/common/bootstrap.min.css">
     <style>
@@ -115,9 +115,12 @@
                 <th>preEnd</th>
                 <th>nextStart</th>
                 <th>nextMax</th>
+                <th>nextEnd</th>
                 <th>preRate</th>
                 <th>nextRate</th>
-                <th>nextEnd</th>
+                <th>threeRate</th>
+                <th>threeMaxPrice</th>
+                <th>threeEndPrice</th>
                 <th>preInflow</th>
                 <th>nextInflow</th>
                 <th>date</th>
@@ -154,6 +157,7 @@
                 <td>${item.preEndPrice}</td>
                 <td>${item.nextStartPrice}</td>
                 <td>${item.nextMaxPrice}</td>
+                <td>${item.nextEndPrice}</td>
                 <td>${item.preRate}</td>
                 <td  style="<c:choose>
                 <c:when test="${item.nextRate>0}">
@@ -163,7 +167,16 @@
                         color: green;
                 </c:when>
                         </c:choose>">${item.nextRate}</td>
-                <td>${item.nextEndPrice}</td>
+                <td  style="<c:choose>
+                <c:when test="${item.threeRate>0}">
+                        color: red;
+                </c:when>
+                <c:when test="${item.threeRate<0}">
+                        color: green;
+                </c:when>
+                        </c:choose>">${item.threeRate}</td>
+                <td>${item.threeMaxPrice}</td>
+                <td>${item.threeEndPrice}</td>
                 <td >${item.preTotalMoney}</td>
                 <td >${item.nextTotalMoney}</td>
                 <td>${item.date}</td>

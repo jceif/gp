@@ -25,7 +25,9 @@ public class DayValueVO implements Serializable {
   private float nextMaxPrice;
   private float nextMinPrice;
 
-
+  private Double threeRate;//第三天增长率
+  private float threeMaxPrice;//第三天最高
+  private Double threeEndPrice;//第三天价格
 
   private int isNew;//是否为新股 1 是，0否
 
@@ -159,18 +161,27 @@ public class DayValueVO implements Serializable {
   }
 
 
+  public Double getThreeRate() {
+    return threeRate;
+  }
 
+  public void setThreeRate(Double threeRate) {
+    this.threeRate = threeRate;
+  }
 
+  public float getThreeMaxPrice() {
+    return threeMaxPrice;
+  }
 
+  public void setThreeMaxPrice(float threeMaxPrice) {
+    this.threeMaxPrice = threeMaxPrice;
+  }
 
+  public Double getThreeEndPrice() {
+    return threeEndPrice;
+  }
 
-
-
-
-
-
-
-
-
-
+  public void setThreeEndPrice(Double threeEndPrice) {
+    this.threeEndPrice = threeEndPrice;
+  }
 }
