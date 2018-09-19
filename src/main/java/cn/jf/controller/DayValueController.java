@@ -123,7 +123,8 @@ public class DayValueController {
             return "redirect:/login";
         }
         if(StringUtils.isEmpty(dateStart)){
-            dateStart="20180503";
+            int month = Calendar.getInstance().get(Calendar.MONTH) + 1;   //获取月份，0表示1月份
+            dateStart=Calendar.getInstance().get(Calendar.YEAR)+""+(month<10?"0"+month:month)+"01";
         }
         if(StringUtils.isEmpty(dateEnd)){
             dateEnd=simpleDateFormat.format(Calendar.getInstance().getTime());
@@ -208,16 +209,13 @@ public class DayValueController {
         List<String> dateStarts = new ArrayList<String>();
         List<String> dateEnds = new ArrayList<String>();
         Calendar calendar = Calendar.getInstance();
-        for (int i = 0; i < 40; i++) {
-            if (calendar.get(Calendar.DAY_OF_WEEK) != 7 && calendar.get(Calendar.DAY_OF_WEEK) != 1) {
-                dateStarts.add(simpleDateFormat.format(calendar.getTime()));
-                if (i > 0 && (dateStarts.size() - dateEnds.size()) > 1) {
-                    dateEnds.add(simpleDateFormat.format(calendar.getTime()));
-                }
-                calendar.add(Calendar.DATE, -7);
-            }else{
-                calendar.add(Calendar.DATE, -1);
-            }
+        for (int i = 1; i < 13; i++) {
+            int year = calendar.get(Calendar.YEAR);    //获取年
+            int month = calendar.get(Calendar.MONTH) + 1;   //获取月份，0表示1月份
+            int last = calendar.getActualMaximum(calendar.DAY_OF_MONTH);    //获取本月最大天数
+            dateStarts.add(year+""+(month<10?"0"+month:month)+"01");
+            dateEnds.add(year+""+(month<10?"0"+month:month)+""+last);
+            calendar.add(Calendar.MONTH, -1);
         }
         request.setAttribute("dateStarts", dateStarts);
         request.setAttribute("dateEnds", dateEnds);
