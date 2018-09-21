@@ -199,8 +199,8 @@ public class DayGoodController {
       dayGoodVo1=dayGoodVo1s.get(i);
       int nextDayValue=dates.get(dates.indexOf(dayGoodVo1.getDate())-1);
       nextDay = dayValueService.findDayValueByIdAndDate(dayGoodVo1.getCompanyCode(), nextDayValue);
-      oneRateSum=oneRateSum.add(BigDecimal.valueOf(dayGoodVo1.getPreRate()).subtract(BigDecimal.valueOf(dayGoodVo1.getPreRate())));
-      twoRateSum=twoRateSum.add(BigDecimal.valueOf(dayGoodVo1.getPreRate()).subtract(BigDecimal.valueOf(dayGoodVo1.getPreRate())));
+      oneRateSum=oneRateSum.add(BigDecimal.valueOf(dayGoodVo1.getLastRate()).subtract(BigDecimal.valueOf(dayGoodVo1.getPreRate())));
+      twoRateSum=twoRateSum.add(BigDecimal.valueOf(dayGoodVo1.getLastRate()).subtract(BigDecimal.valueOf(dayGoodVo1.getPreRate())));
       if (nextDay != null && nextDay.getId() > 0) {
         dayGoodVo1s.get(i).setTwoEndPrice(nextDay.getEndPrice());
         dayGoodVo1s.get(i).setTwoStartPrice(nextDay.getStartPrice());

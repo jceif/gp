@@ -44,7 +44,7 @@
 <body>
 
 
-<form action="/day/topList" method="get">
+<form action="/data/topList" method="get">
     <div style="margin:0 auto; width: 90%;text-align: center;">
 
         <table style="width: 100%;">
