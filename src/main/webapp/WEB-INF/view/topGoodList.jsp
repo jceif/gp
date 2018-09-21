@@ -91,17 +91,7 @@
             <c:forEach items="${dayGoodVo1s}" var="item"  step="1"  varStatus="var">
             <tr>
                     <%--当前--%>
-                <td style="<c:choose>
-                        <c:when test="${item.nextRate>0}">
-                            color: red;
-                        </c:when>
-                        <c:when test="${item.nextMaxPrice>item.preEndPrice}">
-
-                        </c:when>
-                <c:when test="${item.nextMaxPrice<item.preEndPrice}">
-                        color: green;
-                        </c:when>
-                        </c:choose>">${var.count}</td>
+                <td >${var.count}</td>
                         <td>
                             <c:choose>
                                 <c:when test="${ fn:substring(item.companyCode ,0,3)=='600' or fn:substring(item.companyCode ,0,2)=='60'}">
@@ -127,14 +117,7 @@
                         color: green;
                 </c:when>
                         </c:choose>">${item.lastPrice}</td>
-                <td  style="<c:choose>
-                        <c:when test="${item.nextRate>0}">
-                                background: red;
-                        </c:when>
-                        <c:when test="${item.nextRate<0}">
-                                background: green;
-                        </c:when>
-                                </c:choose>">${item.lastRate}</td>
+                <td>${item.lastRate}</td>
                 <td>${item.twoRate}</td>
                 <td >${item.twoStartPrice}</td>
                 <td style="<c:choose>

@@ -64,7 +64,7 @@
     <result property="lastInflow" column="lastInflow"/>
     <result property="lastTime" column="lastTime"/>
 
-    <result property="companyCode" column="companyCode"/>
+    <result property="companyCode" column="company_code"/>
     <result property="date" column="date"/>
 
 
@@ -374,8 +374,8 @@ insert into day_good
 
   <!--根据时间和 流入资金量统计 出 当天收盘时的股票信息-->
  <select id="findDGLastRateByTimeAndInflow" resultMap="dayGoodVo1">
-  select d2.main_money preInflow,d2.rate preRate,d2.time preTime,d1.rate lastRate,d1.main_money lastInflow,d1.time lastTime,d1.company_code,d1.date from day_good d1  inner JOIN
-  (select rate,main_money,company_code,date,time from day_good where time=#{time} and rate>#{rate} and main_money>#{inflow}) d2
+  select d2.main_money preInflow,d2.price prePrice,d2.rate preRate,d2.time preTime,d1.rate lastRate,d1.price lastPrice,d1.main_money lastInflow,d1.time lastTime,d1.company_code,d1.date from day_good d1  inner JOIN
+  (select rate,main_money,price,company_code,date,time from day_good where time=#{time} and rate>#{rate} and main_money>#{inflow}) d2
   on d1.company_code=d2.company_code
   where d1.time=1500 and  d1.date=d2.date
  </select>
