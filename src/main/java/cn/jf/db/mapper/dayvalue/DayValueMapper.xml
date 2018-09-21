@@ -189,7 +189,7 @@ id=#{item.id}
 	</if>
 
 </where>
-	order by id desc  limit #{startIndex},#{limit}
+	order by date desc  limit #{startIndex},#{limit}
 
 </select>
 <select id="findCountDayValueQuery" resultType="java.lang.Integer">

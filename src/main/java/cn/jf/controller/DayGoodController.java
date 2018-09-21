@@ -1,15 +1,21 @@
 package cn.jf.controller;
 
+import cn.jf.model.company.Company;
+import cn.jf.model.daygood.DayGood;
 import cn.jf.model.daygood.DayGoodVo;
+import cn.jf.model.dayvalue.DayValue;
 import cn.jf.service.company.CompanyService;
 import cn.jf.service.daygood.DayGoodService;
 import cn.jf.service.dayvalue.DayValueService;
+import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.druid.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -115,6 +121,70 @@ public class DayGoodController {
     request.setAttribute("marketWorth2", marketWorth2);
     return "index";
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  @RequestMapping("/chart")
+  public String echart(HttpServletRequest request, String companyCode, String date) {
+    Company company= companyService.findCompanyByCode(companyCode);
+    Map<String, Object> map = new HashMap<String, Object>();
+    double maxPrice=0;
+    double minPrice=0;
+    map.put("date", date);
+    map.put("companyCode", companyCode);
+    List<DayGood> dayGoods = dayGoodService.findDayGoodQuery(map);
+    List<String> times = new ArrayList<String>();
+    List<Double> prices = new ArrayList<Double>();
+    List<Double> rates = new ArrayList<Double>();
+    List<Double> moneys = new ArrayList<Double>();
+    double nowPrice = 0;
+    if (dayGoods != null && dayGoods.size() > 0) {
+      for (DayGood dayGood : dayGoods) {
+        minPrice=dayGood.getPrice();
+        times.add(dayGood.getTime());
+        prices.add(dayGood.getPrice());
+        rates.add(dayGood.getRate());
+        moneys.add(dayGood.getMainMoney());
+        if(minPrice>dayGood.getPrice()){
+          minPrice=dayGood.getPrice();
+        }
+        if(maxPrice<dayGood.getPrice()){
+          maxPrice=dayGood.getPrice();
+        }
+      }
+    }
+    request.setAttribute("times", JSONUtils.toJSONString(times));
+    request.setAttribute("rates", JSONUtils.toJSONString(rates));
+    request.setAttribute("prices", JSONUtils.toJSONString(prices));
+    request.setAttribute("moneys", JSONUtils.toJSONString(moneys));
+
+    if(company!=null){
+      request.setAttribute("companyName", company.getName());
+      request.setAttribute("companyCode", company.getCode());
+    }
+    request.setAttribute("date", date);
+    request.setAttribute("minPrice", BigDecimal.valueOf(minPrice).subtract(BigDecimal.valueOf(1)));
+    request.setAttribute("maxPrice", BigDecimal.valueOf(maxPrice).add(BigDecimal.valueOf(1)));
+    return "chart";
+
+  }
+
+
+
+
+
 
   /*日期函数*/
   private void getFormatDates(HttpServletRequest request) {

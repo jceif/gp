@@ -54,7 +54,8 @@
             <tbody>
             <tr>
                 <th>index</th>
-                <th>name-code</th>
+                <th>name</th>
+                <th>code</th>
                 <th>inflow</th>
                 <th>volume</th>
                 <th>amount</th>
@@ -79,15 +80,16 @@
                     <%--当前--%>
                 <td>${var.count-1}</td>
                     <%--公司名称-编码--%>
+                <td><a href="/data/chart?companyCode=${company.code}&date=${item.date}">${company.name}</a></td>
                 <td>
                     <c:choose>
                         <c:when test="${ fn:substring(company.code ,0,3)=='600' or fn:substring(company.code ,0,2)=='60'}">
                             <a href="http://quote.eastmoney.com/concept/sh${company.code}.html?from=classic&eventcode=Web_quote_entrance2"
-                               target="_blank">${company.name}&nbsp;${company.code}</a>
+                               target="_blank">${company.code}</a>
                         </c:when>
                         <c:otherwise>
                             <a href="http://quote.eastmoney.com/concept/sz${company.code}.html?from=classic&eventcode=Web_quote_entrance2"
-                               target="_blank">${company.name}&nbsp;${company.code}</a>
+                               target="_blank">${company.code}</a>
                         </c:otherwise>
                     </c:choose>
                 </td>
