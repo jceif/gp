@@ -53,7 +53,7 @@
   </resultMap>
 
 
-  <resultMap id="dayGoodVo" type="cn.jf.model.daygood.DayGoodVo1">
+  <resultMap id="dayGoodVo1" type="cn.jf.model.daygood.DayGoodVo1">
     <result property="prePrice" column="prePrice"/>
     <result property="preRate" column="preRate"/>
     <result property="preMainMoney" column="preInflow"/>

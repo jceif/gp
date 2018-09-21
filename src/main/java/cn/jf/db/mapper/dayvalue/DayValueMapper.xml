@@ -255,7 +255,7 @@ and (d1.k-d2.k)>=6
 
 
 
-	<select id="findTotalMoneyTopList" resultMap="ArrayList">
+	<select id="findTotalMoneyTopList" resultMap="dayValue">
 		select * from (select * from day_value WHERE date between  #{dateStart} and #{dateEnd} GROUP BY date ORDER BY total_money desc) d order by date desc
  </select>
 
