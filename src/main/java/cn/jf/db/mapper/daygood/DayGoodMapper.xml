@@ -56,15 +56,15 @@
   <resultMap id="dayGoodVo1" type="cn.jf.model.daygood.DayGoodVo1">
     <result property="prePrice" column="prePrice"/>
     <result property="preRate" column="preRate"/>
-    <result property="preMainMoney" column="preInflow"/>
+    <result property="preInflow" column="preInflow"/>
     <result property="preTime" column="preTime"/>
 
     <result property="lastPrice" column="lastPrice"/>
     <result property="lastRate" column="lastRate"/>
-    <result property="lastMainMoney" column="lastInflow"/>
+    <result property="lastInflow" column="lastInflow"/>
     <result property="lastTime" column="lastTime"/>
 
-    <result property="companyCode" column="company_code"/>
+    <result property="companyCode" column="companyCode"/>
     <result property="date" column="date"/>
 
 
