@@ -48,4 +48,6 @@ public interface DayValueService {
 
   Integer findCountByCompanyCode(String companyCode,Integer date);
 
+  List<Integer> findDays();
+
 }

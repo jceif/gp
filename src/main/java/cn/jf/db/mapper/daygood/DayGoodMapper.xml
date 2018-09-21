@@ -51,6 +51,27 @@
     <result property="preTimeRate2" column="preTimeRate2"/>
 
   </resultMap>
+
+
+  <resultMap id="dayGoodVo" type="cn.jf.model.daygood.DayGoodVo1">
+    <result property="prePrice" column="prePrice"/>
+    <result property="preRate" column="preRate"/>
+    <result property="preMainMoney" column="preInflow"/>
+    <result property="preTime" column="preTime"/>
+
+    <result property="lastPrice" column="lastPrice"/>
+    <result property="lastRate" column="lastRate"/>
+    <result property="lastMainMoney" column="lastInflow"/>
+    <result property="lastTime" column="lastTime"/>
+
+    <result property="companyCode" column="company_code"/>
+    <result property="date" column="date"/>
+
+
+
+  </resultMap>
+
+
   <insert id="insertDayGood" parameterType="cn.jf.model.daygood.DayGood">
 insert into day_good
 (	id,
@@ -124,68 +145,8 @@ insert into day_good
       #{idItem}
     </foreach>
   </delete>
-  <delete id="deleteDayGoodList" parameterType="cn.jf.model.daygood.DayGood">
-    delete from day_good
-    where id in
-    <foreach collection="list" item="item" index="index" open="(" separator=","
-      close=")">#{item.id}
-    </foreach>
-  </delete>
-  <insert id="insertDayGoodList" parameterType="java.util.List">
-    insert into day_good
-    ( id,
-    company_code,
-    price,
-    rate,
-    main_money,
-    main_rate,
-    chaoda_money,
-    chaoda_rate,
-    da_money,
-    da_rate,
-    date,
-    time,
-    original_time
-    )values
-    <foreach collection="list" item="item" index="index" separator=",">
-      ( #{item.id},
-      #{item.companyCode},
-      #{item.price},
-      #{item.rate},
-      #{item.mainMoney},
-      #{item.mainRate},
-      #{item.chaodaMoney},
-      #{item.chaodaRate},
-      #{item.daMoney},
-      #{item.daRate},
-      #{item.date},
-      #{item.time},
-      #{item.originalTime}
-      )
-    </foreach>
-  </insert>
-  <update id="updateDayGoodList" parameterType="java.util.List">
-    <foreach collection="list" item="item" index="index" separator=";">
-      update day_good
-      set
-      id=#{item.id},
-      company_code=#{item.companyCode},
-      price=#{item.price},
-      rate=#{item.rate},
-      main_money=#{item.mainMoney},
-      main_rate=#{item.mainRate},
-      chaoda_money=#{item.chaodaMoney},
-      chaoda_rate=#{item.chaodaRate},
-      da_money=#{item.daMoney},
-      da_rate=#{item.daRate},
-      date=#{item.date},
-      time=#{item.time},
-      original_time=#{item.originalTime}
 
-      where
-      id=#{item.id}
-    </foreach>
-  </update>
+
   <select id="findDayGoodQuery" resultMap="dayGood">
     select * from day_good
     <where>
@@ -409,6 +370,15 @@ insert into day_good
     </where>
   </select>
 
+
+
+  <!--根据时间和 流入资金量统计 出 当天收盘时的股票信息-->
+ <select id="findDGLastRateByTimeAndInflow" resultMap="dayGoodVo1">
+  select d2.main_money preInflow,d2.rate preRate,d2.time preTime,d1.rate lastRate,d1.main_money lastInflow,d1.time lastTime,d1.company_code,d1.date from day_good d1  inner JOIN
+  (select rate,main_money,company_code,date,time from day_good where time=#{time} and rate>#{rate} and main_money>#{inflow}) d2
+  on d1.company_code=d2.company_code
+  where d1.time=1500 and  d1.date=d2.date
+ </select>
 
 
 

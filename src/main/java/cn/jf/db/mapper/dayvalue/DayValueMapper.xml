@@ -255,7 +255,7 @@ and (d1.k-d2.k)>=6
 
 
 
-	<select id="findTotalMoneyTopList" resultMap="dayValue">
+	<select id="findTotalMoneyTopList" resultMap="ArrayList">
 		select * from (select * from day_value WHERE date between  #{dateStart} and #{dateEnd} GROUP BY date ORDER BY total_money desc) d order by date desc
  </select>
 
@@ -266,6 +266,10 @@ and (d1.k-d2.k)>=6
 		<if test="date!=null and date!=''">
 			AND date &lt;= #{date}
 		</if>
+ </select>
+
+	<select id="findDays" resultType="java.util.ArrayList">
+		select date from day_value   group  by date order by date desc limit 110
  </select>
 
 </mapper>

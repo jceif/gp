@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import cn.jf.model.daygood.DayGood;
 import cn.jf.model.daygood.DayGoodVo;
+import cn.jf.model.daygood.DayGoodVo1;
+import org.apache.ibatis.annotations.Param;
 
 
 public interface DayGoodMapper {
@@ -20,13 +22,11 @@ public interface DayGoodMapper {
 
   List<DayGood> findDayGoodList();
 
-  int deleteDayGoodList(List<DayGood> dayGoods);
+
 
   int deleteDayGoodListByIds(String[] Ids);
 
-  int insertDayGoodList(List<DayGood> dayGoods);
 
-  void updateDayGoodList(List<DayGood> dayGoods);
 
   List<DayGoodVo> findDayGoodNowQuery(Map map);
 
@@ -35,6 +35,9 @@ public interface DayGoodMapper {
   List<DayGood> findDayGoodQueryPage(Map map);
 
   int findCountDayGoodQuery(Map map);
+
+
+  List<DayGoodVo1> findDGLastRateByTimeAndInflow(@Param("time") String time, @Param("rate") float rate,@Param("inflow") float inflow);
 
 
 

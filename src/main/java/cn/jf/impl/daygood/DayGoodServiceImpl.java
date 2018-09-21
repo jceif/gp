@@ -7,6 +7,7 @@ import cn.jf.common.PageUtil;
 import cn.jf.db.dao.DayGoodMapper;
 import cn.jf.model.daygood.DayGood;
 import cn.jf.model.daygood.DayGoodVo;
+import cn.jf.model.daygood.DayGoodVo1;
 import cn.jf.service.daygood.DayGoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,19 +54,7 @@ public class DayGoodServiceImpl implements DayGoodService {
 	}
 
 	
-	public int deleteDayGoodList(List<DayGood> dayGoods)	{
-		return this.dayGoodMapper.deleteDayGoodList(dayGoods);
-	}
 
-	
-	public void insertDayGoodList(List<DayGood> dayGoods)	{
-		 this.dayGoodMapper.insertDayGoodList(dayGoods);
-	}
-
-	
-	public void updateDayGoodList(List<DayGood> dayGoods)	{
-		 this.dayGoodMapper.updateDayGoodList(dayGoods);
-	}
 
 	
 	public List<DayGood> findDayGoodQuery(Map map)	{
@@ -93,6 +82,11 @@ public class DayGoodServiceImpl implements DayGoodService {
 	@Override
 	public List<DayGoodVo> findDayGoodNowQuery(Map map) {
 		return this.dayGoodMapper.findDayGoodNowQuery(map);
+	}
+
+	@Override
+	public List<DayGoodVo1> findDGLastRateByTimeAndInflow(String time, float rate, float inflow) {
+		return dayGoodMapper.findDGLastRateByTimeAndInflow(time,rate,inflow);
 	}
 
 }

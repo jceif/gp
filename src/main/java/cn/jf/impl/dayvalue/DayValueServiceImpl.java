@@ -132,4 +132,9 @@ public class DayValueServiceImpl implements DayValueService {
     return dayValueMapper.findCountByCompanyCode(companyCode,date);
   }
 
+    @Override
+    public List<Integer> findDays() {
+        return dayValueMapper.findDays();
+    }
+
 }

@@ -2,15 +2,12 @@ package cn.jf.controller;
 
 import cn.jf.common.PageUtil;
 import cn.jf.model.company.Company;
-import cn.jf.model.daygood.DayGoodVo;
 import cn.jf.model.dayvalue.DayValue;
 import cn.jf.model.dayvalue.DayValueVO;
 import cn.jf.service.company.CompanyService;
-import cn.jf.service.daygood.DayGoodService;
 import cn.jf.service.dayvalue.DayValueService;
 import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.druid.util.StringUtils;
-import com.mysql.cj.xdevapi.JsonParser;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -18,9 +15,7 @@ import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONObject;
-import org.json.JSONString;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.support.ManagedList;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -199,7 +194,7 @@ public class DayValueController {
         request.setAttribute("dateStart", dateStart);
         request.setAttribute("dateEnd", dateEnd);
         request.setAttribute("day", day);
-        return "topList";
+        return "topDayList";
     }
 
 

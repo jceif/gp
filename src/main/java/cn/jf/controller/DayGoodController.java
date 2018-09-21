@@ -3,6 +3,7 @@ package cn.jf.controller;
 import cn.jf.model.company.Company;
 import cn.jf.model.daygood.DayGood;
 import cn.jf.model.daygood.DayGoodVo;
+import cn.jf.model.daygood.DayGoodVo1;
 import cn.jf.model.dayvalue.DayValue;
 import cn.jf.service.company.CompanyService;
 import cn.jf.service.daygood.DayGoodService;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
+
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -126,16 +127,6 @@ public class DayGoodController {
 
 
 
-
-
-
-
-
-
-
-
-
-
   @RequestMapping("/chart")
   public String echart(HttpServletRequest request, String companyCode, String date) {
     Company company= companyService.findCompanyByCode(companyCode);
@@ -183,7 +174,51 @@ public class DayGoodController {
 
 
 
+  @RequestMapping("/topList")
+  public String findTotalMoneyTopList(HttpServletRequest request,String time,String rate,String inflow) {
+    if (request.getSession().getAttribute("user") == null) {
+      return "redirect:/login";
+    }
+    if(StringUtils.isEmpty(time)){
+      time="1000";
+    }
+    if(StringUtils.isEmpty(rate)){
+      rate="5";
+    }
+    if(StringUtils.isEmpty(inflow)){
+      inflow="6000";
+    }
 
+    List<DayGoodVo1> dayGoodVo1s = dayGoodService.findDGLastRateByTimeAndInflow(time,Float.parseFloat(rate),Float.parseFloat(inflow));
+    List<Integer> dates=dayValueService.findDays();
+    DayValue nextDay = null;
+    BigDecimal oneRateSum = BigDecimal.valueOf(0);
+    BigDecimal twoRateSum = BigDecimal.valueOf(0);
+    DayGoodVo1 dayGoodVo1=null;
+    for (int i = 1; i < dayGoodVo1s.size(); i++) {
+      dayGoodVo1=dayGoodVo1s.get(i);
+      int nextDayValue=dates.get(dates.indexOf(dayGoodVo1.getDate())-1);
+      nextDay = dayValueService.findDayValueByIdAndDate(dayGoodVo1.getCompanyCode(), nextDayValue);
+      oneRateSum=oneRateSum.add(BigDecimal.valueOf(dayGoodVo1.getPreRate()).subtract(BigDecimal.valueOf(dayGoodVo1.getPreRate())));
+      twoRateSum=twoRateSum.add(BigDecimal.valueOf(dayGoodVo1.getPreRate()).subtract(BigDecimal.valueOf(dayGoodVo1.getPreRate())));
+      if (nextDay != null && nextDay.getId() > 0) {
+        dayGoodVo1s.get(i).setTwoEndPrice(nextDay.getEndPrice());
+        dayGoodVo1s.get(i).setTwoStartPrice(nextDay.getStartPrice());
+        dayGoodVo1s.get(i).setTwoRate(nextDay.getRate());
+        //如果跌幅超过-2必须卖掉
+        if(nextDay.getRate()<-2) {
+          twoRateSum = twoRateSum.add(BigDecimal.valueOf(-2.5));
+        }else{
+          twoRateSum = twoRateSum.add(BigDecimal.valueOf(nextDay.getRate()));
+        }
+      }
+    }
+    getFormatDates(request);
+    request.setAttribute("dayGoodVo1s", dayGoodVo1s);
+    request.setAttribute("oneRateSum", oneRateSum);
+    request.setAttribute("twoRateSum", twoRateSum);
+    return "topGoodList";
+  }
 
 
   /*日期函数*/
