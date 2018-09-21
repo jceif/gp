@@ -268,7 +268,7 @@ and (d1.k-d2.k)>=6
 		</if>
  </select>
 
-	<select id="findDays" resultType="java.util.ArrayList">
+	<select id="findDays" resultType="java.lang.Integer">
 		select date from day_value   group  by date order by date desc limit 110
  </select>
 
