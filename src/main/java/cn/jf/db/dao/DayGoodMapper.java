@@ -37,7 +37,7 @@ public interface DayGoodMapper {
   int findCountDayGoodQuery(Map map);
 
 
-  List<DayGoodVo1> findDGLastRateByTimeAndInflow(@Param("time") String time, @Param("rate") float rate,@Param("inflow") float inflow);
+  List<DayGoodVo1> findDGLastRateByTimeAndInflow(@Param("time") String time, @Param("rate") float rate,@Param("inflow") float inflow,@Param("dateStart") int dateStart,@Param("dateEnd") int dateEnd);
 
 
 

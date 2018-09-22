@@ -1,5 +1,6 @@
 package cn.jf.controller;
 
+import cn.jf.common.FormatDate;
 import cn.jf.model.company.Company;
 import cn.jf.model.daygood.DayGood;
 import cn.jf.model.daygood.DayGoodVo;
@@ -32,9 +33,6 @@ public class DayGoodController {
   private CompanyService companyService;
 
   SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
-  List<String> preDates = new ArrayList<String>();
-  List<String> pre1Dates = new ArrayList<String>();
-  List<String> pre2Dates = new ArrayList<String>();
 
   @RequestMapping("/")
   public String index(HttpServletRequest request, String date, String time, String price, String mainMoney, String rate,
@@ -43,7 +41,7 @@ public class DayGoodController {
       return "redirect:/login";
     }
     //获取日期属性
-    getFormatDates(request);
+    FormatDate.getFormatDates_Day(request);
     Map<String, Object> map = new HashMap<String, Object>();
     if (StringUtils.isEmpty(time)) {
       time = "1030";
@@ -87,13 +85,13 @@ public class DayGoodController {
     map.put("rate", rate);
 
     if (StringUtils.isEmpty(date)) {
-      date = preDates.get(0);
+      date = ((List<String>) request.getAttribute("formatDates")).get(0);
     }
     if (StringUtils.isEmpty(preDate1)) {
-      preDate1 = pre1Dates.get(0);
+      preDate1 = ((List<String>) request.getAttribute("formatDates1")).get(0);
     }
     if (StringUtils.isEmpty(preDate2)) {
-      preDate2 = pre2Dates.get(0);
+      preDate2 = ((List<String>) request.getAttribute("formatDates2")).get(0);
     }
     map.put("date", date);
     map.put("preDayDate1", preDate1);
@@ -104,9 +102,9 @@ public class DayGoodController {
 
     List<DayGoodVo> dayGoods = dayGoodService.findDayGoodNowQuery(map);
     for (DayGoodVo dayGood : dayGoods) {
-      Integer count=dayValueService.findCountByCompanyCode(dayGood.getCompanyCode(),dayGood.getDate());
-      if(count!=null && count<15){
-        dayGood.setCompanyName(dayGood.getCompanyName()+"-n");
+      Integer count = dayValueService.findCountByCompanyCode(dayGood.getCompanyCode(), dayGood.getDate());
+      if (count != null && count < 15) {
+        dayGood.setCompanyName(dayGood.getCompanyName() + "-n");
       }
     }
     request.setAttribute("dayGoods", dayGoods);
@@ -124,15 +122,12 @@ public class DayGoodController {
   }
 
 
-
-
-
   @RequestMapping("/chart")
   public String echart(HttpServletRequest request, String companyCode, String date) {
-    Company company= companyService.findCompanyByCode(companyCode);
+    Company company = companyService.findCompanyByCode(companyCode);
     Map<String, Object> map = new HashMap<String, Object>();
-    double maxPrice=0;
-    double minPrice=0;
+    double maxPrice = 0;
+    double minPrice = 0;
     map.put("date", date);
     map.put("companyCode", companyCode);
     List<DayGood> dayGoods = dayGoodService.findDayGoodQuery(map);
@@ -143,16 +138,16 @@ public class DayGoodController {
     double nowPrice = 0;
     if (dayGoods != null && dayGoods.size() > 0) {
       for (DayGood dayGood : dayGoods) {
-        minPrice=dayGood.getPrice();
+        minPrice = dayGood.getPrice();
         times.add(dayGood.getTime());
         prices.add(dayGood.getPrice());
         rates.add(dayGood.getRate());
         moneys.add(dayGood.getMainMoney());
-        if(minPrice>dayGood.getPrice()){
-          minPrice=dayGood.getPrice();
+        if (minPrice > dayGood.getPrice()) {
+          minPrice = dayGood.getPrice();
         }
-        if(maxPrice<dayGood.getPrice()){
-          maxPrice=dayGood.getPrice();
+        if (maxPrice < dayGood.getPrice()) {
+          maxPrice = dayGood.getPrice();
         }
       }
     }
@@ -161,7 +156,7 @@ public class DayGoodController {
     request.setAttribute("prices", JSONUtils.toJSONString(prices));
     request.setAttribute("moneys", JSONUtils.toJSONString(moneys));
 
-    if(company!=null){
+    if (company != null) {
       request.setAttribute("companyName", company.getName());
       request.setAttribute("companyCode", company.getCode());
     }
@@ -173,78 +168,80 @@ public class DayGoodController {
   }
 
 
-
   @RequestMapping("/topList")
-  public String findTotalMoneyTopList(HttpServletRequest request,String time,String rate,String inflow) {
+  public String findTotalMoneyTopList(HttpServletRequest request, String time, String rate, String inflow,
+      String dateStart, String dateEnd) {
     if (request.getSession().getAttribute("user") == null) {
       return "redirect:/login";
     }
-    if(StringUtils.isEmpty(time)){
-      time="1000";
+    if (StringUtils.isEmpty(time)) {
+      time = "1000";
     }
-    if(StringUtils.isEmpty(rate)){
-      rate="5";
+    if (StringUtils.isEmpty(rate)) {
+      rate = "5";
     }
-    if(StringUtils.isEmpty(inflow)){
-      inflow="6000";
+    if (StringUtils.isEmpty(inflow)) {
+      inflow = "6000";
     }
+    if (StringUtils.isEmpty(dateStart)) {
+      int month = Calendar.getInstance().get(Calendar.MONTH) + 1;   //获取月份，0表示1月份
+      dateStart = Calendar.getInstance().get(Calendar.YEAR) + "" + (month < 10 ? "0" + month : month) + "01";
+    }
+    if (StringUtils.isEmpty(dateEnd)) {
+      dateEnd = simpleDateFormat.format(Calendar.getInstance().getTime());
+    }
+    List<DayGoodVo1> dayGoodVo1s = dayGoodService
+        .findDGLastRateByTimeAndInflow(time, Float.parseFloat(rate), Float.parseFloat(inflow),
+            Integer.parseInt(dateStart), Integer.parseInt(dateEnd));
+    Collections.sort(dayGoodVo1s, new Comparator<DayGoodVo1>() {
+      @Override
+      public int compare(DayGoodVo1 o1, DayGoodVo1 o2) {
+        if (o1.getDate() > o2.getDate()) {
+          return -1;
+        } else {
+          return 1;
+        }
+      }
+    });
 
-    List<DayGoodVo1> dayGoodVo1s = dayGoodService.findDGLastRateByTimeAndInflow(time,Float.parseFloat(rate),Float.parseFloat(inflow));
-    List<Integer> dates=dayValueService.findDays();
+    List<Integer> dates = dayValueService.findDays();
     DayValue nextDay = null;
     BigDecimal oneRateSum = BigDecimal.valueOf(0);
     BigDecimal twoRateSum = BigDecimal.valueOf(0);
-    DayGoodVo1 dayGoodVo1=null;
+    DayGoodVo1 dayGoodVo1 = null;
     for (int i = 1; i < dayGoodVo1s.size(); i++) {
-      dayGoodVo1=dayGoodVo1s.get(i);
-      int nextDayValue=dates.get(dates.indexOf(dayGoodVo1.getDate())-1);
+      dayGoodVo1 = dayGoodVo1s.get(i);
+      int nextDayValue = dates.get(dates.indexOf(dayGoodVo1.getDate()) - 1);
       nextDay = dayValueService.findDayValueByIdAndDate(dayGoodVo1.getCompanyCode(), nextDayValue);
-      oneRateSum=oneRateSum.add(BigDecimal.valueOf(dayGoodVo1.getLastRate()).subtract(BigDecimal.valueOf(dayGoodVo1.getPreRate())));
-      twoRateSum=twoRateSum.add(BigDecimal.valueOf(dayGoodVo1.getLastRate()).subtract(BigDecimal.valueOf(dayGoodVo1.getPreRate())));
+      oneRateSum = oneRateSum
+          .add(BigDecimal.valueOf(dayGoodVo1.getLastRate()).subtract(BigDecimal.valueOf(dayGoodVo1.getPreRate())));
+      twoRateSum = twoRateSum
+          .add(BigDecimal.valueOf(dayGoodVo1.getLastRate()).subtract(BigDecimal.valueOf(dayGoodVo1.getPreRate())));
       if (nextDay != null && nextDay.getId() > 0) {
         dayGoodVo1s.get(i).setTwoEndPrice(nextDay.getEndPrice());
         dayGoodVo1s.get(i).setTwoStartPrice(nextDay.getStartPrice());
         dayGoodVo1s.get(i).setTwoRate(nextDay.getRate());
         //如果跌幅超过-2必须卖掉
-        if(nextDay.getRate()<-2) {
-          twoRateSum = twoRateSum.add(BigDecimal.valueOf(-2.5));
-        }else{
+        if (nextDay.getRate() < -2) {
+          //twoRateSum = twoRateSum.add(BigDecimal.valueOf(-2.5));
+          twoRateSum = twoRateSum.add(BigDecimal.valueOf(-4));
+        } else {
           twoRateSum = twoRateSum.add(BigDecimal.valueOf(nextDay.getRate()));
         }
       }
     }
-    getFormatDates(request);
+    FormatDate.getFormatDates(request);
+    request.setAttribute("time", time);
+    request.setAttribute("rate", rate);
+    request.setAttribute("inflow", inflow);
+    request.setAttribute("dateStart", dateStart);
+    request.setAttribute("dateEnd", dateEnd);
     request.setAttribute("dayGoodVo1s", dayGoodVo1s);
     request.setAttribute("oneRateSum", oneRateSum);
     request.setAttribute("twoRateSum", twoRateSum);
+
     return "topGoodList";
   }
-
-
-  /*日期函数*/
-  private void getFormatDates(HttpServletRequest request) {
-    preDates = new ArrayList<String>();
-    pre1Dates = new ArrayList<String>();
-    pre2Dates = new ArrayList<String>();
-    Calendar calendar = Calendar.getInstance();
-    for (int i = 0; i < 31; i++) {
-      if (calendar.get(Calendar.DAY_OF_WEEK) != 7 && calendar.get(Calendar.DAY_OF_WEEK) != 1) {
-        preDates.add(simpleDateFormat.format(calendar.getTime()));
-        if (i > 0 && (preDates.size() - pre1Dates.size()) > 1) {
-          pre1Dates.add(simpleDateFormat.format(calendar.getTime()));
-        }
-        if (i > 1 && (pre1Dates.size() - pre2Dates.size()) > 1) {
-          pre2Dates.add(simpleDateFormat.format(calendar.getTime()));
-        }
-      }
-      calendar.add(Calendar.DATE, -1);
-    }
-    request.setAttribute("formatDates", preDates);
-    request.setAttribute("formatDates1", pre1Dates);
-    request.setAttribute("formatDates2", pre2Dates);
-  }
-
-
 
 
 }

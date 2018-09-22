@@ -49,6 +49,28 @@
 
         <table style="width: 100%;">
             <tr>
+                <th>查询时间：
+                    <select name="time">
+                        <option value="">请选择</option>
+                        <option value="930" <c:if test="${930==time}">selected</c:if>>930</option>
+                        <option value="1000" <c:if test="${1000==time}">selected</c:if>>1000</option>
+                        <option value="1030" <c:if test="${1030==time}">selected</c:if>>1030</option>
+                        <option value="1100" <c:if test="${1100==time}">selected</c:if>>1100</option>
+                        <option value="1130" <c:if test="${1130==time}">selected</c:if>>1130</option>
+                        <option value="1300" <c:if test="${1300==time}">selected</c:if>>1300</option>
+                        <option value="1330" <c:if test="${1330==time}">selected</c:if>>1330</option>
+                        <option value="1400" <c:if test="${1400==time}">selected</c:if>>1400</option>
+                        <option value="1430" <c:if test="${1430==time}">selected</c:if>>1430</option>
+                    </select>
+                </th>
+
+                <th>净流入：<input type="number" name="inflow"
+                               value="${inflow}">
+                </td>
+
+                <th>rate：<input type="number" name="rate"
+                               value="${rate}">
+                </td>
                 <th>开始日期：
                     <select name="dateStart">
                         <option value="">请选择</option>
@@ -92,7 +114,7 @@
             <tr>
                     <%--当前--%>
                 <td >${var.count}</td>
-                        <td>
+                <td>
                             <c:choose>
                                 <c:when test="${ fn:substring(item.companyCode ,0,3)=='600' or fn:substring(item.companyCode ,0,2)=='60'}">
                                     <a href="http://quote.eastmoney.com/concept/sh${item.companyCode}.html?from=classic&eventcode=Web_quote_entrance2"
@@ -107,7 +129,7 @@
                 <td>${item.preTime}</td>
                 <td>${item.preInflow}</td>
                 <td>${item.prePrice}</td>
-                <td>${item.preRate}</td>
+                <td>${item.preRate}%</td>
                 <td >${item.lastInflow}</td>
                 <td style="<c:choose>
                 <c:when test="${item.lastPrice>item.prePrice}">
@@ -117,15 +139,15 @@
                         color: green;
                 </c:when>
                         </c:choose>">${item.lastPrice}</td>
-                <td>${item.lastRate}</td>
-                <td>${item.twoRate}</td>
+                <td>${item.lastRate}%</td>
+                <td>${item.twoRate}%</td>
                 <td >${item.twoStartPrice}</td>
                 <td style="<c:choose>
                 <c:when test="${item.twoEndPrice>item.prePrice}">
-                        color: red;
+                        background: red;
                 </c:when>
                 <c:when test="${item.twoEndPrice<item.prePrice}">
-                        color: green;
+                        background: green;
                 </c:when>
                         </c:choose>">${item.twoEndPrice}</td>
                 <td>${item.date}</td>

@@ -9,6 +9,7 @@ import cn.jf.model.daygood.DayGood;
 import cn.jf.model.daygood.DayGoodVo;
 import cn.jf.model.daygood.DayGoodVo1;
 import cn.jf.service.daygood.DayGoodService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -85,8 +86,8 @@ public class DayGoodServiceImpl implements DayGoodService {
 	}
 
 	@Override
-	public List<DayGoodVo1> findDGLastRateByTimeAndInflow(String time, float rate, float inflow) {
-		return dayGoodMapper.findDGLastRateByTimeAndInflow(time,rate,inflow);
+	public List<DayGoodVo1> findDGLastRateByTimeAndInflow(String time, float rate, float inflow,int dateStart,int dateEnd) {
+		return dayGoodMapper.findDGLastRateByTimeAndInflow(time,rate,inflow,dateStart,dateEnd);
 	}
 
 }

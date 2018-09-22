@@ -1,5 +1,6 @@
 package cn.jf.controller;
 
+import cn.jf.common.FormatDate;
 import cn.jf.common.PageUtil;
 import cn.jf.model.company.Company;
 import cn.jf.model.dayvalue.DayValue;
@@ -187,7 +188,7 @@ public class DayValueController {
                 dayValueList.add(dayValueVO);
             }
         }
-        getFormatDates(request);
+        FormatDate.getFormatDates(request);
         request.setAttribute("dayValues", dayValueList);
         request.setAttribute("oneRateSum", oneRateSum);
         request.setAttribute("twoRateSum", twoRateSum);
@@ -199,21 +200,6 @@ public class DayValueController {
 
 
 
-    /*日期函数*/
-    private void getFormatDates(HttpServletRequest request) {
-        List<String> dateStarts = new ArrayList<String>();
-        List<String> dateEnds = new ArrayList<String>();
-        Calendar calendar = Calendar.getInstance();
-        for (int i = 1; i < 13; i++) {
-            int year = calendar.get(Calendar.YEAR);    //获取年
-            int month = calendar.get(Calendar.MONTH) + 1;   //获取月份，0表示1月份
-            int last = calendar.getActualMaximum(calendar.DAY_OF_MONTH);    //获取本月最大天数
-            dateStarts.add(year+""+(month<10?"0"+month:month)+"01");
-            dateEnds.add(year+""+(month<10?"0"+month:month)+""+last);
-            calendar.add(Calendar.MONTH, -1);
-        }
-        request.setAttribute("dateStarts", dateStarts);
-        request.setAttribute("dateEnds", dateEnds);
-    }
+
 
 }

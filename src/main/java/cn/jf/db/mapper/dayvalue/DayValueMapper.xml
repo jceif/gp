@@ -241,15 +241,14 @@ id=#{item.id}
         select d.* from day_value d
 LEFT JOIN (select * FROM day_value where `date`=(select date from day_value GROUP BY date order by date desc LIMIT 1,1)) d1 ON d.company_code=d1.company_code
 LEFT JOIN (select * FROM day_value where `date`=(select date from day_value GROUP BY date order by date desc LIMIT 2,1)) d2 ON d.company_code=d2.company_code
-where
-d.date=(select date from day_value GROUP BY date order by date desc LIMIT 0,1)
+ where d.date=(select date from day_value GROUP BY date order by date desc LIMIT 0,1)
 and d.k>d1.k
 and d.d>d1.d
 and d.j>d1.j
 and d1.k>d2.k
 and d1.d>d2.d
 and d1.j>d2.j
-and d.j &lt; 90; and d1.j &lt; 90; and d2.j &lt; 90;
+and d.j &lt; 90; and d1.j &lt; 90 and d2.j &lt; 90
 and (d1.k-d2.k)>=6
 </select>
 

@@ -35,7 +35,7 @@ public interface DayGoodService {
 
  List<DayGoodVo> findDayGoodNowQuery(Map map);
 
- List<DayGoodVo1> findDGLastRateByTimeAndInflow(String time, float rate,float inflow);
+ List<DayGoodVo1> findDGLastRateByTimeAndInflow(String time, float rate,float inflow,int dateStart, int dateEnd);
 
 
 }
