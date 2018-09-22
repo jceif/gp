@@ -136,11 +136,15 @@ public class DayValueController {
         DayValue threeDay = null;
         BigDecimal oneRateSum = BigDecimal.valueOf(0);
         BigDecimal twoRateSum = BigDecimal.valueOf(0);
+        BigDecimal ztRateSum = BigDecimal.valueOf(0);
         for (int i = 1; i < dayValues.size(); i++) {
             dayValueVO = new DayValueVO();
             preDay = dayValues.get(i);
             if (preDay.getTotalMoney() <= 0 || (preDay.getRate()<0 && preDay.getTotalMoney()<100000)) {
                 continue;
+            }
+            if(preDay.getRate()>=9.5){
+
             }
             nextDay = dayValueService.findDayValueByIdAndDate(preDay.getCompanyCode(), dayValues.get(i - 1).getDate());
             if (nextDay != null && nextDay.getId() > 0) {
