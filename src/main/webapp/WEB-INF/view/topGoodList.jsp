@@ -111,6 +111,7 @@
             </tr>
         <%--item 前，itemOld后--%>
             <c:forEach items="${dayGoodVo1s}" var="item"  step="1"  varStatus="var">
+                <c:if test="${item.preRate<9.5}">
             <tr>
                     <%--当前--%>
                 <td >${var.count}</td>
@@ -128,12 +129,12 @@
                         </td>
                 <td>${item.preTime}</td>
                 <td>${item.preInflow}</td>
+                <td >${item.prePrice}</td>
                 <td style="<c:choose>
-                <c:when test="${item.prePrice>9.5}">
+                <c:when test="${item.preRate>9.5}">
                         background: red;
                 </c:when>
-                        </c:choose>">${item.prePrice}</td>
-                <td>${item.preRate}%</td>
+                        </c:choose>">${item.preRate}%</td>
                 <td >${item.lastInflow}</td>
                 <td style="<c:choose>
                 <c:when test="${item.lastPrice>item.prePrice}">
@@ -156,6 +157,7 @@
                         </c:choose>">${item.twoEndPrice}</td>
                 <td>${item.date}</td>
                 </tr>
+                </c:if>
             </c:forEach>
 
 
@@ -164,6 +166,11 @@
 
 
         <p style="color: red;text-align: left;">10点，7000万，5及以上</p>
+        <p style="color: red;text-align: left;">1400，12000万，4及以上</p>
+        <p style="color: red;text-align: left;">1430，10000万，4及以上</p>
+
+        <p style="color: red;text-align: left;">1400，10000万，4及以上</p>
+        300742
         <p></p>
     </div>
 
