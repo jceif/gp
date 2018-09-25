@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <title>${twoRateSum}|${oneRateSum}</title>
+    <title>${twoRateSum}|${ztRateSum}</title>
     <link rel="stylesheet" type="text/css"
           href="${ctx}assets/css/common/bootstrap.min.css">
     <style>
@@ -157,6 +157,10 @@
 
             </tbody>
         </table><!-- /.table -->
+
+
+        <p style="color: red;text-align: left;">10点，7000万，5及以上</p>
+        <p></p>
     </div>
 
 

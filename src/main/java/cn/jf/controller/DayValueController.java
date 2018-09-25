@@ -125,15 +125,15 @@ public class DayValueController {
             dateEnd=simpleDateFormat.format(Calendar.getInstance().getTime());
         }
         double sellMinPrice=-1.5;//最小卖出价格
-        List<DayValueVO> dayValueList = new ArrayList<DayValueVO>();
-        List<DayValue> dayValues = dayValueService.findTotalMoneyTopList(Integer.parseInt(dateStart), Integer.parseInt(dateEnd));
         DayValueVO dayValueVO = null;
-        DayValue preDay = null;
-        DayValue nextDay = null;
-        DayValue threeDay = null;
+        DayValue preDay = null;//当天数据
+        DayValue nextDay = null;//第二天数据
+        DayValue threeDay = null;//第三天数据
         BigDecimal oneRateSum = BigDecimal.valueOf(0);//第一天收益率
         BigDecimal twoRateSum = BigDecimal.valueOf(0);//第二天收益率
         BigDecimal ztRateSum = BigDecimal.valueOf(0);//非涨停收益率
+        List<DayValueVO> dayValueList = new ArrayList<DayValueVO>();
+        List<DayValue> dayValues = dayValueService.findTotalMoneyTopList(Integer.parseInt(dateStart), Integer.parseInt(dateEnd));
         for (int i = 1; i < dayValues.size(); i++) {
             dayValueVO = new DayValueVO();
             preDay = dayValues.get(i);
@@ -165,7 +165,7 @@ public class DayValueController {
                     oneRateSum = oneRateSum.add(BigDecimal.valueOf(nextDay.getRate()));
                     twoRateSum = twoRateSum.add(BigDecimal.valueOf(nextDay.getRate()));
                 }
-                if(preDay.getRate()<=9.5){
+                if(preDay.getRate()<9.5){
                     if(nextDay.getRate()<sellMinPrice) {
                         ztRateSum = ztRateSum.add(BigDecimal.valueOf(sellMinPrice-0.5));
                     }else{
@@ -183,7 +183,7 @@ public class DayValueController {
                             else{
                                 twoRateSum = twoRateSum.add(BigDecimal.valueOf(threeDay.getRate()));
                             }
-                            if(preDay.getRate()<=9.5){
+                            if(preDay.getRate()<9.5){
                                 if(threeDay.getRate()<sellMinPrice) {
                                     ztRateSum = ztRateSum.add(BigDecimal.valueOf(sellMinPrice-0.5));
                                 }
@@ -207,7 +207,6 @@ public class DayValueController {
         request.setAttribute("ztRateSum", ztRateSum);
         request.setAttribute("dateStart", dateStart);
         request.setAttribute("dateEnd", dateEnd);
-        //request.setAttribute("day", day);
         return "topDayList";
     }
 

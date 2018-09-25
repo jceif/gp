@@ -196,7 +196,7 @@ public class DayGoodController {
         Collections.sort(dayGoodVo1s, new Comparator<DayGoodVo1>() {
             @Override
             public int compare(DayGoodVo1 o1, DayGoodVo1 o2) {
-                if (o1.getDate() > o2.getDate()) {
+                if (o1.getDate() >= o2.getDate()) {
                     return -1;
                 } else {
                     return 1;
@@ -204,18 +204,16 @@ public class DayGoodController {
             }
         });
     }
-
     List<Integer> dates = dayValueService.findDays();
     DayValue nextDay = null;
-    BigDecimal oneRateSum = BigDecimal.valueOf(0);
     BigDecimal twoRateSum = BigDecimal.valueOf(0);
     DayGoodVo1 dayGoodVo1 = null;
+    double sellMinPrice=-1.5;//最小卖出价格
+    BigDecimal ztRateSum = BigDecimal.valueOf(0);//非涨停收益率
     for (int i = 1; i < dayGoodVo1s.size(); i++) {
       dayGoodVo1 = dayGoodVo1s.get(i);
       int nextDayValue = dates.get(dates.indexOf(dayGoodVo1.getDate()) - 1);
       nextDay = dayValueService.findDayValueByIdAndDate(dayGoodVo1.getCompanyCode(), nextDayValue);
-      oneRateSum = oneRateSum
-          .add(BigDecimal.valueOf(dayGoodVo1.getLastRate()).subtract(BigDecimal.valueOf(dayGoodVo1.getPreRate())));
       twoRateSum = twoRateSum
           .add(BigDecimal.valueOf(dayGoodVo1.getLastRate()).subtract(BigDecimal.valueOf(dayGoodVo1.getPreRate())));
       if (nextDay != null && nextDay.getId() > 0) {
@@ -223,11 +221,17 @@ public class DayGoodController {
         dayGoodVo1s.get(i).setTwoStartPrice(nextDay.getStartPrice());
         dayGoodVo1s.get(i).setTwoRate(nextDay.getRate());
         //如果跌幅超过-2必须卖掉
-        if (nextDay.getRate() < -2) {
-          //twoRateSum = twoRateSum.add(BigDecimal.valueOf(-2.5));
-          twoRateSum = twoRateSum.add(BigDecimal.valueOf(-4));
+        if (nextDay.getRate() < sellMinPrice) {
+          twoRateSum = twoRateSum.add(BigDecimal.valueOf(sellMinPrice-0.5));
         } else {
           twoRateSum = twoRateSum.add(BigDecimal.valueOf(nextDay.getRate()));
+        }
+        if(dayGoodVo1.getPreRate()<9.5){
+          if(nextDay.getRate()<sellMinPrice) {
+            ztRateSum = ztRateSum.add(BigDecimal.valueOf(sellMinPrice-0.5));
+          }else{
+            ztRateSum = ztRateSum.add(BigDecimal.valueOf(nextDay.getRate()));
+          }
         }
       }
     }
@@ -238,8 +242,8 @@ public class DayGoodController {
     request.setAttribute("dateStart", dateStart);
     request.setAttribute("dateEnd", dateEnd);
     request.setAttribute("dayGoodVo1s", dayGoodVo1s);
-    request.setAttribute("oneRateSum", oneRateSum);
     request.setAttribute("twoRateSum", twoRateSum);
+    request.setAttribute("ztRateSum", ztRateSum);
 
     return "topGoodList";
   }
