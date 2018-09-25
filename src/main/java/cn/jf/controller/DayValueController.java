@@ -134,17 +134,14 @@ public class DayValueController {
         DayValue preDay = null;
         DayValue nextDay = null;
         DayValue threeDay = null;
-        BigDecimal oneRateSum = BigDecimal.valueOf(0);
-        BigDecimal twoRateSum = BigDecimal.valueOf(0);
-        BigDecimal ztRateSum = BigDecimal.valueOf(0);
+        BigDecimal oneRateSum = BigDecimal.valueOf(0);//第一天收益率
+        BigDecimal twoRateSum = BigDecimal.valueOf(0);//第二天收益率
+        BigDecimal ztRateSum = BigDecimal.valueOf(0);//非涨停收益率
         for (int i = 1; i < dayValues.size(); i++) {
             dayValueVO = new DayValueVO();
             preDay = dayValues.get(i);
             if (preDay.getTotalMoney() <= 0 || (preDay.getRate()<0 && preDay.getTotalMoney()<100000)) {
                 continue;
-            }
-            if(preDay.getRate()>=9.5){
-
             }
             nextDay = dayValueService.findDayValueByIdAndDate(preDay.getCompanyCode(), dayValues.get(i - 1).getDate());
             if (nextDay != null && nextDay.getId() > 0) {
@@ -171,17 +168,31 @@ public class DayValueController {
                     oneRateSum = oneRateSum.add(BigDecimal.valueOf(nextDay.getRate()));
                     twoRateSum = twoRateSum.add(BigDecimal.valueOf(nextDay.getRate()));
                 }
-                dayValueVO.setIsNew(0);
+                if(preDay.getRate()<=9.5){
+                    if(nextDay.getRate()<-2) {
+                        ztRateSum = ztRateSum.add(BigDecimal.valueOf(-3));
+                    }else{
+                        ztRateSum = ztRateSum.add(BigDecimal.valueOf(nextDay.getRate()));
+                    }
+                }
                 if(i>1) {
                     threeDay = dayValueService.findDayValueByIdAndDate(preDay.getCompanyCode(), dayValues.get(i - 2).getDate());
                     if(threeDay!=null && threeDay.getId()>0) {
                         //如果第二天的涨幅大于三 留到第二天卖掉
                         if (nextDay.getRate() > 6 ) {
                             if(threeDay.getRate()<-1.5) {
-                                twoRateSum = twoRateSum.add(BigDecimal.valueOf(-2));
+                                twoRateSum = twoRateSum.add(BigDecimal.valueOf(-2.5));
                             }
                             else{
                                 twoRateSum = twoRateSum.add(BigDecimal.valueOf(threeDay.getRate()));
+                            }
+                            if(preDay.getRate()<=9.5){
+                                if(threeDay.getRate()<-1.5) {
+                                    ztRateSum = ztRateSum.add(BigDecimal.valueOf(-2.5));
+                                }
+                                else{
+                                    ztRateSum = ztRateSum.add(BigDecimal.valueOf(threeDay.getRate()));
+                                }
                             }
                         }
                         dayValueVO.setThreeEndPrice(threeDay.getEndPrice());
@@ -196,6 +207,7 @@ public class DayValueController {
         request.setAttribute("dayValues", dayValueList);
         request.setAttribute("oneRateSum", oneRateSum);
         request.setAttribute("twoRateSum", twoRateSum);
+        request.setAttribute("ztRateSum", ztRateSum);
         request.setAttribute("dateStart", dateStart);
         request.setAttribute("dateEnd", dateEnd);
         request.setAttribute("day", day);
