@@ -122,7 +122,7 @@
                 <td>${item.nextMaxPrice}</td>
                 <td>${item.nextEndPrice}</td>
                 <td style="<c:choose>
-                <c:when test="${item.preRate>9}">
+                <c:when test="${item.preRate>9.5}">
                         background: red;
                 </c:when>
                         </c:choose>">${item.preRate}</td>

@@ -128,7 +128,11 @@
                         </td>
                 <td>${item.preTime}</td>
                 <td>${item.preInflow}</td>
-                <td>${item.prePrice}</td>
+                <td style="<c:choose>
+                <c:when test="${item.prePrice>9.5}">
+                        background: red;
+                </c:when>
+                        </c:choose>">${item.prePrice}</td>
                 <td>${item.preRate}%</td>
                 <td >${item.lastInflow}</td>
                 <td style="<c:choose>
