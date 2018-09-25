@@ -191,18 +191,19 @@ public class DayGoodController {
       dateEnd = simpleDateFormat.format(Calendar.getInstance().getTime());
     }
     List<DayGoodVo1> dayGoodVo1s = dayGoodService
-        .findDGLastRateByTimeAndInflow(time, Float.parseFloat(rate), Float.parseFloat(inflow),
-            Integer.parseInt(dateStart), Integer.parseInt(dateEnd));
-    Collections.sort(dayGoodVo1s, new Comparator<DayGoodVo1>() {
-      @Override
-      public int compare(DayGoodVo1 o1, DayGoodVo1 o2) {
-        if (o1.getDate() > o2.getDate()) {
-          return -1;
-        } else {
-          return 1;
-        }
-      }
-    });
+        .findDGLastRateByTimeAndInflow(time, Float.parseFloat(rate), Float.parseFloat(inflow), Integer.parseInt(dateStart), Integer.parseInt(dateEnd));
+    if(dayGoodVo1s!=null && dayGoodVo1s.size()>0) {
+        Collections.sort(dayGoodVo1s, new Comparator<DayGoodVo1>() {
+            @Override
+            public int compare(DayGoodVo1 o1, DayGoodVo1 o2) {
+                if (o1.getDate() > o2.getDate()) {
+                    return -1;
+                } else {
+                    return 1;
+                }
+            }
+        });
+    }
 
     List<Integer> dates = dayValueService.findDays();
     DayValue nextDay = null;
