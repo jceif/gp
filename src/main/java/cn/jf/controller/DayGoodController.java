@@ -196,9 +196,11 @@ public class DayGoodController {
         Collections.sort(dayGoodVo1s, new Comparator<DayGoodVo1>() {
             @Override
             public int compare(DayGoodVo1 o1, DayGoodVo1 o2) {
-                if (o1.getDate() >= o2.getDate()) {
+                if (o1.getDate() > o2.getDate()) {
                     return -1;
-                } else {
+                }else if(o1.getDate() == o2.getDate()){
+                  return  0;
+                } else{
                     return 1;
                 }
             }
