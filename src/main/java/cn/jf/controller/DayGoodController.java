@@ -214,6 +214,9 @@ public class DayGoodController {
     BigDecimal ztRateSum = BigDecimal.valueOf(0);//非涨停收益率
     for (int i = 1; i < dayGoodVo1s.size(); i++) {
       dayGoodVo1 = dayGoodVo1s.get(i);
+      if(dates.indexOf(dayGoodVo1.getDate())==0){
+          continue;
+      }
       int nextDayValue = dates.get(dates.indexOf(dayGoodVo1.getDate()) - 1);
       nextDay = dayValueService.findDayValueByIdAndDate(dayGoodVo1.getCompanyCode(), nextDayValue);
       twoRateSum = twoRateSum.add(BigDecimal.valueOf(dayGoodVo1.getLastRate()).subtract(BigDecimal.valueOf(dayGoodVo1.getPreRate())));
