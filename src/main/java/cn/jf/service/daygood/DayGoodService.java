@@ -37,5 +37,9 @@ public interface DayGoodService {
 
  List<DayGoodVo1> findDGLastRateByTimeAndInflow(String time, float rate,float inflow,int dateStart, int dateEnd);
 
+ List<DayGood> findTopOneByTime(String time, int dateStart, int dateEnd);
+
+
+
 
 }

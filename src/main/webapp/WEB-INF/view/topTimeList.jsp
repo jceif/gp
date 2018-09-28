@@ -6,16 +6,14 @@
 
 <html>
 <head>
-    <title>${twoRateSum}|${ztRateSum}</title>
-    <link rel="stylesheet" type="text/css"
-          href="${ctx}assets/css/common/bootstrap.min.css">
+    <title>${rateSum}|${fztRateSum}</title>
+    <link rel="stylesheet" type="text/css" href="${ctx}assets/css/common/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${ctx}assets/css/common/list.css">
-
 </head>
 <body>
 
 
-<form action="/data/topList" method="get">
+<form action="/data//topTimeList" method="get">
     <div style="margin:0 auto; width: 90%;text-align: center;">
 
         <table style="width: 100%;">
@@ -32,16 +30,9 @@
                         <option value="1330" <c:if test="${1330==time}">selected</c:if>>1330</option>
                         <option value="1400" <c:if test="${1400==time}">selected</c:if>>1400</option>
                         <option value="1430" <c:if test="${1430==time}">selected</c:if>>1430</option>
+                        <option value="1500" <c:if test="${1500==time}">selected</c:if>>1500</option>
                     </select>
                 </th>
-
-                <th>净流入：<input type="number" name="inflow"
-                               value="${inflow}">
-                </td>
-
-                <th>rate：<input type="number" name="rate"
-                               value="${rate}">
-                </td>
                 <th>开始日期：
                     <select name="dateStart">
                         <option value="">请选择</option>
@@ -68,24 +59,24 @@
             <tr>
                 <th>index</th>
                 <th>code</th>
-                <th>preTime</th>
                 <th>preInflow</th>
-                <th>prePrice</th>
-                <th>preRate</th>
                 <th>lastInflow</th>
-                <th>lastPrice</th>
-                <th>lastRate</th>
-                <th>twoRate</th>
-                <th>twoStartPrice</th>
-                <th>twoEndPrice</th>
+                <th>prePrice</th>
+                <th>endPrice</th>
+                <th>nextStartPrice</th>
+                <th>preRate</th>
+                <th>endRate</th>
+                <th>nextRate</th>
+                <th>threeRate</th>
+                <th>incomeRate</th>
                 <th>date</th>
             </tr>
         <%--item 前，itemOld后--%>
             <c:forEach items="${dayGoodVo1s}" var="item"  step="1"  varStatus="var">
-                <c:if test="${item.preRate<9.5}">
+
             <tr>
                     <%--当前--%>
-                <td >${var.count}</td>
+                <td style="<c:if test="${item.preRate>=9.5}">background:yellow;</c:if>">  ${var.count}</td>
                 <td>
                             <c:choose>
                                 <c:when test="${ fn:substring(item.companyCode ,0,3)=='600' or fn:substring(item.companyCode ,0,2)=='60'}">
@@ -98,37 +89,30 @@
                                 </c:otherwise>
                             </c:choose>
                         </td>
-                <td>${item.preTime}</td>
                 <td>${item.preInflow}</td>
+                <td >${item.lastInflow}</td>
                 <td >${item.prePrice}</td>
                 <td style="<c:choose>
-                <c:when test="${item.preRate>9.5}">
-                        background: red;
-                </c:when>
-                        </c:choose>">${item.preRate}%</td>
-                <td >${item.lastInflow}</td>
-                <td style="<c:choose>
-                <c:when test="${item.lastPrice>item.prePrice}">
-                        color: red;
-                </c:when>
-                <c:when test="${item.lastPrice<item.prePrice}">
-                        color: green;
-                </c:when>
-                        </c:choose>">${item.lastPrice}</td>
+                        <c:when test="${item.lastPrice>item.prePrice}">
+                                color: red;
+                        </c:when>
+                        <c:when test="${item.lastPrice<item.prePrice}">
+                                color: green;
+                        </c:when>
+                                </c:choose>">${item.lastPrice}</td>
+                <td >${item.twoStartPrice}</td>
+                <td >${item.preRate}%</td>
                 <td>${item.lastRate}%</td>
                 <td>${item.twoRate}%</td>
-                <td >${item.twoStartPrice}</td>
-                <td style="<c:choose>
-                <c:when test="${item.twoEndPrice>item.prePrice}">
-                        background: red;
-                </c:when>
-                <c:when test="${item.twoEndPrice<item.prePrice}">
-                        background: green;
-                </c:when>
-                        </c:choose>">${item.twoEndPrice}</td>
+                <td>${item.threeRate}%</td>
+<td style="<c:choose>
+<c:when test="${item.incomeRate>0}">
+        color: red;
+</c:when>
+        </c:choose>">${item.incomeRate}</td>
                 <td>${item.date}</td>
                 </tr>
-                </c:if>
+
             </c:forEach>
 
 
@@ -136,11 +120,7 @@
         </table><!-- /.table -->
 
 
-        <p style="color: red;text-align: left;">10点，7000万，5及以上</p>
-        <p style="color: red;text-align: left;">1400，12000万，4及以上</p>
-        <p style="color: red;text-align: left;">1430，10000万，4及以上</p>
 
-        <p style="color: red;text-align: left;">1400，10000万，4及以上</p>
 
     </div>
 

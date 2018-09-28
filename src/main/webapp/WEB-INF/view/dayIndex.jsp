@@ -9,37 +9,8 @@
     <title>data-day-index</title>
     <link rel="stylesheet" type="text/css"
           href="${ctx}assets/css/common/bootstrap.min.css">
-    <style>
-        td {
-            padding: 6px 5px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            min-width: 10px;
-            text-align: center;
-        }
+    <link rel="stylesheet" type="text/css" href="${ctx}assets/css/common/list.css">
 
-        th {
-            border: 1px solid #ddd;
-            height: 45px;
-            background: azure;
-            padding: 8px 6px;
-            text-align: center;
-        }
-
-        input {
-            height: 30px;
-            padding: 3px 5px;
-            margin: 3px 5px;
-            min-width: 100px;
-        }
-
-        select {
-            height: 30px;
-            padding: 3px 5px;
-            margin: 3px 5px;
-            min-width: 100px;
-        }
-    </style>
 </head>
 <body>
 

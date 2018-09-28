@@ -129,82 +129,73 @@ public class DayValueController {
         DayValue preDay = null;//当天数据
         DayValue nextDay = null;//第二天数据
         DayValue threeDay = null;//第三天数据
-        BigDecimal oneRateSum = BigDecimal.valueOf(0);//第一天收益率
-        BigDecimal twoRateSum = BigDecimal.valueOf(0);//第二天收益率
-        BigDecimal ztRateSum = BigDecimal.valueOf(0);//非涨停收益率
+        BigDecimal rateSum = BigDecimal.valueOf(0);//第二天收益率
+        BigDecimal fztRateSum = BigDecimal.valueOf(0);//非涨停收益率
         List<DayValueVO> dayValueList = new ArrayList<DayValueVO>();
         List<DayValue> dayValues = dayValueService.findTotalMoneyTopList(Integer.parseInt(dateStart), Integer.parseInt(dateEnd));
         for (int i = 1; i < dayValues.size(); i++) {
             dayValueVO = new DayValueVO();
             preDay = dayValues.get(i);
-            if (preDay.getTotalMoney() <= 0 || (preDay.getRate()<0 && preDay.getTotalMoney()<100000)) {
-                continue;
-            }
+            dayValueVO.setId(preDay.getId());
+            dayValueVO.setDate(preDay.getDate());
+            dayValueVO.setCompanyCode(preDay.getCompanyCode());
+            dayValueVO.setPreEndPrice(preDay.getEndPrice());
+            dayValueVO.setPreMaxPrice(preDay.getMaxPrice());
+            dayValueVO.setPreMinPrice(preDay.getMinPrice());
+            dayValueVO.setPreStartPrice(preDay.getStartPrice());
+            dayValueVO.setPreRate(preDay.getRate());
+            dayValueVO.setPreTotalMoney(preDay.getTotalMoney());
             nextDay = dayValueService.findDayValueByIdAndDate(preDay.getCompanyCode(), dayValues.get(i - 1).getDate());
             if (nextDay != null && nextDay.getId() > 0) {
-                dayValueVO.setCompanyCode(preDay.getCompanyCode());
-                dayValueVO.setDate(preDay.getDate());
-                dayValueVO.setId(preDay.getId());
                 dayValueVO.setNextEndPrice(nextDay.getEndPrice());
                 dayValueVO.setNextMaxPrice(nextDay.getMaxPrice());
                 dayValueVO.setNextMinPrice(nextDay.getMinPrice());
                 dayValueVO.setNextStartPrice(nextDay.getStartPrice());
                 dayValueVO.setNextRate(nextDay.getRate());
                 dayValueVO.setNextTotalMoney(nextDay.getTotalMoney());
-                dayValueVO.setPreEndPrice(preDay.getEndPrice());
-                dayValueVO.setPreMaxPrice(preDay.getMaxPrice());
-                dayValueVO.setPreMinPrice(preDay.getMinPrice());
-                dayValueVO.setPreStartPrice(preDay.getStartPrice());
-                dayValueVO.setPreRate(preDay.getRate());
-                dayValueVO.setPreTotalMoney(preDay.getTotalMoney());
-                //如果跌幅超过-2必须卖掉
-                if(nextDay.getRate()<sellMinPrice) {
-                    oneRateSum = oneRateSum.add(BigDecimal.valueOf(sellMinPrice-0.5));
-                    twoRateSum = twoRateSum.add(BigDecimal.valueOf(sellMinPrice-0.5));
-                }else{
-                    oneRateSum = oneRateSum.add(BigDecimal.valueOf(nextDay.getRate()));
-                    twoRateSum = twoRateSum.add(BigDecimal.valueOf(nextDay.getRate()));
-                }
-                if(preDay.getRate()<9.5){
-                    if(nextDay.getRate()<sellMinPrice) {
-                        ztRateSum = ztRateSum.add(BigDecimal.valueOf(sellMinPrice-0.5));
-                    }else{
-                        ztRateSum = ztRateSum.add(BigDecimal.valueOf(nextDay.getRate()));
-                    }
-                }
-                if(i>1) {
-                    threeDay = dayValueService.findDayValueByIdAndDate(preDay.getCompanyCode(), dayValues.get(i - 2).getDate());
-                    if(threeDay!=null && threeDay.getId()>0) {
-                        //如果第二天的涨幅大于三 留到第二天卖掉
-                        if (nextDay.getRate() > 6 ) {
-                            if(threeDay.getRate()<sellMinPrice) {
-                                twoRateSum = twoRateSum.add(BigDecimal.valueOf(sellMinPrice-0.5));
-                            }
-                            else{
-                                twoRateSum = twoRateSum.add(BigDecimal.valueOf(threeDay.getRate()));
-                            }
-                            if(preDay.getRate()<9.5){
-                                if(threeDay.getRate()<sellMinPrice) {
-                                    ztRateSum = ztRateSum.add(BigDecimal.valueOf(sellMinPrice-0.5));
-                                }
-                                else{
-                                    ztRateSum = ztRateSum.add(BigDecimal.valueOf(threeDay.getRate()));
-                                }
-                            }
+                if (preDay.getRate()>0 || (preDay.getRate()<=0 && preDay.getTotalMoney()<100000)) {
+                    //如果跌幅超过-2必须卖掉
+                    if (nextDay.getRate() < sellMinPrice) {
+                        rateSum = rateSum.add(BigDecimal.valueOf(sellMinPrice - 1));
+                        if (preDay.getRate() < 9.5) {
+                            fztRateSum = fztRateSum.add(BigDecimal.valueOf(sellMinPrice - 0.5));
                         }
-                        dayValueVO.setThreeEndPrice(threeDay.getEndPrice());
-                        dayValueVO.setThreeMaxPrice(threeDay.getMaxPrice());
-                        dayValueVO.setThreeRate(threeDay.getRate());
+                    } else {
+                        rateSum = rateSum.add(BigDecimal.valueOf(nextDay.getRate()));
+                        if (preDay.getRate() < 9.5) {
+                            fztRateSum = fztRateSum.add(BigDecimal.valueOf(nextDay.getRate()));
+                        }
+                    }
+                    if (i > 1) {
+                        threeDay = dayValueService.findDayValueByIdAndDate(preDay.getCompanyCode(), dayValues.get(i - 2).getDate());
+                        if (threeDay != null && threeDay.getId() > 0) {
+                            //如果第二天的涨幅大于三 留到第二天卖掉
+                            if (nextDay.getRate() > 6) {
+                                if (threeDay.getRate() < sellMinPrice) {
+                                    rateSum = rateSum.add(BigDecimal.valueOf(sellMinPrice - 1));
+                                    if (preDay.getRate() < 9.5) {
+                                        fztRateSum = fztRateSum.add(BigDecimal.valueOf(sellMinPrice - 0.5));
+                                    }
+                                } else {
+                                    rateSum = rateSum.add(BigDecimal.valueOf(threeDay.getRate()));
+                                    if (preDay.getRate() < 9.5) {
+                                        fztRateSum = fztRateSum.add(BigDecimal.valueOf(threeDay.getRate()));
+                                    }
+                                }
+                            }
+                            dayValueVO.setThreeEndPrice(threeDay.getEndPrice());
+                            dayValueVO.setThreeMaxPrice(threeDay.getMaxPrice());
+                            dayValueVO.setThreeRate(threeDay.getRate());
+                        }
                     }
                 }
-                dayValueList.add(dayValueVO);
             }
+            dayValueList.add(dayValueVO);
         }
         FormatDate.getFormatDates(request);
         request.setAttribute("dayValues", dayValueList);
-        request.setAttribute("oneRateSum", oneRateSum);
-        request.setAttribute("twoRateSum", twoRateSum);
-        request.setAttribute("ztRateSum", ztRateSum);
+        request.setAttribute("rateSum", rateSum);
+        request.setAttribute("fztRateSum", fztRateSum);
         request.setAttribute("dateStart", dateStart);
         request.setAttribute("dateEnd", dateEnd);
         return "topDayList";

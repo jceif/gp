@@ -40,6 +40,9 @@ public interface DayGoodMapper {
   List<DayGoodVo1> findDGLastRateByTimeAndInflow(@Param("time") String time, @Param("rate") float rate,@Param("inflow") float inflow,@Param("dateStart") int dateStart,@Param("dateEnd") int dateEnd);
 
 
+  List<DayGood> findTopOneByTime(@Param("time") String time,@Param("dateStart") int dateStart,@Param("dateEnd") int dateEnd);
+
+
 
 
 }

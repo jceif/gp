@@ -382,5 +382,11 @@ insert into day_good
 
 
 
+  <!--根据流入资金量 和 时间统计出 -->
+  <select id="findTopOneByTime" resultMap="dayGood">
+  select * from (select * from day_good WHERE time=#{time} and  date between   #{dateStart} and #{dateEnd}  group by date  ORDER BY main_money desc) d order by date desc
+ </select>
+
+
 
 </mapper>

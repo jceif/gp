@@ -216,8 +216,8 @@ public class DayGoodController {
       dayGoodVo1 = dayGoodVo1s.get(i);
       int nextDayValue = dates.get(dates.indexOf(dayGoodVo1.getDate()) - 1);
       nextDay = dayValueService.findDayValueByIdAndDate(dayGoodVo1.getCompanyCode(), nextDayValue);
-      twoRateSum = twoRateSum
-          .add(BigDecimal.valueOf(dayGoodVo1.getLastRate()).subtract(BigDecimal.valueOf(dayGoodVo1.getPreRate())));
+      twoRateSum = twoRateSum.add(BigDecimal.valueOf(dayGoodVo1.getLastRate()).subtract(BigDecimal.valueOf(dayGoodVo1.getPreRate())));
+      ztRateSum = ztRateSum.add(BigDecimal.valueOf(dayGoodVo1.getLastRate()).subtract(BigDecimal.valueOf(dayGoodVo1.getPreRate())));
       if (nextDay != null && nextDay.getId() > 0) {
         dayGoodVo1s.get(i).setTwoEndPrice(nextDay.getEndPrice());
         dayGoodVo1s.get(i).setTwoStartPrice(nextDay.getStartPrice());
@@ -250,5 +250,104 @@ public class DayGoodController {
     return "topGoodList";
   }
 
+
+
+  @RequestMapping("/topTimeList")
+  public String findTopOneByTime(HttpServletRequest request, String time, String dateStart, String dateEnd) {
+    if (request.getSession().getAttribute("user") == null) {
+      return "redirect:/login";
+    }
+    if (StringUtils.isEmpty(time)) {
+      time = "1000";
+    }
+    if (StringUtils.isEmpty(dateStart)) {
+      int month = Calendar.getInstance().get(Calendar.MONTH) + 1;   //获取月份，0表示1月份
+      dateStart = Calendar.getInstance().get(Calendar.YEAR) + "" + (month < 10 ? "0" + month : month) + "01";
+    }
+    if (StringUtils.isEmpty(dateEnd)) {
+      dateEnd = simpleDateFormat.format(Calendar.getInstance().getTime());
+    }
+    List<DayGood> dayGoods = dayGoodService.findTopOneByTime(time, Integer.parseInt(dateStart), Integer.parseInt(dateEnd));
+    List<Integer> dates = dayValueService.findDays();
+    DayValue currentDay = null;
+    DayValue nextDay = null;
+    DayValue threeDay = null;
+    DayGoodVo1 dayGoodVo1 = null;
+    DayGood dayGood = null;
+    double sellMinPrice=-1.5;//最小卖出价格
+    BigDecimal fztRateSum = BigDecimal.valueOf(0);//非涨停收益率
+    BigDecimal rateSum = BigDecimal.valueOf(0);//所有收益率
+    List<DayGoodVo1> dayGoodVo1s=new ArrayList<DayGoodVo1>();
+    for (int i = 1; i < dayGoods.size(); i++) {
+      dayGood = dayGoods.get(i);
+      if (dates.indexOf(dayGood.getDate()) == 0) {
+        continue;
+      }
+      currentDay = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), dayGood.getDate());
+      nextDay = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), dates.get(dates.indexOf(dayGood.getDate()) - 1));
+      fztRateSum = fztRateSum.add(BigDecimal.valueOf(currentDay.getEndPrice()).subtract(BigDecimal.valueOf(dayGood.getPrice())));
+      rateSum = rateSum.add(BigDecimal.valueOf(currentDay.getEndPrice()).subtract(BigDecimal.valueOf(dayGood.getPrice())));
+      dayGoodVo1 = new DayGoodVo1();
+      dayGoodVo1.setPreTime(Integer.parseInt(time));
+      dayGoodVo1.setPreRate(dayGood.getRate());
+      dayGoodVo1.setPrePrice(dayGood.getPrice());
+      dayGoodVo1.setPreInflow(dayGood.getMainMoney());
+      dayGoodVo1.setCompanyCode(dayGood.getCompanyCode());
+
+      dayGoodVo1.setLastInflow(currentDay.getTotalMoney());
+      dayGoodVo1.setLastPrice(currentDay.getEndPrice());
+      dayGoodVo1.setLastRate(currentDay.getRate());
+
+      dayGoodVo1.setDate(dayGood.getDate());
+      if (nextDay != null && nextDay.getId() > 0) {
+        dayGoodVo1.setTwoEndPrice(nextDay.getEndPrice());
+        dayGoodVo1.setTwoStartPrice(nextDay.getStartPrice());
+        dayGoodVo1.setTwoRate(nextDay.getRate());
+        //如果跌幅超过-2必须卖掉
+          if (nextDay.getRate() < sellMinPrice) {
+            rateSum = rateSum.add(BigDecimal.valueOf(sellMinPrice - 1));
+            if (dayGoodVo1.getPreRate() < 9.5) {
+              fztRateSum = fztRateSum.add(BigDecimal.valueOf(sellMinPrice - 0.5));
+            }
+          } else {
+            rateSum = rateSum.add(BigDecimal.valueOf(nextDay.getRate()));
+            if (dayGoodVo1.getPreRate() < 9.5) {
+              fztRateSum = fztRateSum.add(BigDecimal.valueOf(nextDay.getRate()));
+            }
+          }
+          if (dates.indexOf(dayGood.getDate()) > 1) {
+            threeDay = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), dates.get(dates.indexOf(dayGood.getDate()) - 2));
+            if (threeDay != null && threeDay.getId() > 0) {
+              //如果第二天的涨幅大于三 留到第二天卖掉
+              if (nextDay.getRate() > 6) {
+                if (threeDay.getRate() < sellMinPrice) {
+                  rateSum = rateSum.add(BigDecimal.valueOf(sellMinPrice - 1));
+                  if (dayGoodVo1.getPreRate() < 9.5) {
+                    fztRateSum = fztRateSum.add(BigDecimal.valueOf(sellMinPrice - 0.5));
+                  }
+                } else {
+                  rateSum = rateSum.add(BigDecimal.valueOf(threeDay.getRate()));
+                  if (dayGoodVo1.getPreRate() < 9.5) {
+                    fztRateSum = fztRateSum.add(BigDecimal.valueOf(threeDay.getRate()));
+                  }
+                }
+              }
+              dayGoodVo1.setThreeRate(threeDay.getRate());
+            }
+          }
+          dayGoodVo1.setIncomeRate(BigDecimal.valueOf(nextDay.getRate()).add(BigDecimal.valueOf(currentDay.getEndPrice()).subtract(BigDecimal.valueOf(dayGood.getPrice()))).doubleValue());
+        dayGoodVo1s.add(dayGoodVo1);
+      }
+    }
+    FormatDate.getFormatDates(request);
+    request.setAttribute("time", time);
+    request.setAttribute("dateStart", dateStart);
+    request.setAttribute("dateEnd", dateEnd);
+    request.setAttribute("dayGoodVo1s", dayGoodVo1s);
+    request.setAttribute("fztRateSum", fztRateSum);
+    request.setAttribute("rateSum", rateSum);
+
+    return "topTimeList";
+  }
 
 }

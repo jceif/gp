@@ -90,4 +90,10 @@ public class DayGoodServiceImpl implements DayGoodService {
 		return dayGoodMapper.findDGLastRateByTimeAndInflow(time,rate,inflow,dateStart,dateEnd);
 	}
 
+	@Override
+	public List<DayGood> findTopOneByTime(String time, int dateStart, int dateEnd) {
+		return dayGoodMapper.findTopOneByTime(time,dateStart,dateEnd);
+	}
+
+
 }

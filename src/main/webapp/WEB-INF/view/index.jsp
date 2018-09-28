@@ -8,37 +8,8 @@
     <title>data-my-center</title>
     <link rel="stylesheet" type="text/css"
           href="${ctx}assets/css/common/bootstrap.min.css">
-    <style>
-        td {
-            padding: 6px 5px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            min-width: 10px;
-            text-align: center;
-        }
+    <link rel="stylesheet" type="text/css" href="${ctx}assets/css/common/list.css">
 
-        th {
-            border: 1px solid #ddd;
-            height: 45px;
-            background: azure;
-            padding: 8px 6px;
-            text-align: center;
-        }
-
-        input {
-            height: 30px;
-            padding: 3px 5px;
-            margin: 3px 5px;
-            min-width: 100px;
-        }
-
-        select {
-            height: 30px;
-            padding: 3px 5px;
-            margin: 3px 5px;
-            min-width: 100px;
-        }
-    </style>
 </head>
 <body>
 <form action="/data/" method="get">
@@ -127,7 +98,7 @@
                 </th>
                 <th>价格：<input type="number" name="price" value="${price}"></th>
                 <th>涨跌：<input type="text" name="rate" value="${rate}"></th>
-                <th><input type="submit" value="查询">&nbsp;<a href="/day/topList" target="_blank">tj</a> &nbsp;<a href="/data//topList" target="_blank">tj1</a> </th>
+                <th><input type="submit" value="查询">&nbsp;<a href="/day/topList" target="_blank">tj</a>&nbsp;<a href="/data/topTimeList" target="_blank">tj1</a> &nbsp;<a href="/data//topList" target="_blank">tj2</a> </th>
             </tr>
         </table>
         <%--</div>--%>
