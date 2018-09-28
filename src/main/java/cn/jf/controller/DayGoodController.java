@@ -261,7 +261,7 @@ public class DayGoodController {
       return "redirect:/login";
     }
     if (StringUtils.isEmpty(time)) {
-      time = "1000";
+      time = "1130";
     }
     if (StringUtils.isEmpty(dateStart)) {
       int month = Calendar.getInstance().get(Calendar.MONTH) + 1;   //获取月份，0表示1月份
