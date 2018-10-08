@@ -32,6 +32,7 @@ public class DayValueController {
     private CompanyService companyService;
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+
     /**
      * 统计最近kdj macd diff dea 连续三天上涨的值
      */
@@ -113,18 +114,18 @@ public class DayValueController {
 
 
     @RequestMapping("/topList")
-    public String findTotalMoneyTopList(HttpServletRequest request,String dateStart,String dateEnd) {
+    public String findTotalMoneyTopList(HttpServletRequest request, String dateStart, String dateEnd) {
         if (request.getSession().getAttribute("user") == null) {
             return "redirect:/login";
         }
-        if(StringUtils.isEmpty(dateStart)){
+        if (StringUtils.isEmpty(dateStart)) {
             int month = Calendar.getInstance().get(Calendar.MONTH) + 1;   //获取月份，0表示1月份
-            dateStart=Calendar.getInstance().get(Calendar.YEAR)+""+(month<10?"0"+month:month)+"01";
+            dateStart = Calendar.getInstance().get(Calendar.YEAR) + "" + (month < 10 ? "0" + month : month) + "01";
         }
-        if(StringUtils.isEmpty(dateEnd)){
-            dateEnd=simpleDateFormat.format(Calendar.getInstance().getTime());
+        if (StringUtils.isEmpty(dateEnd)) {
+            dateEnd = simpleDateFormat.format(Calendar.getInstance().getTime());
         }
-        double sellMinPrice=-1.5;//最小卖出价格
+        double sellMinPrice = -1.5;//最小卖出价格
         DayValueVO dayValueVO = null;
         DayValue preDay = null;//当天数据
         DayValue nextDay = null;//第二天数据
@@ -153,13 +154,13 @@ public class DayValueController {
                 dayValueVO.setNextStartPrice(nextDay.getStartPrice());
                 dayValueVO.setNextRate(nextDay.getRate());
                 dayValueVO.setNextTotalMoney(nextDay.getTotalMoney());
-                if (preDay.getRate()>0 || (preDay.getRate()<=0 && preDay.getTotalMoney()<100000)) {
+                if (preDay.getRate() > 0 || (preDay.getRate() <= 0 && preDay.getTotalMoney() < 100000)) {
                     //如果跌幅超过-2必须卖掉
                     if (nextDay.getRate() < sellMinPrice) {
                         if (preDay.getRate() < 9.5) {
                             fztRateSum = fztRateSum.add(BigDecimal.valueOf(sellMinPrice - 0.5));
-                            rateSum = rateSum.add(BigDecimal.valueOf(sellMinPrice - 1));
-                        }else{
+                            rateSum = rateSum.add(BigDecimal.valueOf(sellMinPrice - 0.5));
+                        } else {
                             rateSum = rateSum.add(BigDecimal.valueOf(sellMinPrice - 2));
                         }
                     } else {
@@ -177,8 +178,8 @@ public class DayValueController {
                                     //如果不是涨停数据 减去1，否则-2
                                     if (preDay.getRate() < 9.5) {
                                         fztRateSum = fztRateSum.add(BigDecimal.valueOf(sellMinPrice - 0.5));
-                                        rateSum = rateSum.add(BigDecimal.valueOf(sellMinPrice - 1));
-                                    }else{
+                                        rateSum = rateSum.add(BigDecimal.valueOf(sellMinPrice - 0.5));
+                                    } else {
                                         rateSum = rateSum.add(BigDecimal.valueOf(sellMinPrice - 2));
                                     }
                                 } else {
@@ -205,9 +206,6 @@ public class DayValueController {
         request.setAttribute("dateEnd", dateEnd);
         return "topDayList";
     }
-
-
-
 
 
 }
