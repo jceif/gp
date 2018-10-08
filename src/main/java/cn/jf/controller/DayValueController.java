@@ -156,9 +156,11 @@ public class DayValueController {
                 if (preDay.getRate()>0 || (preDay.getRate()<=0 && preDay.getTotalMoney()<100000)) {
                     //如果跌幅超过-2必须卖掉
                     if (nextDay.getRate() < sellMinPrice) {
-                        rateSum = rateSum.add(BigDecimal.valueOf(sellMinPrice - 1));
                         if (preDay.getRate() < 9.5) {
                             fztRateSum = fztRateSum.add(BigDecimal.valueOf(sellMinPrice - 0.5));
+                            rateSum = rateSum.add(BigDecimal.valueOf(sellMinPrice - 1));
+                        }else{
+                            rateSum = rateSum.add(BigDecimal.valueOf(sellMinPrice - 2));
                         }
                     } else {
                         rateSum = rateSum.add(BigDecimal.valueOf(nextDay.getRate()));
@@ -172,9 +174,12 @@ public class DayValueController {
                             //如果第二天的涨幅大于三 留到第二天卖掉
                             if (nextDay.getRate() > 6) {
                                 if (threeDay.getRate() < sellMinPrice) {
-                                    rateSum = rateSum.add(BigDecimal.valueOf(sellMinPrice - 1));
+                                    //如果不是涨停数据 减去1，否则-2
                                     if (preDay.getRate() < 9.5) {
                                         fztRateSum = fztRateSum.add(BigDecimal.valueOf(sellMinPrice - 0.5));
+                                        rateSum = rateSum.add(BigDecimal.valueOf(sellMinPrice - 1));
+                                    }else{
+                                        rateSum = rateSum.add(BigDecimal.valueOf(sellMinPrice - 2));
                                     }
                                 } else {
                                     rateSum = rateSum.add(BigDecimal.valueOf(threeDay.getRate()));
