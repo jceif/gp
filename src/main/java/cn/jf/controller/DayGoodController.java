@@ -279,6 +279,7 @@ public class DayGoodController {
         double sellMinPrice = -1.5;//最小卖出价格
         BigDecimal fztRateSum = BigDecimal.valueOf(0);//非涨停收益率
         BigDecimal rateSum = BigDecimal.valueOf(0);//所有收益率
+        BigDecimal ztRateSum = BigDecimal.valueOf(0);//涨停收益率
         List<DayGoodVo1> dayGoodVo1s = new ArrayList<DayGoodVo1>();
         for (int i = 1; i < dayGoods.size(); i++) {
             dayGood = dayGoods.get(i);
@@ -341,7 +342,14 @@ public class DayGoodController {
                         dayGoodVo1.setThreeRate(threeDay.getRate());
                     }
                 }
-                dayGoodVo1.setIncomeRate(BigDecimal.valueOf(nextDay.getRate()).add(BigDecimal.valueOf(currentDay.getEndPrice()).subtract(BigDecimal.valueOf(dayGood.getPrice()))).doubleValue());
+                if(currentDay.getDate()==20180918) {
+                    System.out.println(currentDay.getRate());
+                }
+                dayGoodVo1.setIncomeRate(BigDecimal.valueOf(nextDay.getRate()).add(BigDecimal.valueOf(currentDay.getRate()).subtract(BigDecimal.valueOf(dayGood.getRate()))).doubleValue());
+                //统计涨停数据 赔付率
+                if(currentDay.getRate()>9.5){
+                    ztRateSum=ztRateSum.add(BigDecimal.valueOf(dayGoodVo1.getIncomeRate()));
+                }
                 dayGoodVo1s.add(dayGoodVo1);
             }
         }
@@ -352,6 +360,7 @@ public class DayGoodController {
         request.setAttribute("dayGoodVo1s", dayGoodVo1s);
         request.setAttribute("fztRateSum", fztRateSum);
         request.setAttribute("rateSum", rateSum);
+        request.setAttribute("ztRateSum", ztRateSum);
 
         return "topTimeList";
     }

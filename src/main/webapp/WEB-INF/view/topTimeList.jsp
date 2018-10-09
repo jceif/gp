@@ -50,7 +50,7 @@
                         </c:forEach>
                     </select>
                 </th>
-                <th><input type="submit" value="查询"></th>
+                <th><input type="submit" value="查询">&nbsp;${ztRateSum}</th>
             </tr>
         </table>
 
