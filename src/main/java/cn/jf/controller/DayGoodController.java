@@ -347,7 +347,7 @@ public class DayGoodController {
                 }
                 dayGoodVo1.setIncomeRate(BigDecimal.valueOf(nextDay.getRate()).add(BigDecimal.valueOf(currentDay.getRate()).subtract(BigDecimal.valueOf(dayGood.getRate()))).doubleValue());
                 //统计涨停数据 赔付率
-                if(currentDay.getRate()>9.5){
+                if(dayGood.getRate()>9.5){
                     ztRateSum=ztRateSum.add(BigDecimal.valueOf(dayGoodVo1.getIncomeRate()));
                 }
                 dayGoodVo1s.add(dayGoodVo1);
