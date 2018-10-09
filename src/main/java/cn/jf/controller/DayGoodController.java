@@ -288,8 +288,11 @@ public class DayGoodController {
             }
             currentDay = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), dayGood.getDate());
             nextDay = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), dates.get(dates.indexOf(dayGood.getDate()) - 1));
-            fztRateSum = fztRateSum.add(BigDecimal.valueOf(currentDay.getEndPrice()).subtract(BigDecimal.valueOf(dayGood.getPrice())));
-            rateSum = rateSum.add(BigDecimal.valueOf(currentDay.getEndPrice()).subtract(BigDecimal.valueOf(dayGood.getPrice())));
+            if(dayGood.getRate()<9.5) {
+                fztRateSum = fztRateSum
+                    .add(BigDecimal.valueOf(currentDay.getRate()).subtract(BigDecimal.valueOf(dayGood.getRate())));
+            }
+            rateSum = rateSum.add(BigDecimal.valueOf(currentDay.getRate()).subtract(BigDecimal.valueOf(dayGood.getRate())));
             dayGoodVo1 = new DayGoodVo1();
             dayGoodVo1.setPreTime(Integer.parseInt(time));
             dayGoodVo1.setPreRate(dayGood.getRate());
