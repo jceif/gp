@@ -76,7 +76,7 @@
 
             <tr>
                     <%--当前--%>
-                <td style="<c:if test="${item.preRate>=9.5}">background:yellow;</c:if>">  ${var.count}</td>
+                <td style="<c:if test="${item.preRate>=9.5}">background:yellow;</c:if>">${var.count}</td>
                 <td>
                             <c:choose>
                                 <c:when test="${ fn:substring(item.companyCode ,0,3)=='600' or fn:substring(item.companyCode ,0,2)=='60'}">
@@ -110,7 +110,7 @@
         color: red;
 </c:when>
         </c:choose>">${item.incomeRate}</td>
-                <td>${item.date}</td>
+                        <td><a target="_blank" href="/data/chart?companyCode=${item.companyCode}&date=${item.date}">${item.date}</a></td>
                 </tr>
 
             </c:forEach>
