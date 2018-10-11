@@ -194,6 +194,15 @@ public class DayGoodController {
             dateEnd = simpleDateFormat.format(Calendar.getInstance().getTime());
         }
 
+        if (StringUtils.isEmpty(dateStart)) {
+            int month = Calendar.getInstance().get(Calendar.MONTH) + 1;   //获取月份，0表示1月份
+            dateStart = Calendar.getInstance().get(Calendar.YEAR) + "" + (month < 10 ? "0" + month : month) + "01";
+        }
+        if (StringUtils.isEmpty(dateEnd)) {
+            dateEnd = simpleDateFormat.format(Calendar.getInstance().getTime());
+        }
+
+
 /*
         select * FROM day_good where date=20180928 and  time=1430 order BY main_money desc limit 1;
         select * FROM day_good where date=20180928 and  time=1400 order BY main_money desc limit 1;
