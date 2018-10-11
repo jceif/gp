@@ -171,6 +171,9 @@ public class DayGoodController {
     @RequestMapping("/topList")
     public String findTotalMoneyTopList(HttpServletRequest request, String time, String rate, String inflow,
                                         String dateStart, String dateEnd) {
+
+
+        List<Integer> dates = dayValueService.findDays();
         if (request.getSession().getAttribute("user") == null) {
             return "redirect:/login";
         }
@@ -190,65 +193,34 @@ public class DayGoodController {
         if (StringUtils.isEmpty(dateEnd)) {
             dateEnd = simpleDateFormat.format(Calendar.getInstance().getTime());
         }
-        List<DayGoodVo1> dayGoodVo1s = dayGoodService
-                .findDGLastRateByTimeAndInflow(time, Float.parseFloat(rate), Float.parseFloat(inflow), Integer.parseInt(dateStart), Integer.parseInt(dateEnd));
-        if (dayGoodVo1s != null && dayGoodVo1s.size() > 0) {
-            Collections.sort(dayGoodVo1s, new Comparator<DayGoodVo1>() {
-                @Override
-                public int compare(DayGoodVo1 o1, DayGoodVo1 o2) {
-                    if (o1.getDate() > o2.getDate()) {
-                        return -1;
-                    } else if (o1.getDate() == o2.getDate()) {
-                        return 0;
-                    } else {
-                        return 1;
-                    }
-                }
-            });
-        }
-        List<Integer> dates = dayValueService.findDays();
-        DayValue nextDay = null;
-        BigDecimal twoRateSum = BigDecimal.valueOf(0);
-        DayGoodVo1 dayGoodVo1 = null;
-        double sellMinPrice = -1.5;//最小卖出价格
-        BigDecimal ztRateSum = BigDecimal.valueOf(0);//非涨停收益率
-        for (int i = 1; i < dayGoodVo1s.size(); i++) {
-            dayGoodVo1 = dayGoodVo1s.get(i);
-            if (dates.indexOf(dayGoodVo1.getDate()) == 0) {
-                continue;
-            }
-            int nextDayValue = dates.get(dates.indexOf(dayGoodVo1.getDate()) - 1);
-            nextDay = dayValueService.findDayValueByIdAndDate(dayGoodVo1.getCompanyCode(), nextDayValue);
-            twoRateSum = twoRateSum.add(BigDecimal.valueOf(dayGoodVo1.getLastRate()).subtract(BigDecimal.valueOf(dayGoodVo1.getPreRate())));
-            ztRateSum = ztRateSum.add(BigDecimal.valueOf(dayGoodVo1.getLastRate()).subtract(BigDecimal.valueOf(dayGoodVo1.getPreRate())));
-            if (nextDay != null && nextDay.getId() > 0) {
-                dayGoodVo1s.get(i).setTwoEndPrice(nextDay.getEndPrice());
-                dayGoodVo1s.get(i).setTwoStartPrice(nextDay.getStartPrice());
-                dayGoodVo1s.get(i).setTwoRate(nextDay.getRate());
-                //如果跌幅超过-2必须卖掉
-                if (nextDay.getRate() < sellMinPrice) {
-                    twoRateSum = twoRateSum.add(BigDecimal.valueOf(sellMinPrice - 0.5));
-                } else {
-                    twoRateSum = twoRateSum.add(BigDecimal.valueOf(nextDay.getRate()));
-                }
-                if (dayGoodVo1.getPreRate() < 9.5) {
-                    if (nextDay.getRate() < sellMinPrice) {
-                        ztRateSum = ztRateSum.add(BigDecimal.valueOf(sellMinPrice - 0.5));
-                    } else {
-                        ztRateSum = ztRateSum.add(BigDecimal.valueOf(nextDay.getRate()));
-                    }
-                }
-            }
-        }
+
+/*
+        select * FROM day_good where date=20180928 and  time=1430 order BY main_money desc limit 1;
+        select * FROM day_good where date=20180928 and  time=1400 order BY main_money desc limit 1;
+        select * FROM day_good where date=20180928 and  time=1330 order BY main_money desc limit 1;
+        select * FROM day_good where date=20180928 and  time=1300 order BY main_money desc limit 1;
+        select * FROM day_good where date=20180928 and  time=1130 order BY main_money desc limit 1;
+        select * FROM day_good where date=20180928 and  time=1100 order BY main_money desc limit 1;
+
+
+
+        select * FROM day_good where date=20180928 and  time=1430 order BY main_money desc limit 1;
+        select * FROM day_good where date=20180928 and  time=1400 order BY main_money desc limit 1;
+        select * FROM day_good where date=20180928 and  time=1330 order BY main_money desc limit 1;
+        select * FROM day_good where date=20180928 and  time=1300 order BY main_money desc limit 1;
+        select * FROM day_good where date=20180928 and  time=1130 order BY main_money desc limit 1;
+        select * FROM day_good where date=20180928 and  time=1100 order BY main_money desc limit 1;
+
+        select rate FROM day_value where date=20180928 and company_code=000001;
+*/
+
         FormatDate.getFormatDates(request);
         request.setAttribute("time", time);
         request.setAttribute("rate", rate);
         request.setAttribute("inflow", inflow);
         request.setAttribute("dateStart", dateStart);
         request.setAttribute("dateEnd", dateEnd);
-        request.setAttribute("dayGoodVo1s", dayGoodVo1s);
-        request.setAttribute("twoRateSum", twoRateSum);
-        request.setAttribute("ztRateSum", ztRateSum);
+
 
         return "topGoodList";
     }
