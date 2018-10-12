@@ -95,5 +95,10 @@ public class DayGoodServiceImpl implements DayGoodService {
 		return dayGoodMapper.findTopOneByTime(time,dateStart,dateEnd);
 	}
 
+	@Override
+	public DayGood findByDateATime(int date, int time) {
+		return  dayGoodMapper.findByDateATime(date,time);
+	}
+
 
 }

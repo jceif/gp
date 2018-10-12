@@ -5,6 +5,7 @@ import java.util.Map;
 import cn.jf.model.daygood.DayGood;
 import cn.jf.model.daygood.DayGoodVo;
 import cn.jf.model.daygood.DayGoodVo1;
+import cn.jf.model.dayvalue.DayValue;
 import org.apache.ibatis.annotations.Param;
 
 
@@ -41,6 +42,8 @@ public interface DayGoodMapper {
 
 
   List<DayGood> findTopOneByTime(@Param("time") String time,@Param("dateStart") int dateStart,@Param("dateEnd") int dateEnd);
+
+  DayGood findByDateATime(@Param("date") int date,@Param("time") int time);
 
 
 

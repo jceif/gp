@@ -52,6 +52,7 @@ public interface DayValueMapper {
 
 
 	List<Integer> findDays();
+	DayValue findByCodeADate(@Param("companyCode") String companyCode,@Param("date") int date);
 
 
 }

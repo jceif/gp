@@ -388,5 +388,10 @@ insert into day_good
  </select>
 
 
+  <!--根据流入资金量 和 时间统计出 -->
+  <select id="findByDateATime" resultMap="dayGood">
+    select * FROM day_good where date=#{date} and  time=#{time} order BY main_money desc limit 1
+ </select>
+
 
 </mapper>

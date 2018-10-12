@@ -271,4 +271,9 @@ and (d1.k-d2.k)>=6
 		select date from day_value   group  by date order by date desc limit 110
  </select>
 
+
+	<select id="findByCodeADate" resultMap="dayValue">
+		select * FROM day_value where date=#{date} and company_code=#{companyCode}
+	</select>
+
 </mapper>

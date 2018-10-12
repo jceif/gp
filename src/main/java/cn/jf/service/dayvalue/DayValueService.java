@@ -50,4 +50,6 @@ public interface DayValueService {
 
   List<Integer> findDays();
 
+  DayValue findByCodeADate(String companyCode, int date);
+
 }

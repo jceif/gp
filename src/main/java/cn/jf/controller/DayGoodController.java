@@ -169,23 +169,13 @@ public class DayGoodController {
 
 
     @RequestMapping("/topList")
-    public String findTotalMoneyTopList(HttpServletRequest request, String time, String rate, String inflow,
-                                        String dateStart, String dateEnd) {
+    public String findTotalMoneyTopList(HttpServletRequest request, String dateStart, String dateEnd) {
 
 
         List<Integer> dates = dayValueService.findDays();
         if (request.getSession().getAttribute("user") == null) {
             return "redirect:/login";
         }
-        if (StringUtils.isEmpty(time)) {
-            time = "1000";
-        }
-        if (StringUtils.isEmpty(rate)) {
-            rate = "5";
-        }
-        if (StringUtils.isEmpty(inflow)) {
-            inflow = "6000";
-        }
         if (StringUtils.isEmpty(dateStart)) {
             int month = Calendar.getInstance().get(Calendar.MONTH) + 1;   //获取月份，0表示1月份
             dateStart = Calendar.getInstance().get(Calendar.YEAR) + "" + (month < 10 ? "0" + month : month) + "01";
@@ -202,34 +192,112 @@ public class DayGoodController {
             dateEnd = simpleDateFormat.format(Calendar.getInstance().getTime());
         }
 
+        Map<String, List<DayGood>> listMap = new LinkedHashMap<String, List<DayGood>>();
 
-/*
-        select * FROM day_good where date=20180928 and  time=1430 order BY main_money desc limit 1;
-        select * FROM day_good where date=20180928 and  time=1400 order BY main_money desc limit 1;
-        select * FROM day_good where date=20180928 and  time=1330 order BY main_money desc limit 1;
-        select * FROM day_good where date=20180928 and  time=1300 order BY main_money desc limit 1;
-        select * FROM day_good where date=20180928 and  time=1130 order BY main_money desc limit 1;
-        select * FROM day_good where date=20180928 and  time=1100 order BY main_money desc limit 1;
+        List<DayGood> dayGoodList;
+        BigDecimal dayRateSum = BigDecimal.valueOf(0);//当天数据
+        BigDecimal daysRateSum = BigDecimal.valueOf(0);        //总数据
+        BigDecimal v1110 = BigDecimal.valueOf(0);
+        BigDecimal v1130 = BigDecimal.valueOf(0);
+        BigDecimal v1300 = BigDecimal.valueOf(0);
+        BigDecimal v1330 = BigDecimal.valueOf(0);
+        BigDecimal v1400 = BigDecimal.valueOf(0);
+        BigDecimal v1430 = BigDecimal.valueOf(0);
+        for (int i = 1; i < dates.size(); i++) {
+            int date=dates.get(i);//小20180911
+            int dateNext=dates.get(i-1);//大20180912
+            if (date >= Integer.parseInt(dateStart) && date <= Integer.parseInt(dateEnd)) {
+                v1110 = BigDecimal.valueOf(0);
+                v1130 = BigDecimal.valueOf(0);
+                v1300 = BigDecimal.valueOf(0);
+                v1330 = BigDecimal.valueOf(0);
+                v1400 = BigDecimal.valueOf(0);
+                v1430 = BigDecimal.valueOf(0);
+                dayGoodList = new ArrayList<DayGood>();
+                DayGood dayGood1100 = dayGoodService.findByDateATime(date, 1100);
+                if (dayGood1100 != null) {
+                    DayValue dayValue1100 = dayValueService.findDayValueByIdAndDate(dayGood1100.getCompanyCode(), date);
+                    if(dayValue1100!=null){
+                        v1110 = BigDecimal.valueOf(dayValue1100.getRate()).subtract(BigDecimal.valueOf(dayGood1100.getRate()));
+                        DayValue dayValue1100Next = dayValueService.findDayValueByIdAndDate(dayGood1100.getCompanyCode(), dateNext);
+                        if(dayValue1100Next!=null){
+                            v1110 = v1110.add(BigDecimal.valueOf(dayValue1100Next.getRate()));
+                        }
+                    }
+                }
+                DayGood dayGood1130 = dayGoodService.findByDateATime(date, 1130);
+                if (dayGood1130 != null) {
+                    DayValue dayValue1130 = dayValueService.findDayValueByIdAndDate(dayGood1130.getCompanyCode(), date);
+                    if(dayValue1130!=null){
+                        DayValue dayValue1130Next = dayValueService.findDayValueByIdAndDate(dayGood1130.getCompanyCode(), dateNext);
+                        v1130 = BigDecimal.valueOf(dayValue1130.getRate()).subtract(BigDecimal.valueOf(dayGood1130.getRate()));
+                        if(dayValue1130Next!=null){
+                            v1130 = v1330.add(BigDecimal.valueOf(dayValue1130Next.getRate()));;
+                        }
+                    }
+                }
 
+                DayGood dayGood1300 = dayGoodService.findByDateATime(date, 1300);
+                if (dayGood1300 != null) {
+                    DayValue dayValue1300 = dayValueService.findDayValueByIdAndDate(dayGood1300.getCompanyCode(), date);
+                    if(dayValue1300!=null){
+                        DayValue dayValue1300Next = dayValueService.findDayValueByIdAndDate(dayGood1300.getCompanyCode(), dateNext);
+                        v1300 = BigDecimal.valueOf(dayValue1300.getRate()).subtract(BigDecimal.valueOf(dayGood1300.getRate()));
+                        if(dayValue1300Next!=null){
+                            v1300 = v1300.add(BigDecimal.valueOf(dayValue1300Next.getRate()));;
+                        }
+                    }
+                }
 
+                DayGood dayGood1330 = dayGoodService.findByDateATime(date, 1330);
+                if (dayGood1330 != null) {
+                    DayValue dayValue1330 = dayValueService.findDayValueByIdAndDate(dayGood1330.getCompanyCode(), date);
+                    if(dayValue1330!=null){
+                        v1330 = BigDecimal.valueOf(dayValue1330.getRate()).subtract(BigDecimal.valueOf(dayGood1330.getRate()));
+                        DayValue dayValue1330Next = dayValueService.findDayValueByIdAndDate(dayGood1330.getCompanyCode(), dateNext);
+                        if(dayValue1330Next!=null){
+                            v1330 = v1330.add(BigDecimal.valueOf(dayValue1330Next.getRate()));;;
+                        }
+                    }
+                }
 
-        select * FROM day_good where date=20180928 and  time=1430 order BY main_money desc limit 1;
-        select * FROM day_good where date=20180928 and  time=1400 order BY main_money desc limit 1;
-        select * FROM day_good where date=20180928 and  time=1330 order BY main_money desc limit 1;
-        select * FROM day_good where date=20180928 and  time=1300 order BY main_money desc limit 1;
-        select * FROM day_good where date=20180928 and  time=1130 order BY main_money desc limit 1;
-        select * FROM day_good where date=20180928 and  time=1100 order BY main_money desc limit 1;
+                DayGood dayGood1400 = dayGoodService.findByDateATime(date, 1400);
+                if (dayGood1400 != null) {
+                    DayValue dayValue1400 = dayValueService.findDayValueByIdAndDate(dayGood1400.getCompanyCode(), date);
+                    DayValue dayValue1400Next = dayValueService.findDayValueByIdAndDate(dayGood1400.getCompanyCode(), dateNext);
+                    v1400 = BigDecimal.valueOf(dayValue1400.getRate()).subtract(BigDecimal.valueOf(dayGood1400.getRate())).add(BigDecimal.valueOf(dayValue1400Next.getRate()));;;
+                }
 
-        select rate FROM day_value where date=20180928 and company_code=000001;
-*/
+                DayGood dayGood1430 = dayGoodService.findByDateATime(date, 1400);
+                if (dayGood1430 != null) {
+                    DayValue dayValue1430 = dayValueService.findDayValueByIdAndDate(dayGood1430.getCompanyCode(), date);
+                    if(dayValue1430!=null){
+                        DayValue dayValue1430Next = dayValueService.findDayValueByIdAndDate(dayGood1430.getCompanyCode(), dateNext);
+                        v1430 = BigDecimal.valueOf(dayValue1430.getRate()).subtract(BigDecimal.valueOf(dayGood1430.getRate())).add(BigDecimal.valueOf(dayValue1430Next.getRate()));;;
+
+                    }
+                }
+
+                dayGoodList.add(dayGood1100);
+                dayGoodList.add(dayGood1130);
+                dayGoodList.add(dayGood1300);
+                dayGoodList.add(dayGood1330);
+                dayGoodList.add(dayGood1400);
+                dayGoodList.add(dayGood1430);
+
+                dayRateSum = v1110.add(v1130).add(v1300).add(v1330).add(v1400).add(v1430);
+                listMap.put(date + "_" + dayRateSum, dayGoodList);
+                daysRateSum = daysRateSum.add(dayRateSum);
+
+            }
+        }
 
         FormatDate.getFormatDates(request);
-        request.setAttribute("time", time);
-        request.setAttribute("rate", rate);
-        request.setAttribute("inflow", inflow);
         request.setAttribute("dateStart", dateStart);
         request.setAttribute("dateEnd", dateEnd);
-
+        request.setAttribute("daysRateSum", daysRateSum);
+        request.setAttribute("dayRateSum", dayRateSum);
+        request.setAttribute("listMap", listMap);
 
         return "topGoodList";
     }
@@ -269,9 +337,9 @@ public class DayGoodController {
             }
             currentDay = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), dayGood.getDate());
             nextDay = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), dates.get(dates.indexOf(dayGood.getDate()) - 1));
-            if(dayGood.getRate()<9.5) {
+            if (dayGood.getRate() < 9.5) {
                 fztRateSum = fztRateSum
-                    .add(BigDecimal.valueOf(currentDay.getRate()).subtract(BigDecimal.valueOf(dayGood.getRate())));
+                        .add(BigDecimal.valueOf(currentDay.getRate()).subtract(BigDecimal.valueOf(dayGood.getRate())));
             }
             rateSum = rateSum.add(BigDecimal.valueOf(currentDay.getRate()).subtract(BigDecimal.valueOf(dayGood.getRate())));
             dayGoodVo1 = new DayGoodVo1();
@@ -326,13 +394,13 @@ public class DayGoodController {
                         dayGoodVo1.setThreeRate(threeDay.getRate());
                     }
                 }
-                if(currentDay.getDate()==20180918) {
+                if (currentDay.getDate() == 20180918) {
                     System.out.println(currentDay.getRate());
                 }
                 dayGoodVo1.setIncomeRate(BigDecimal.valueOf(nextDay.getRate()).add(BigDecimal.valueOf(currentDay.getRate()).subtract(BigDecimal.valueOf(dayGood.getRate()))).doubleValue());
                 //统计涨停数据 赔付率
-                if(dayGood.getRate()>9.5){
-                    ztRateSum=ztRateSum.add(BigDecimal.valueOf(dayGoodVo1.getIncomeRate()));
+                if (dayGood.getRate() > 9.5) {
+                    ztRateSum = ztRateSum.add(BigDecimal.valueOf(dayGoodVo1.getIncomeRate()));
                 }
                 dayGoodVo1s.add(dayGoodVo1);
             }

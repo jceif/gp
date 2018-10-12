@@ -9,6 +9,7 @@ import cn.jf.common.PageUtil;
 import cn.jf.model.daygood.DayGood;
 import cn.jf.model.daygood.DayGoodVo;
 import cn.jf.model.daygood.DayGoodVo1;
+import cn.jf.model.dayvalue.DayValue;
 
 
 public interface DayGoodService {
@@ -39,6 +40,9 @@ public interface DayGoodService {
 
  List<DayGood> findTopOneByTime(String time, int dateStart, int dateEnd);
 
+
+
+ DayGood findByDateATime(int date,int time);
 
 
 
