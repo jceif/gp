@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <title>${daysRateSum}|${dayRateSum}</title>
+    <title>${daysRateSum}</title>
     <link rel="stylesheet" type="text/css"
           href="${ctx}assets/css/common/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${ctx}assets/css/common/list.css">
@@ -45,19 +45,27 @@
             <tbody>
             <tr>
                 <th>date</th>
-
-
+                <th>rateSum</th>
+                <th>companyCode</th>
+                <th>mainMoney</th>
+                <th>rate</th>
+                <th>time</th>
             </tr>
         <%--item 前，itemOld后--%>
             <c:forEach items="${listMap}" var="item"  step="1"  varStatus="var">
-
                 <tr>
-                    <th>${item.key}</th>
-
+                    <td rowspan="${fn:length(item.value)+1}">${fn:split(item.key, '_')[0]}</td>
+                    <td rowspan="${fn:length(item.value)+1}">${fn:split(item.key, '_')[1]}</td>
+                    <c:forEach items="${item.value}" var="v" >
+                        <tr>
+                            <td>${v.companyCode}</td>
+                            <td >${v.mainMoney}</td>
+                            <td >${v.rate}%</td>
+                            <td >${v.time}</td>
+                        </tr>
+                    </c:forEach>
 
                 </tr>
-
-
             </c:forEach>
             </tbody>
         </table><!-- /.table -->

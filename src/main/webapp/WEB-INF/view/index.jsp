@@ -98,7 +98,7 @@
                 </th>
                 <th>价格：<input type="number" name="price" value="${price}"></th>
                 <th>涨跌：<input type="text" name="rate" value="${rate}"></th>
-                <th><input type="submit" value="查询">&nbsp;<%--<a href="/day/topList" target="_blank">tj</a>&nbsp;--%><a href="/data/topTimeList" target="_blank">tj1</a>&nbsp;<a href="/data//topList" target="_blank">tj2</a> </th>
+                <th><input type="submit" value="查询">&nbsp;<a href="/data/topTimeList" target="_blank">tj1</a>&nbsp;<a href="/data/topList" target="_blank">tj2</a> </th>
             </tr>
         </table>
         <%--</div>--%>

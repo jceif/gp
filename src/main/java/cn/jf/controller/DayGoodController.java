@@ -203,6 +203,7 @@ public class DayGoodController {
         BigDecimal v1330 = BigDecimal.valueOf(0);
         BigDecimal v1400 = BigDecimal.valueOf(0);
         BigDecimal v1430 = BigDecimal.valueOf(0);
+        List<String> companyCodes=new ArrayList<String>();
         for (int i = 1; i < dates.size(); i++) {
             int date=dates.get(i);//小20180911
             int dateNext=dates.get(i-1);//大20180912
@@ -213,6 +214,7 @@ public class DayGoodController {
                 v1330 = BigDecimal.valueOf(0);
                 v1400 = BigDecimal.valueOf(0);
                 v1430 = BigDecimal.valueOf(0);
+                companyCodes=new ArrayList<String>();
                 dayGoodList = new ArrayList<DayGood>();
                 DayGood dayGood1100 = dayGoodService.findByDateATime(date, 1100);
                 if (dayGood1100 != null) {
@@ -223,22 +225,28 @@ public class DayGoodController {
                         if(dayValue1100Next!=null){
                             v1110 = v1110.add(BigDecimal.valueOf(dayValue1100Next.getRate()));
                         }
+                        companyCodes.add(dayValue1100.getCompanyCode());
+                        dayGoodList.add(dayGood1100);
                     }
+
                 }
+
                 DayGood dayGood1130 = dayGoodService.findByDateATime(date, 1130);
-                if (dayGood1130 != null) {
+                if (dayGood1130 != null && !companyCodes.contains(dayGood1130.getCompanyCode())) {
                     DayValue dayValue1130 = dayValueService.findDayValueByIdAndDate(dayGood1130.getCompanyCode(), date);
                     if(dayValue1130!=null){
                         DayValue dayValue1130Next = dayValueService.findDayValueByIdAndDate(dayGood1130.getCompanyCode(), dateNext);
                         v1130 = BigDecimal.valueOf(dayValue1130.getRate()).subtract(BigDecimal.valueOf(dayGood1130.getRate()));
                         if(dayValue1130Next!=null){
-                            v1130 = v1330.add(BigDecimal.valueOf(dayValue1130Next.getRate()));;
+                            v1130 = v1130.add(BigDecimal.valueOf(dayValue1130Next.getRate()));;
                         }
+                        companyCodes.add(dayGood1130.getCompanyCode());
+                        dayGoodList.add(dayGood1130);
                     }
                 }
 
                 DayGood dayGood1300 = dayGoodService.findByDateATime(date, 1300);
-                if (dayGood1300 != null) {
+                if (dayGood1300 != null && !companyCodes.contains(dayGood1300.getCompanyCode())) {
                     DayValue dayValue1300 = dayValueService.findDayValueByIdAndDate(dayGood1300.getCompanyCode(), date);
                     if(dayValue1300!=null){
                         DayValue dayValue1300Next = dayValueService.findDayValueByIdAndDate(dayGood1300.getCompanyCode(), dateNext);
@@ -246,11 +254,13 @@ public class DayGoodController {
                         if(dayValue1300Next!=null){
                             v1300 = v1300.add(BigDecimal.valueOf(dayValue1300Next.getRate()));;
                         }
+                        companyCodes.add(dayGood1300.getCompanyCode());
+                        dayGoodList.add(dayGood1300);
                     }
                 }
 
                 DayGood dayGood1330 = dayGoodService.findByDateATime(date, 1330);
-                if (dayGood1330 != null) {
+                if (dayGood1330 != null && !companyCodes.contains(dayGood1330.getCompanyCode())) {
                     DayValue dayValue1330 = dayValueService.findDayValueByIdAndDate(dayGood1330.getCompanyCode(), date);
                     if(dayValue1330!=null){
                         v1330 = BigDecimal.valueOf(dayValue1330.getRate()).subtract(BigDecimal.valueOf(dayGood1330.getRate()));
@@ -258,32 +268,40 @@ public class DayGoodController {
                         if(dayValue1330Next!=null){
                             v1330 = v1330.add(BigDecimal.valueOf(dayValue1330Next.getRate()));;;
                         }
+                        companyCodes.add(dayGood1330.getCompanyCode());
+                        dayGoodList.add(dayGood1330);
                     }
                 }
 
                 DayGood dayGood1400 = dayGoodService.findByDateATime(date, 1400);
-                if (dayGood1400 != null) {
+                if (dayGood1400 != null && !companyCodes.contains(dayGood1400.getCompanyCode())) {
                     DayValue dayValue1400 = dayValueService.findDayValueByIdAndDate(dayGood1400.getCompanyCode(), date);
-                    DayValue dayValue1400Next = dayValueService.findDayValueByIdAndDate(dayGood1400.getCompanyCode(), dateNext);
-                    v1400 = BigDecimal.valueOf(dayValue1400.getRate()).subtract(BigDecimal.valueOf(dayGood1400.getRate())).add(BigDecimal.valueOf(dayValue1400Next.getRate()));;;
-                }
+                    if(dayValue1400!=null){
+                        DayValue dayValue1400Next = dayValueService.findDayValueByIdAndDate(dayGood1400.getCompanyCode(), dateNext);
+                        v1400 = BigDecimal.valueOf(dayValue1400.getRate()).subtract(BigDecimal.valueOf(dayGood1400.getRate()));
+                        if(dayValue1400Next!=null){
+                            v1400 =v1400.add(BigDecimal.valueOf(dayValue1400Next.getRate()));
+                        }
+                        companyCodes.add(dayGood1400.getCompanyCode());
+                        dayGoodList.add(dayGood1400);
+                    }
+                   }
 
-                DayGood dayGood1430 = dayGoodService.findByDateATime(date, 1400);
-                if (dayGood1430 != null) {
+                DayGood dayGood1430 = dayGoodService.findByDateATime(date, 1430);
+                if (dayGood1430 != null && !companyCodes.contains(dayGood1430.getCompanyCode())) {
                     DayValue dayValue1430 = dayValueService.findDayValueByIdAndDate(dayGood1430.getCompanyCode(), date);
                     if(dayValue1430!=null){
                         DayValue dayValue1430Next = dayValueService.findDayValueByIdAndDate(dayGood1430.getCompanyCode(), dateNext);
-                        v1430 = BigDecimal.valueOf(dayValue1430.getRate()).subtract(BigDecimal.valueOf(dayGood1430.getRate())).add(BigDecimal.valueOf(dayValue1430Next.getRate()));;;
-
+                        v1430 = BigDecimal.valueOf(dayValue1430.getRate()).subtract(BigDecimal.valueOf(dayGood1430.getRate()));
+                        if(dayValue1430Next!=null) {
+                            v1430 = v1430.add(BigDecimal.valueOf(dayValue1430Next.getRate()));
+                        }
+                        companyCodes.add(dayGood1430.getCompanyCode());
+                        dayGoodList.add(dayGood1430);
                     }
                 }
 
-                dayGoodList.add(dayGood1100);
-                dayGoodList.add(dayGood1130);
-                dayGoodList.add(dayGood1300);
-                dayGoodList.add(dayGood1330);
-                dayGoodList.add(dayGood1400);
-                dayGoodList.add(dayGood1430);
+
 
                 dayRateSum = v1110.add(v1130).add(v1300).add(v1330).add(v1400).add(v1430);
                 listMap.put(date + "_" + dayRateSum, dayGoodList);
