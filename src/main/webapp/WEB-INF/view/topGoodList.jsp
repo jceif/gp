@@ -97,7 +97,7 @@
                                 </c:choose></td>
                                 <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>">${v.mainMoney}</td>
                                 <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>">${v.endMainMoney}</td>
-                                <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>">${v.rate}%</td>
+                                <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>"><span style="<c:if test="${v.rate>9.5}">color:red;</c:if>">${v.rate}%</td>
                                <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>">${v.endRate}%</td>
                                <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>">${v.nextRate}%</td>
                                 <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>">${v.time}</td>
