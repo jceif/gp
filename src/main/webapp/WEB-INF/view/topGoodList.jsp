@@ -37,6 +37,30 @@
                         </c:forEach>
                     </select>
                 </th>
+
+                <th>开始时间：
+                    <select name="timeStart">
+                        <option value="">请选择</option>
+                        <option value="1100" <c:if test="${1100==timeStart}">selected</c:if>>${1100}</option>
+                        <option value="1130" <c:if test="${1130==timeStart}">selected</c:if>>${1130}</option>
+                        <option value="1300" <c:if test="${1300==timeStart}">selected</c:if>>${1300}</option>
+                        <option value="1330" <c:if test="${1330==timeStart}">selected</c:if>>${1330}</option>
+                        <option value="1400" <c:if test="${1400==timeStart}">selected</c:if>>${1400}</option>
+                        <option value="1430" <c:if test="${1430==timeStart}">selected</c:if>>${1430}</option>
+                    </select>
+                </th>
+                <th>结束时间：
+                    <select name="timeEnd">
+                        <option value="">请选择</option>
+                        <option value="1100" <c:if test="${1100==timeEnd}">selected</c:if>>${1100}</option>
+                        <option value="1130" <c:if test="${1130==timeEnd}">selected</c:if>>${1130}</option>
+                        <option value="1300" <c:if test="${1300==timeEnd}">selected</c:if>>${1300}</option>
+                        <option value="1330" <c:if test="${1330==timeEnd}">selected</c:if>>${1330}</option>
+                        <option value="1400" <c:if test="${1400==timeEnd}">selected</c:if>>${1400}</option>
+                        <option value="1430" <c:if test="${1430==timeEnd}">selected</c:if>>${1430}</option>
+
+                    </select>
+                </th>
                 <th><input type="submit" value="查询"></th>
             </tr>
         </table>
@@ -45,27 +69,32 @@
             <tbody>
             <tr>
                 <th>date</th>
-                <th>rateSum</th>
                 <th>companyCode</th>
                 <th>mainMoney</th>
-                <th>rate</th>
+                <th>preRate</th>
+                <th>endRate</th>
+                <th>nextRate</th>
                 <th>time</th>
+                <th>rateSum</th>
             </tr>
         <%--item 前，itemOld后--%>
             <c:forEach items="${listMap}" var="item"  step="1"  varStatus="var">
-                <tr>
-                    <td rowspan="${fn:length(item.value)+1}">${fn:split(item.key, '_')[0]}</td>
-                    <td rowspan="${fn:length(item.value)+1}">${fn:split(item.key, '_')[1]}</td>
-                    <c:forEach items="${item.value}" var="v" >
+                    <c:forEach items="${item.value}" var="v" varStatus="status">
                         <tr>
-                            <td>${v.companyCode}</td>
-                            <td >${v.mainMoney}</td>
-                            <td >${v.rate}%</td>
-                            <td >${v.time}</td>
+                            <c:if test="${status.index==0}">
+                                 <td style="border-bottom: #1b6d85 solid 1px" rowspan="${fn:length(item.value)}">${fn:split(item.key, '_')[0]}</td>
+                            </c:if>
+                                <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>">${v.companyCode}</td>
+                                <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>">${v.mainMoney}</td>
+                                <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>">${v.rate}%</td>
+                               <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>">${v.endRate}%</td>
+                               <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>">${v.nextRate}%</td>
+                                <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>">${v.time}</td>
+                            <c:if test="${status.index==0}">
+                            <td style="border-bottom: #1b6d85 solid 1px" rowspan="${fn:length(item.value)}">${fn:split(item.key, '_')[1]}</td>
+                            </c:if>
                         </tr>
                     </c:forEach>
-
-                </tr>
             </c:forEach>
             </tbody>
         </table><!-- /.table -->

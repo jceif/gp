@@ -36,6 +36,11 @@ public class DayGood implements Serializable {
   private Date originalTime; // 原始时间(准确时间）
 
 
+  private Double endRate;//收盘Rate，数据库无此字段
+
+  private Double nextRate;//第二天收盘价，数据库无此字段
+
+
   public int getId() {
     return this.id;
   }
@@ -141,4 +146,19 @@ public class DayGood implements Serializable {
   }
 
 
+  public Double getEndRate() {
+    return endRate;
+  }
+
+  public void setEndRate(Double endRate) {
+    this.endRate = endRate;
+  }
+
+  public Double getNextRate() {
+    return nextRate;
+  }
+
+  public void setNextRate(Double nextRate) {
+    this.nextRate = nextRate;
+  }
 }
