@@ -70,7 +70,8 @@
             <tr>
                 <th>date</th>
                 <th>companyCode</th>
-                <th>mainMoney</th>
+                <th>preMoney</th>
+                <th>nextMoney</th>
                 <th>preRate</th>
                 <th>endRate</th>
                 <th>nextRate</th>
@@ -84,8 +85,18 @@
                             <c:if test="${status.index==0}">
                                  <td style="border-bottom: #1b6d85 solid 1px" rowspan="${fn:length(item.value)}">${fn:split(item.key, '_')[0]}</td>
                             </c:if>
-                                <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>">${v.companyCode}</td>
+                                <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>">    <c:choose>
+                                    <c:when test="${ fn:substring(v.companyCode ,0,3)=='600' or fn:substring(v.companyCode ,0,2)=='60'}">
+                                        <a href="http://quote.eastmoney.com/concept/sh${v.companyCode}.html?from=classic&eventcode=Web_quote_entrance2"
+                                           target="_blank">${v.companyCode}</a>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="http://quote.eastmoney.com/concept/sz${v.companyCode}.html?from=classic&eventcode=Web_quote_entrance2"
+                                           target="_blank">${v.companyCode}</a>
+                                    </c:otherwise>
+                                </c:choose></td>
                                 <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>">${v.mainMoney}</td>
+                                <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>">${v.endMainMoney}</td>
                                 <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>">${v.rate}%</td>
                                <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>">${v.endRate}%</td>
                                <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>">${v.nextRate}%</td>

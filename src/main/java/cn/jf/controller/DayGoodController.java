@@ -239,6 +239,7 @@ public class DayGoodController {
                                 dayGood1100.setNextRate(dayValue1100Next.getRate());
                             }
                             dayGood1100.setEndRate(dayValue1100.getRate());
+                            dayGood1100.setEndMainMoney(dayValue1100.getTotalMoney());
                             companyCodes.add(dayValue1100.getCompanyCode());
                             dayGoodList.add(dayGood1100);
                         }
@@ -261,6 +262,7 @@ public class DayGoodController {
                                 dayGood1130.setNextRate(dayValue1130Next.getRate());
                             }
                             dayGood1130.setEndRate(dayValue1130.getRate());
+                            dayGood1130.setEndMainMoney(dayValue1130.getTotalMoney());
                             companyCodes.add(dayGood1130.getCompanyCode());
                             dayGoodList.add(dayGood1130);
                         }
@@ -281,6 +283,7 @@ public class DayGoodController {
                                 dayGood1300.setNextRate(dayValue1300Next.getRate());
                             }
                             dayGood1300.setEndRate(dayValue1300.getRate());
+                            dayGood1300.setEndMainMoney(dayValue1300.getTotalMoney());
                             companyCodes.add(dayGood1300.getCompanyCode());
                             dayGoodList.add(dayGood1300);
                         }
@@ -301,6 +304,7 @@ public class DayGoodController {
                                 dayGood1330.setNextRate(dayValue1330Next.getRate());
                             }
                             dayGood1330.setEndRate(dayValue1330.getRate());
+                            dayGood1330.setEndMainMoney(dayValue1330.getTotalMoney());
                             companyCodes.add(dayGood1330.getCompanyCode());
                             dayGoodList.add(dayGood1330);
                         }
@@ -322,6 +326,7 @@ public class DayGoodController {
                                 dayGood1400.setNextRate(dayValue1400Next.getRate());
                             }
                             dayGood1400.setEndRate(dayValue1400.getRate());
+                            dayGood1400.setEndMainMoney(dayValue1400.getTotalMoney());
                             companyCodes.add(dayGood1400.getCompanyCode());
                             dayGoodList.add(dayGood1400);
                         }
@@ -343,6 +348,7 @@ public class DayGoodController {
                                 dayGood1430.setNextRate(dayValue1430Next.getRate());
                             }
                             dayGood1430.setEndRate(dayValue1430.getRate());
+                            dayGood1430.setEndMainMoney(dayValue1430.getTotalMoney());
                             companyCodes.add(dayGood1430.getCompanyCode());
                             dayGoodList.add(dayGood1430);
                         }

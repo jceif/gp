@@ -37,6 +37,7 @@ public class DayGood implements Serializable {
 
 
   private Double endRate;//收盘Rate，数据库无此字段
+  private Double endMainMoney;//收盘流入，数据库无此字段
 
   private Double nextRate;//第二天收盘价，数据库无此字段
 
@@ -160,5 +161,13 @@ public class DayGood implements Serializable {
 
   public void setNextRate(Double nextRate) {
     this.nextRate = nextRate;
+  }
+
+  public Double getEndMainMoney() {
+    return endMainMoney;
+  }
+
+  public void setEndMainMoney(Double endMainMoney) {
+    this.endMainMoney = endMainMoney;
   }
 }
