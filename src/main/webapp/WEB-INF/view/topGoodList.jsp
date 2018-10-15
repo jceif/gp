@@ -41,6 +41,7 @@
                 <th>开始时间：
                     <select name="timeStart">
                         <option value="">请选择</option>
+                        <option value="1030" <c:if test="${1030==timeStart}">selected</c:if>>${1030}</option>
                         <option value="1100" <c:if test="${1100==timeStart}">selected</c:if>>${1100}</option>
                         <option value="1130" <c:if test="${1130==timeStart}">selected</c:if>>${1130}</option>
                         <option value="1300" <c:if test="${1300==timeStart}">selected</c:if>>${1300}</option>
@@ -52,6 +53,7 @@
                 <th>结束时间：
                     <select name="timeEnd">
                         <option value="">请选择</option>
+                        <option value="1030" <c:if test="${1030==timeEnd}">selected</c:if>>${1030}</option>
                         <option value="1100" <c:if test="${1100==timeEnd}">selected</c:if>>${1100}</option>
                         <option value="1130" <c:if test="${1130==timeEnd}">selected</c:if>>${1130}</option>
                         <option value="1300" <c:if test="${1300==timeEnd}">selected</c:if>>${1300}</option>

@@ -201,167 +201,26 @@ public class DayGoodController {
         }
 
         Map<String, List<DayGood>> listMap = new LinkedHashMap<String, List<DayGood>>();
-
-        List<DayGood> dayGoodList;
-        BigDecimal dayRateSum = BigDecimal.valueOf(0);//当天数据
-        BigDecimal daysRateSum = BigDecimal.valueOf(0);        //总数据
-        BigDecimal v1110 = BigDecimal.valueOf(0);
-        BigDecimal v1130 = BigDecimal.valueOf(0);
-        BigDecimal v1300 = BigDecimal.valueOf(0);
-        BigDecimal v1330 = BigDecimal.valueOf(0);
-        BigDecimal v1400 = BigDecimal.valueOf(0);
-        BigDecimal v1430 = BigDecimal.valueOf(0);
-        List<String> companyCodes = new ArrayList<String>();
+        BigDecimal dayRateSum = BigDecimal.valueOf(0);//当天涨幅数据
+        BigDecimal daysRateSum = BigDecimal.valueOf(0);//总数据涨幅
         for (int i = 1; i < dates.size(); i++) {
             int date = dates.get(i);//小20180911
             int dateNext = dates.get(i - 1);//大20180912
             if (date >= Integer.parseInt(dateStart) && date <= Integer.parseInt(dateEnd)) {
-                v1110 = BigDecimal.valueOf(0);
-                v1130 = BigDecimal.valueOf(0);
-                v1300 = BigDecimal.valueOf(0);
-                v1330 = BigDecimal.valueOf(0);
-                v1400 = BigDecimal.valueOf(0);
-                v1430 = BigDecimal.valueOf(0);
-                companyCodes = new ArrayList<String>();
-                dayGoodList = new ArrayList<DayGood>();
-                if (1100 >= Integer.parseInt(timeStart) && 1100 <= Integer.parseInt(timeEnd)) {
-                    DayGood dayGood1100 = dayGoodService.findByDateATime(date, 1100);
-                    if (dayGood1100 != null) {
-                        DayValue dayValue1100 = dayValueService
-                            .findDayValueByIdAndDate(dayGood1100.getCompanyCode(), date);
-                        if (dayValue1100 != null) {
-                            v1110 = BigDecimal.valueOf(dayValue1100.getRate())
-                                .subtract(BigDecimal.valueOf(dayGood1100.getRate()));
-                            DayValue dayValue1100Next = dayValueService
-                                .findDayValueByIdAndDate(dayGood1100.getCompanyCode(), dateNext);
-                            if (dayValue1100Next != null) {
-                                v1110 = v1110.add(BigDecimal.valueOf(dayValue1100Next.getRate()));
-                                dayGood1100.setNextRate(dayValue1100Next.getRate());
-                            }
-                            dayGood1100.setEndRate(dayValue1100.getRate());
-                            dayGood1100.setEndMainMoney(dayValue1100.getTotalMoney());
-                            companyCodes.add(dayValue1100.getCompanyCode());
-                            dayGoodList.add(dayGood1100);
-                        }
-
-                    }
-                }
-
-                if (1130 >= Integer.parseInt(timeStart) && 1130 <= Integer.parseInt(timeEnd)) {
-                    DayGood dayGood1130 = dayGoodService.findByDateATime(date, 1130);
-                    if (dayGood1130 != null && !companyCodes.contains(dayGood1130.getCompanyCode())) {
-                        DayValue dayValue1130 = dayValueService
-                            .findDayValueByIdAndDate(dayGood1130.getCompanyCode(), date);
-                        if (dayValue1130 != null) {
-                            DayValue dayValue1130Next = dayValueService
-                                .findDayValueByIdAndDate(dayGood1130.getCompanyCode(), dateNext);
-                            v1130 = BigDecimal.valueOf(dayValue1130.getRate())
-                                .subtract(BigDecimal.valueOf(dayGood1130.getRate()));
-                            if (dayValue1130Next != null) {
-                                v1130 = v1130.add(BigDecimal.valueOf(dayValue1130Next.getRate()));
-                                dayGood1130.setNextRate(dayValue1130Next.getRate());
-                            }
-                            dayGood1130.setEndRate(dayValue1130.getRate());
-                            dayGood1130.setEndMainMoney(dayValue1130.getTotalMoney());
-                            companyCodes.add(dayGood1130.getCompanyCode());
-                            dayGoodList.add(dayGood1130);
-                        }
-                    }
-                }
-                if (1300 >= Integer.parseInt(timeStart) && 1300 <= Integer.parseInt(timeEnd)) {
-                    DayGood dayGood1300 = dayGoodService.findByDateATime(date, 1300);
-                    if (dayGood1300 != null && !companyCodes.contains(dayGood1300.getCompanyCode())) {
-                        DayValue dayValue1300 = dayValueService
-                            .findDayValueByIdAndDate(dayGood1300.getCompanyCode(), date);
-                        if (dayValue1300 != null) {
-                            DayValue dayValue1300Next = dayValueService
-                                .findDayValueByIdAndDate(dayGood1300.getCompanyCode(), dateNext);
-                            v1300 = BigDecimal.valueOf(dayValue1300.getRate())
-                                .subtract(BigDecimal.valueOf(dayGood1300.getRate()));
-                            if (dayValue1300Next != null) {
-                                v1300 = v1300.add(BigDecimal.valueOf(dayValue1300Next.getRate()));
-                                dayGood1300.setNextRate(dayValue1300Next.getRate());
-                            }
-                            dayGood1300.setEndRate(dayValue1300.getRate());
-                            dayGood1300.setEndMainMoney(dayValue1300.getTotalMoney());
-                            companyCodes.add(dayGood1300.getCompanyCode());
-                            dayGoodList.add(dayGood1300);
-                        }
-                    }
-                }
-                if (1330 >= Integer.parseInt(timeStart) && 1330 <= Integer.parseInt(timeEnd)) {
-                    DayGood dayGood1330 = dayGoodService.findByDateATime(date, 1330);
-                    if (dayGood1330 != null && !companyCodes.contains(dayGood1330.getCompanyCode())) {
-                        DayValue dayValue1330 = dayValueService
-                            .findDayValueByIdAndDate(dayGood1330.getCompanyCode(), date);
-                        if (dayValue1330 != null) {
-                            v1330 = BigDecimal.valueOf(dayValue1330.getRate())
-                                .subtract(BigDecimal.valueOf(dayGood1330.getRate()));
-                            DayValue dayValue1330Next = dayValueService
-                                .findDayValueByIdAndDate(dayGood1330.getCompanyCode(), dateNext);
-                            if (dayValue1330Next != null) {
-                                v1330 = v1330.add(BigDecimal.valueOf(dayValue1330Next.getRate()));
-                                dayGood1330.setNextRate(dayValue1330Next.getRate());
-                            }
-                            dayGood1330.setEndRate(dayValue1330.getRate());
-                            dayGood1330.setEndMainMoney(dayValue1330.getTotalMoney());
-                            companyCodes.add(dayGood1330.getCompanyCode());
-                            dayGoodList.add(dayGood1330);
-                        }
-                    }
-                }
-
-                if (1400 >= Integer.parseInt(timeStart) && 1400 <= Integer.parseInt(timeEnd)) {
-                    DayGood dayGood1400 = dayGoodService.findByDateATime(date, 1400);
-                    if (dayGood1400 != null && !companyCodes.contains(dayGood1400.getCompanyCode())) {
-                        DayValue dayValue1400 = dayValueService
-                            .findDayValueByIdAndDate(dayGood1400.getCompanyCode(), date);
-                        if (dayValue1400 != null) {
-                            DayValue dayValue1400Next = dayValueService
-                                .findDayValueByIdAndDate(dayGood1400.getCompanyCode(), dateNext);
-                            v1400 = BigDecimal.valueOf(dayValue1400.getRate())
-                                .subtract(BigDecimal.valueOf(dayGood1400.getRate()));
-                            if (dayValue1400Next != null) {
-                                v1400 = v1400.add(BigDecimal.valueOf(dayValue1400Next.getRate()));
-                                dayGood1400.setNextRate(dayValue1400Next.getRate());
-                            }
-                            dayGood1400.setEndRate(dayValue1400.getRate());
-                            dayGood1400.setEndMainMoney(dayValue1400.getTotalMoney());
-                            companyCodes.add(dayGood1400.getCompanyCode());
-                            dayGoodList.add(dayGood1400);
-                        }
-                    }
-                }
-
-                if (1430 >= Integer.parseInt(timeStart) && 1430 <= Integer.parseInt(timeEnd)) {
-                    DayGood dayGood1430 = dayGoodService.findByDateATime(date, 1430);
-                    if (dayGood1430 != null && !companyCodes.contains(dayGood1430.getCompanyCode())) {
-                        DayValue dayValue1430 = dayValueService
-                            .findDayValueByIdAndDate(dayGood1430.getCompanyCode(), date);
-                        if (dayValue1430 != null) {
-                            DayValue dayValue1430Next = dayValueService
-                                .findDayValueByIdAndDate(dayGood1430.getCompanyCode(), dateNext);
-                            v1430 = BigDecimal.valueOf(dayValue1430.getRate())
-                                .subtract(BigDecimal.valueOf(dayGood1430.getRate()));
-                            if (dayValue1430Next != null) {
-                                v1430 = v1430.add(BigDecimal.valueOf(dayValue1430Next.getRate()));
-                                dayGood1430.setNextRate(dayValue1430Next.getRate());
-                            }
-                            dayGood1430.setEndRate(dayValue1430.getRate());
-                            dayGood1430.setEndMainMoney(dayValue1430.getTotalMoney());
-                            companyCodes.add(dayGood1430.getCompanyCode());
-                            dayGoodList.add(dayGood1430);
-                        }
-                    }
-
-                }
-                dayRateSum = v1110.add(v1130).add(v1300).add(v1330).add(v1400).add(v1430);
-                listMap.put(date + "_" + dayRateSum, dayGoodList);
+                List<String> companyCodes = new ArrayList<String>();
+                List<DayGood> dayGoodList = new ArrayList<DayGood>();
+                BigDecimal v1030 = tt(1030, timeStart, timeEnd, date, dateNext, companyCodes, dayGoodList);
+                BigDecimal v1100 = tt(1100, timeStart, timeEnd, date, dateNext, companyCodes, dayGoodList);
+                BigDecimal v1130 = tt(1130, timeStart, timeEnd, date, dateNext, companyCodes, dayGoodList);
+                BigDecimal v1300 = tt(1300, timeStart, timeEnd, date, dateNext, companyCodes, dayGoodList);
+                BigDecimal v1330 = tt(1330, timeStart, timeEnd, date, dateNext, companyCodes, dayGoodList);
+                BigDecimal v1400 = tt(1400, timeStart, timeEnd, date, dateNext, companyCodes, dayGoodList);
+                BigDecimal v1430 = tt(1430, timeStart, timeEnd, date, dateNext, companyCodes, dayGoodList);
+                dayRateSum = v1030.add(v1100).add(v1130).add(v1300).add(v1330).add(v1400).add(v1430);
                 daysRateSum = daysRateSum.add(dayRateSum);
+                listMap.put(date + "_" + dayRateSum, dayGoodList);
             }
-
         }
-
         FormatDate.getFormatDates(request);
         request.setAttribute("dateStart", dateStart);
         request.setAttribute("dateEnd", dateEnd);
@@ -488,5 +347,31 @@ public class DayGoodController {
 
         return "topTimeList";
     }
+
+
+
+    private BigDecimal tt(int timeValue, String timeStart,String timeEnd,int date,int dateNext,List<String> companyCodes,List<DayGood> dayGoodList){
+        BigDecimal value=BigDecimal.valueOf(0);
+        if (timeValue >= Integer.parseInt(timeStart) && timeValue <= Integer.parseInt(timeEnd)) {
+            DayGood dayGood = dayGoodService.findByDateATime(date, timeValue);
+            if (dayGood != null && !companyCodes.contains(dayGood.getCompanyCode())) {
+                DayValue dayValue = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), date);
+                if (dayValue != null) {
+                    DayValue dayValueNext = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), dateNext);
+                    value = BigDecimal.valueOf(dayValue.getRate()).subtract(BigDecimal.valueOf(dayGood.getRate()));//当天赔付率
+                    if (dayValueNext != null) {
+                        value = value.add(BigDecimal.valueOf(dayValueNext.getRate()));//当天赔付率+第二天
+                        dayGood.setNextRate(dayValueNext.getRate());
+                    }
+                    dayGood.setEndRate(dayValue.getRate());
+                    dayGood.setEndMainMoney(dayValue.getTotalMoney());
+                    companyCodes.add(dayGood.getCompanyCode());
+                    dayGoodList.add(dayGood);
+                }
+            }
+        }
+        return value;
+    }
+
 
 }
