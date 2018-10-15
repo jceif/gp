@@ -199,26 +199,28 @@ public class DayGoodController {
         if (StringUtils.isEmpty(dateEnd)) {
             dateEnd = simpleDateFormat.format(Calendar.getInstance().getTime());
         }
-
         Map<String, List<DayGood>> listMap = new LinkedHashMap<String, List<DayGood>>();
-        BigDecimal dayRateSum = BigDecimal.valueOf(0);//当天涨幅数据
         BigDecimal daysRateSum = BigDecimal.valueOf(0);//总数据涨幅
+
+        BigDecimal  fztDaysRateSum=BigDecimal.valueOf(0);//非涨停
         for (int i = 1; i < dates.size(); i++) {
             int date = dates.get(i);//小20180911
             int dateNext = dates.get(i - 1);//大20180912
             if (date >= Integer.parseInt(dateStart) && date <= Integer.parseInt(dateEnd)) {
                 List<String> companyCodes = new ArrayList<String>();
                 List<DayGood> dayGoodList = new ArrayList<DayGood>();
-                BigDecimal v1030 = tt(1030, timeStart, timeEnd, date, dateNext, companyCodes, dayGoodList);
-                BigDecimal v1100 = tt(1100, timeStart, timeEnd, date, dateNext, companyCodes, dayGoodList);
-                BigDecimal v1130 = tt(1130, timeStart, timeEnd, date, dateNext, companyCodes, dayGoodList);
-                BigDecimal v1300 = tt(1300, timeStart, timeEnd, date, dateNext, companyCodes, dayGoodList);
-                BigDecimal v1330 = tt(1330, timeStart, timeEnd, date, dateNext, companyCodes, dayGoodList);
-                BigDecimal v1400 = tt(1400, timeStart, timeEnd, date, dateNext, companyCodes, dayGoodList);
-                BigDecimal v1430 = tt(1430, timeStart, timeEnd, date, dateNext, companyCodes, dayGoodList);
-                dayRateSum = v1030.add(v1100).add(v1130).add(v1300).add(v1330).add(v1400).add(v1430);
+                BigDecimal v1030 []= tt(1030, timeStart, timeEnd, date, dateNext, companyCodes, dayGoodList);
+                BigDecimal v1100 []= tt(1100, timeStart, timeEnd, date, dateNext, companyCodes, dayGoodList);
+                BigDecimal v1130 []= tt(1130, timeStart, timeEnd, date, dateNext, companyCodes, dayGoodList);
+                BigDecimal v1300 []= tt(1300, timeStart, timeEnd, date, dateNext, companyCodes, dayGoodList);
+                BigDecimal v1330 []= tt(1330, timeStart, timeEnd, date, dateNext, companyCodes, dayGoodList);
+                BigDecimal v1400 []= tt(1400, timeStart, timeEnd, date, dateNext, companyCodes, dayGoodList);
+                BigDecimal v1430 []= tt(1430, timeStart, timeEnd, date, dateNext, companyCodes, dayGoodList);
+                BigDecimal dayRateSum = v1030[0].add(v1100[0]).add(v1130[0]).add(v1300[0]).add(v1330[0]).add(v1400[0]).add(v1430[0]);//当天涨幅数据
+                BigDecimal fztDayRateSum=v1030[1].add(v1100[1]).add(v1130[1]).add(v1300[1]).add(v1330[1]).add(v1400[1]).add(v1430[1]);//当天非涨停
                 daysRateSum = daysRateSum.add(dayRateSum);
-                listMap.put(date + "_" + dayRateSum, dayGoodList);
+                fztDaysRateSum = fztDaysRateSum.add(fztDayRateSum);//非涨停 总值
+                listMap.put(date + "_" + dayRateSum+"_"+fztDayRateSum, dayGoodList);
             }
         }
         FormatDate.getFormatDates(request);
@@ -227,7 +229,7 @@ public class DayGoodController {
         request.setAttribute("timeStart", timeStart);
         request.setAttribute("timeEnd", timeEnd);
         request.setAttribute("daysRateSum", daysRateSum);
-        request.setAttribute("dayRateSum", dayRateSum);
+        request.setAttribute("fztDaysRateSum", fztDaysRateSum);
         request.setAttribute("listMap", listMap);
 
         return "topGoodList";
@@ -350,8 +352,9 @@ public class DayGoodController {
 
 
 
-    private BigDecimal tt(int timeValue, String timeStart,String timeEnd,int date,int dateNext,List<String> companyCodes,List<DayGood> dayGoodList){
+    private BigDecimal [] tt(int timeValue, String timeStart,String timeEnd,int date,int dateNext,List<String> companyCodes,List<DayGood> dayGoodList){
         BigDecimal value=BigDecimal.valueOf(0);
+        BigDecimal fztDayRateSum=new BigDecimal(0);
         if (timeValue >= Integer.parseInt(timeStart) && timeValue <= Integer.parseInt(timeEnd)) {
             DayGood dayGood = dayGoodService.findByDateATime(date, timeValue);
             if (dayGood != null && !companyCodes.contains(dayGood.getCompanyCode())) {
@@ -367,10 +370,13 @@ public class DayGoodController {
                     dayGood.setEndMainMoney(dayValue.getTotalMoney());
                     companyCodes.add(dayGood.getCompanyCode());
                     dayGoodList.add(dayGood);
+                    if(dayGood.getRate()<9.6){
+                        fztDayRateSum=value;
+                    }
                 }
             }
         }
-        return value;
+        return new BigDecimal[]{value,fztDayRateSum};
     }
 
 

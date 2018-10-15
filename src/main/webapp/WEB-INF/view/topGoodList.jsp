@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <title>${daysRateSum}</title>
+    <title>${daysRateSum}|${fztDaysRateSum}</title>
     <link rel="stylesheet" type="text/css"
           href="${ctx}assets/css/common/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${ctx}assets/css/common/list.css">
@@ -78,7 +78,8 @@
                 <th>endRate</th>
                 <th>nextRate</th>
                 <th>time</th>
-                <th>rateSum</th>
+                <th>rate</th>
+                <th>fztRate</th>
             </tr>
         <%--item 前，itemOld后--%>
             <c:forEach items="${listMap}" var="item"  step="1"  varStatus="var">
@@ -102,9 +103,12 @@
                                 <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>"><span style="<c:if test="${v.rate>9.5}">color:red;</c:if>">${v.rate}%</td>
                                <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>">${v.endRate}%</td>
                                <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>">${v.nextRate}%</td>
-                                <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>">${v.time}</td>
+                                <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>">
+                                    <a target="_blank" href="/data/chart?companyCode=${v.companyCode}&date=${fn:split(item.key, '_')[0]}">${v.time}</a>
+                                </td>
                             <c:if test="${status.index==0}">
                             <td style="border-bottom: #1b6d85 solid 1px" rowspan="${fn:length(item.value)}">${fn:split(item.key, '_')[1]}</td>
+                                <td style="border-bottom: #1b6d85 solid 1px" rowspan="${fn:length(item.value)}">${fn:split(item.key, '_')[2]}</td>
                             </c:if>
                         </tr>
                     </c:forEach>
