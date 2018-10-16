@@ -31,9 +31,7 @@ public class DayGoodServiceImpl implements DayGoodService {
 	}
 
 	
-	public int deleteDayGoodAll()	{
-		return this.dayGoodMapper.deleteDayGoodAll();
-	}
+
 
 	
 	public void updateDayGood(DayGood dayGood)	{

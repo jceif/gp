@@ -31,9 +31,6 @@ public class DayValueServiceImpl implements DayValueService {
   }
 
 
-  public int deleteDayValueAll() {
-    return this.dayValueMapper.deleteDayValueAll();
-  }
 
 
   public void updateDayValue(DayValue dayValue) {
@@ -93,34 +90,16 @@ public class DayValueServiceImpl implements DayValueService {
     return this.dayValueMapper.findCountDayValueQuery(map);
   }
 
-  @Override
-  public List<DayValue> dayValueTop5(String companyCode) {
-    Calendar calendar = Calendar.getInstance();
-    calendar.add(Calendar.DATE, -100);
-    List<DayValue> dayValues = dayValueMapper
-        .dayValueTop5(companyCode, Integer.parseInt(simpleDateFormat.format(calendar.getTime())));
-    return dayValues;
-  }
 
-  @Override
-  public Double dayValueAverage(String companyCode) {
-    Calendar calendar = Calendar.getInstance();
-    calendar.add(Calendar.DATE, -100);
-    Double avgValue = dayValueMapper
-        .dayValueAverage(companyCode, Integer.parseInt(simpleDateFormat.format(calendar.getTime())));
-    return avgValue;
 
-  }
+
 
   @Override
   public List<DayValue> dayValueUpList() {
     return dayValueMapper.dayValueUpList();
   }
 
-  @Override
-  public List<DayValue> findTotalMoneyTopList(int dateStart, int dateEnd) {
-    return  dayValueMapper.findTotalMoneyTopList( dateStart,  dateEnd);
-  }
+
 
   @Override
   public DayValue findDayValueByIdAndDate(String companyCode, int date) {

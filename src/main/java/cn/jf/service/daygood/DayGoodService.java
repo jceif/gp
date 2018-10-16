@@ -18,7 +18,7 @@ public interface DayGoodService {
 
  void deleteDayGoodById(String dayGoodId);
 
- int deleteDayGoodAll();
+
 
  void updateDayGood(DayGood dayGood);
 

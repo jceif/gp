@@ -49,9 +49,7 @@ insert into day_value
 	delete from day_value
 	where id=#{id}
 </delete>
-<delete id="deleteDayValueAll">
-	delete from day_value
-</delete>
+
 <select id="findDayValueById" resultMap="dayValue">
 	select * from day_value
 	where id=#{id}
@@ -223,15 +221,8 @@ id=#{item.id}
 </select>
 
 
-	<select id="dayValueTop5" resultMap="dayValue">
-		select * from day_value where company_code=#{companyCode} and `date` &gt;= #{date} ORDER  by end_price desc limit 3
-	</select>
 
 
-
-	<select id="dayValueAverage" resultType="java.lang.Double">
-		select FORMAT(AVG(end_price),2)  from day_value where company_code=#{companyCode} and `date` &gt;= #{date} ORDER  by id  desc
-	</select>
 
 
 
@@ -254,9 +245,7 @@ and (d1.k-d2.k)>=6
 
 
 
-	<select id="findTotalMoneyTopList" resultMap="dayValue">
-		select * from (select * from day_value WHERE date between  #{dateStart} and #{dateEnd} GROUP BY date ORDER BY total_money desc) d order by date desc
- </select>
+
 
 
 

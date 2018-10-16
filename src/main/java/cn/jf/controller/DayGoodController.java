@@ -253,29 +253,23 @@ public class DayGoodController {
         }
         List<DayGood> dayGoods = dayGoodService.findTopOneByTime(time, Integer.parseInt(dateStart), Integer.parseInt(dateEnd));
         List<Integer> dates = dayValueService.findDays();
-        DayValue currentDay = null;
-        DayValue nextDay = null;
-        DayValue threeDay = null;
-        DayGoodVo1 dayGoodVo1 = null;
-        DayGood dayGood = null;
         double sellMinPrice = -1.5;//最小卖出价格
         BigDecimal fztRateSum = BigDecimal.valueOf(0);//非涨停收益率
         BigDecimal rateSum = BigDecimal.valueOf(0);//所有收益率
         BigDecimal ztRateSum = BigDecimal.valueOf(0);//涨停收益率
         List<DayGoodVo1> dayGoodVo1s = new ArrayList<DayGoodVo1>();
         for (int i = 1; i < dayGoods.size(); i++) {
-            dayGood = dayGoods.get(i);
+            DayGood  dayGood = dayGoods.get(i);
             if (dates.indexOf(dayGood.getDate()) == 0) {
                 continue;
             }
-            currentDay = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), dayGood.getDate());
-            nextDay = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), dates.get(dates.indexOf(dayGood.getDate()) - 1));
+            DayValue currentDay = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), dayGood.getDate());
+            DayValue nextDay = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), dates.get(dates.indexOf(dayGood.getDate()) - 1));
             if (dayGood.getRate() < 9.5) {
-                fztRateSum = fztRateSum
-                        .add(BigDecimal.valueOf(currentDay.getRate()).subtract(BigDecimal.valueOf(dayGood.getRate())));
+                fztRateSum = fztRateSum.add(BigDecimal.valueOf(currentDay.getRate()).subtract(BigDecimal.valueOf(dayGood.getRate())));
             }
             rateSum = rateSum.add(BigDecimal.valueOf(currentDay.getRate()).subtract(BigDecimal.valueOf(dayGood.getRate())));
-            dayGoodVo1 = new DayGoodVo1();
+            DayGoodVo1 dayGoodVo1 = new DayGoodVo1();
             dayGoodVo1.setPreTime(Integer.parseInt(time));
             dayGoodVo1.setPreRate(dayGood.getRate());
             dayGoodVo1.setPrePrice(dayGood.getPrice());
@@ -294,10 +288,10 @@ public class DayGoodController {
                 //如果跌幅超过-2必须卖掉
                 if (nextDay.getRate() < sellMinPrice) {
                     if (dayGoodVo1.getPreRate() < 9.5) {
-                        fztRateSum = fztRateSum.add(BigDecimal.valueOf(sellMinPrice - 0.5));
-                        rateSum = rateSum.add(BigDecimal.valueOf(sellMinPrice - 0.5));
+                        fztRateSum = fztRateSum.add(BigDecimal.valueOf(sellMinPrice - 1));
+                        rateSum = rateSum.add(BigDecimal.valueOf(sellMinPrice - 1));
                     } else {
-                        rateSum = rateSum.add(BigDecimal.valueOf(sellMinPrice - 2));
+                        rateSum = rateSum.add(BigDecimal.valueOf(sellMinPrice - 3));
                     }
                 } else {
                     rateSum = rateSum.add(BigDecimal.valueOf(nextDay.getRate()));
@@ -306,14 +300,14 @@ public class DayGoodController {
                     }
                 }
                 if (dates.indexOf(dayGood.getDate()) > 1) {
-                    threeDay = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), dates.get(dates.indexOf(dayGood.getDate()) - 2));
+                    DayValue threeDay = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), dates.get(dates.indexOf(dayGood.getDate()) - 2));
                     if (threeDay != null && threeDay.getId() > 0) {
                         //如果第二天的涨幅大于三 留到第二天卖掉
                         if (nextDay.getRate() > 6) {
                             if (threeDay.getRate() < sellMinPrice) {
                                 if (dayGoodVo1.getPreRate() < 9.5) {
-                                    fztRateSum = fztRateSum.add(BigDecimal.valueOf(sellMinPrice - 0.5));
-                                    rateSum = rateSum.add(BigDecimal.valueOf(sellMinPrice - 0.5));
+                                    fztRateSum = fztRateSum.add(BigDecimal.valueOf(sellMinPrice - 1));
+                                    rateSum = rateSum.add(BigDecimal.valueOf(sellMinPrice - 1));
                                 } else {
                                     rateSum = rateSum.add(BigDecimal.valueOf(sellMinPrice - 2));
                                 }
@@ -351,7 +345,17 @@ public class DayGoodController {
     }
 
 
-
+    /**
+     *
+     * @param timeValue 当前查询的时间
+     * @param timeStart 开始时间
+     * @param timeEnd 结束时间
+     * @param date 当前查询的日期
+     * @param dateNext 第二天的日期
+     * @param companyCodes 公司代码
+     * @param dayGoodList 公司
+     * @return
+     */
     private BigDecimal [] tt(int timeValue, String timeStart,String timeEnd,int date,int dateNext,List<String> companyCodes,List<DayGood> dayGoodList){
         BigDecimal value=BigDecimal.valueOf(0);
         BigDecimal fztDayRateSum=new BigDecimal(0);

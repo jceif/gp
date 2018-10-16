@@ -13,7 +13,6 @@ public interface DayValueService {
 
   void deleteDayValueById(String dayValueId);
 
-  int deleteDayValueAll();
 
   void updateDayValue(DayValue dayValue);
 
@@ -35,14 +34,9 @@ public interface DayValueService {
 
   int findCountDayValueQuery(Map map);
 
-  List<DayValue> dayValueTop5(String companyCode);
-
-  Double dayValueAverage(String companyCode);
 
   List<DayValue> dayValueUpList();
 
-
-  List<DayValue> findTotalMoneyTopList(int dateStart, int dateEnd);
 
   DayValue findDayValueByIdAndDate( String companyCode,int date);
 

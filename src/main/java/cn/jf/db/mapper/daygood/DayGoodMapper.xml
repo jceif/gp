@@ -107,9 +107,7 @@ insert into day_good
 	delete from day_good
 	where id=#{id}
 </delete>
-  <delete id="deleteDayGoodAll">
-	delete from day_good
-</delete>
+
   <select id="findDayGoodById" resultMap="dayGood">
 	select * from day_good
 	where id=#{id}

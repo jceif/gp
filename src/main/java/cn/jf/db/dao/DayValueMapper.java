@@ -15,7 +15,7 @@ public interface DayValueMapper {
 
 	 void deleteDayValueById(String dayValueId);
 
-	 int deleteDayValueAll();
+
 
 	 void updateDayValue(DayValue dayValue);
 
@@ -37,13 +37,12 @@ public interface DayValueMapper {
 
 	 int findCountDayValueQuery(Map map);
 
-	List<DayValue> dayValueTop5(@Param("companyCode") String companyCode,@Param("date") int date);
 
-	Double dayValueAverage(@Param("companyCode") String companyCode,@Param("date") int date);
+
 
 	List<DayValue> dayValueUpList();
 
-	List<DayValue> findTotalMoneyTopList(@Param("dateStart") int dateStart,@Param("dateEnd") int dateEnd);
+
 
 	DayValue findDayValueByIdAndDate(@Param("companyCode") String companyCode,@Param("date") int date);
 
