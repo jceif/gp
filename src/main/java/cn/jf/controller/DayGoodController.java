@@ -260,6 +260,10 @@ public class DayGoodController {
         List<DayGoodVo1> dayGoodVo1s = new ArrayList<DayGoodVo1>();
         for (int i = 1; i < dayGoods.size(); i++) {
             DayGood  dayGood = dayGoods.get(i);
+            //创业板
+            if(dayGood.getCompanyCode().startsWith("300")) {
+                continue;
+            }
             if (dates.indexOf(dayGood.getDate()) == 0) {
                 continue;
             }
@@ -361,21 +365,24 @@ public class DayGoodController {
         BigDecimal fztDayRateSum=new BigDecimal(0);
         if (timeValue >= Integer.parseInt(timeStart) && timeValue <= Integer.parseInt(timeEnd)) {
             DayGood dayGood = dayGoodService.findByDateATime(date, timeValue);
-            if (dayGood != null && !companyCodes.contains(dayGood.getCompanyCode())) {
-                DayValue dayValue = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), date);
-                if (dayValue != null) {
-                    DayValue dayValueNext = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), dateNext);
-                    value = BigDecimal.valueOf(dayValue.getRate()).subtract(BigDecimal.valueOf(dayGood.getRate()));//当天赔付率
-                    if (dayValueNext != null) {
-                        value = value.add(BigDecimal.valueOf(dayValueNext.getRate()));//当天赔付率+第二天
-                        dayGood.setNextRate(dayValueNext.getRate());
-                    }
-                    dayGood.setEndRate(dayValue.getRate());
-                    dayGood.setEndMainMoney(dayValue.getTotalMoney());
-                    companyCodes.add(dayGood.getCompanyCode());
-                    dayGoodList.add(dayGood);
-                    if(dayGood.getRate()<9.6){
-                        fztDayRateSum=value;
+            //非创业板
+            if(!dayGood.getCompanyCode().startsWith("300")) {
+                if (dayGood != null && !companyCodes.contains(dayGood.getCompanyCode())) {
+                    DayValue dayValue = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), date);
+                    if (dayValue != null) {
+                        DayValue dayValueNext = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), dateNext);
+                        value = BigDecimal.valueOf(dayValue.getRate()).subtract(BigDecimal.valueOf(dayGood.getRate()));//当天赔付率
+                        if (dayValueNext != null) {
+                            value = value.add(BigDecimal.valueOf(dayValueNext.getRate()));//当天赔付率+第二天
+                            dayGood.setNextRate(dayValueNext.getRate());
+                        }
+                        dayGood.setEndRate(dayValue.getRate());
+                        dayGood.setEndMainMoney(dayValue.getTotalMoney());
+                        companyCodes.add(dayGood.getCompanyCode());
+                        dayGoodList.add(dayGood);
+                        if (dayGood.getRate() < 9.5) {
+                            fztDayRateSum = value;
+                        }
                     }
                 }
             }

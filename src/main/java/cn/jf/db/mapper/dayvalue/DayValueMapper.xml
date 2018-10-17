@@ -257,7 +257,7 @@ and (d1.k-d2.k)>=6
  </select>
 
 	<select id="findDays" resultType="java.lang.Integer">
-		select date from day_value   group  by date order by date desc limit 110
+		select date from day_value   group  by date order by date desc limit 365
  </select>
 
 
