@@ -121,4 +121,9 @@ public class DayValueServiceImpl implements DayValueService {
     return dayValueMapper.findByCodeADate(companyCode,date);
   }
 
+  @Override
+  public List<DayValue> findDayValueZt(float rate, float totalMoney, int startDate, int endDate) {
+    return dayValueMapper.findDayValueZt(rate,totalMoney,startDate,endDate);
+  }
+
 }

@@ -3,6 +3,7 @@ package cn.jf.controller;
 import cn.jf.common.FormatDate;
 import cn.jf.common.PageUtil;
 import cn.jf.model.company.Company;
+import cn.jf.model.daygood.DayGood;
 import cn.jf.model.dayvalue.DayValue;
 import cn.jf.model.dayvalue.DayValueVO;
 import cn.jf.service.company.CompanyService;
@@ -96,6 +97,95 @@ public class DayValueController {
         return "dayDetail";
     }
 
+    @RequestMapping("/topRateList")
+    public String findDayValueZt(HttpServletRequest request, String rate,String totalMoney,String dateStart,String dateEnd) {
+        if (request.getSession().getAttribute("user") == null) {
+            return "redirect:/login";
+        }
+
+        if (StringUtils.isEmpty(rate)) {
+            rate="9";
+        }
+        if (StringUtils.isEmpty(totalMoney)) {
+            totalMoney="1000";
+        }
+        if (StringUtils.isEmpty(dateStart)) {
+            int month = Calendar.getInstance().get(Calendar.MONTH) + 1;   //获取月份，0表示1月份
+            dateStart = Calendar.getInstance().get(Calendar.YEAR) + "" + (month < 10 ? "0" + month : month) + "01";
+        }
+        if (StringUtils.isEmpty(dateEnd)) {
+            dateEnd = simpleDateFormat.format(Calendar.getInstance().getTime());
+        }
+        List<Integer> dates = dayValueService.findDays();
+        List<DayValue> dayValues = dayValueService.findDayValueZt(Float.parseFloat(rate), Float.parseFloat(totalMoney),Integer.parseInt(dateStart), Integer.parseInt(dateEnd));
+        Map<String, List<DayValue>> listMap = new LinkedHashMap<String, List<DayValue>>();
+        BigDecimal dayRateSum = BigDecimal.valueOf(0);//总数据涨幅
+        BigDecimal daysRateSum = BigDecimal.valueOf(0);//总数据涨幅
+
+        BigDecimal rateTest = BigDecimal.valueOf(0);//测试
+        List<DayValue> dayValueList=new ArrayList<DayValue>();
+        int currentDate=0;
+        for (int i = 0; i < dayValues.size(); i++) {
+            if(currentDate==0){
+                currentDate=dayValues.get(i).getDate();
+            }
+            DayValue dayValue = dayValues.get(i);
+            //创业板
+            if (dayValue.getCompanyCode().startsWith("300") || dates.indexOf(dayValue.getDate()) == 0) {
+                continue;
+            }
+
+            if (currentDate != dayValues.get(i).getDate()) {
+                if(dayValueList.size()>0) {
+                    listMap.put(currentDate + "_" + (dayRateSum.divide(BigDecimal.valueOf(dayValueList.size()), 2, BigDecimal.ROUND_HALF_EVEN)), dayValueList);
+                    daysRateSum = daysRateSum.add(dayRateSum.divide(BigDecimal.valueOf(dayValueList.size()), 2, BigDecimal.ROUND_HALF_EVEN));
+                    currentDate = dayValues.get(i).getDate();
+                }
+                    dayRateSum = BigDecimal.valueOf(0);
+                    dayValueList = new ArrayList<DayValue>();
+
+
+            }
+
+            DayValue preDay = dayValueService.findDayValueByIdAndDate(dayValue.getCompanyCode(), dates.get(dates.indexOf(dayValue.getDate()) + 1));
+            DayValue nextDay = dayValueService.findDayValueByIdAndDate(dayValue.getCompanyCode(), dates.get(dates.indexOf(dayValue.getDate()) - 1));
+            if(preDay==null){
+                System.out.println("----"+dayValue.getCompanyCode()+"-"+dayValue.getDate());
+            }
+            dayValue.setPreRate(preDay==null?0.00:preDay.getRate());
+            dayValue.setNextRate(nextDay==null?0.00:nextDay.getRate());
+            if(preDay!=null &&preDay.getMacd()!=0 && preDay.getDiff()!=0 && preDay.getDea()!=0  ) {
+                dayValue.setPreK(preDay.getK());
+                dayValue.setPreD(preDay.getD());
+                dayValue.setPreJ(preDay.getJ());
+            }
+          /*  if(dayValue.getPreD()<40 && dayValue.getPreJ()*2<20 && dayValue.getPreD()>dayValue.getK()){
+                rateTest=rateTest.add(BigDecimal.valueOf(dayValue.getNextRate()));
+            }*/
+
+            if((dayValue.getPreJ()*2)<dayValue.getPreD()  && dayValue.getPreJ()<21 && dayValue.getTotalMoney()<2300){
+                rateTest=rateTest.add(BigDecimal.valueOf(dayValue.getNextRate()));
+            }else{
+                continue;
+            }
+
+
+            if(nextDay!=null) {
+                dayRateSum = dayRateSum.add(BigDecimal.valueOf(nextDay.getRate()));
+            }
+
+            dayValueList.add(dayValue);
+        }
+        FormatDate.getFormatDates(request);
+        request.setAttribute("rate", rate);
+        request.setAttribute("totalMoney", totalMoney);
+        request.setAttribute("dateStart", dateStart);
+        request.setAttribute("dateEnd", dateEnd);
+        request.setAttribute("daysRateSum", daysRateSum);
+        request.setAttribute("rateTest", rateTest);
+        request.setAttribute("listMap", listMap);
+        return "dayvalue/topRateList";
+    }
 
 
 

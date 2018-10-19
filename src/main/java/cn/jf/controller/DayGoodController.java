@@ -232,7 +232,7 @@ public class DayGoodController {
         request.setAttribute("fztDaysRateSum", fztDaysRateSum);
         request.setAttribute("listMap", listMap);
 
-        return "topGoodList";
+        return "daygood/topGoodList";
     }
 
 
@@ -345,7 +345,7 @@ public class DayGoodController {
         request.setAttribute("rateSum", rateSum);
         request.setAttribute("ztRateSum", ztRateSum);
 
-        return "topTimeList";
+        return "daygood/topTimeList";
     }
 
 

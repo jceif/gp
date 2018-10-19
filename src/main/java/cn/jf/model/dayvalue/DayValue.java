@@ -37,11 +37,35 @@ public class DayValue implements Serializable {
   private float d;
   private float j;
 
+  private float preK;//数据库中无此字段
+  private float preD;//数据库中无此字段
+  private float preJ;//数据库中无此字段
+  private Double preRate;//数据库中无此字段 前一天rate
+  private Double nextRate;//数据库中无此字段 后一天rate
 
+  public float getPreK() {
+    return preK;
+  }
 
+  public void setPreK(float preK) {
+    this.preK = preK;
+  }
 
+  public float getPreD() {
+    return preD;
+  }
 
+  public void setPreD(float preD) {
+    this.preD = preD;
+  }
 
+  public float getPreJ() {
+    return preJ;
+  }
+
+  public void setPreJ(float preJ) {
+    this.preJ = preJ;
+  }
 
   public int getId() {
     return this.id;
@@ -197,5 +221,23 @@ public class DayValue implements Serializable {
 
   public void setJ(float j) {
     this.j = j;
+  }
+
+  public Double getPreRate() {
+    return preRate;
+  }
+
+  public void setPreRate(Double preRate) {
+    this.preRate = preRate;
+  }
+
+
+
+  public Double getNextRate() {
+    return nextRate;
+  }
+
+  public void setNextRate(Double nextRate) {
+    this.nextRate = nextRate;
   }
 }

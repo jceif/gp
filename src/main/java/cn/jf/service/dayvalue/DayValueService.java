@@ -46,4 +46,6 @@ public interface DayValueService {
 
   DayValue findByCodeADate(String companyCode, int date);
 
+  List<DayValue> findDayValueZt(float rate, float totalMoney,int startDate,int endDate);
+
 }

@@ -255,10 +255,15 @@ and (d1.k-d2.k)>=6
 			AND date &lt;= #{date}
 		</if>
  </select>
-
 	<select id="findDays" resultType="java.lang.Integer">
 		select date from day_value   group  by date order by date desc limit 365
  </select>
+
+
+	<select id="findDayValueZt"  resultMap="dayValue">
+		select * from day_value where rate>#{rate} and total_money>#{totalMoney} and date BETWEEN #{startDate} and #{endDate}  order by date desc, total_money desc
+ 	</select>
+
 
 
 	<select id="findByCodeADate" resultMap="dayValue">
