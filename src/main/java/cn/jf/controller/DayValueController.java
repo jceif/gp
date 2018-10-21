@@ -143,6 +143,7 @@ public class DayValueController {
                 }
                     dayRateSum = BigDecimal.valueOf(0);
                     dayValueList = new ArrayList<DayValue>();
+                currentDate =dayValue.getDate();
 
 
             }
@@ -163,7 +164,20 @@ public class DayValueController {
                 rateTest=rateTest.add(BigDecimal.valueOf(dayValue.getNextRate()));
             }*/
 
-            if((dayValue.getPreJ()*2)<dayValue.getPreD()  && dayValue.getPreJ()<21 && dayValue.getTotalMoney()<2300){
+        /*    if((dayValue.getPreJ()*2)<dayValue.getPreD()  && dayValue.getPreJ()<21 && dayValue.getTotalMoney()<2300){
+                rateTest=rateTest.add(BigDecimal.valueOf(dayValue.getNextRate()));
+            }else{
+                continue;
+            }*/
+
+
+       /*     if( (dayValue.getPreJ()<1 || (dayValue.getPreJ()>2 && dayValue.getPreJ()<6))  &&  dayValue.getPreD()>0 && dayValue.getPreK()>0){
+                rateTest=rateTest.add(BigDecimal.valueOf(dayValue.getNextRate()));
+            }else{
+                continue;
+            }*/
+
+            if(  dayValue.getPreJ()<8  &&  dayValue.getPreD()>22 && dayValue.getPreK()>0){
                 rateTest=rateTest.add(BigDecimal.valueOf(dayValue.getNextRate()));
             }else{
                 continue;
@@ -182,7 +196,7 @@ public class DayValueController {
         request.setAttribute("dateStart", dateStart);
         request.setAttribute("dateEnd", dateEnd);
         request.setAttribute("daysRateSum", daysRateSum);
-        request.setAttribute("rateTest", rateTest);
+        //request.setAttribute("rateTest", rateTest);
         request.setAttribute("listMap", listMap);
         return "dayvalue/topRateList";
     }

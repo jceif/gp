@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <title>${daysRateSum}|${rateTest}</title>
+    <title>${daysRateSum}</title>
     <link rel="stylesheet" type="text/css"
           href="${ctx}assets/css/common/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${ctx}assets/css/common/list.css">
