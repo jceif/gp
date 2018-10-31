@@ -139,7 +139,7 @@ public class DayValueController {
                 if(dayValueList.size()>0) {
                     listMap.put(currentDate + "_" + (dayRateSum.divide(BigDecimal.valueOf(dayValueList.size()), 2, BigDecimal.ROUND_HALF_EVEN)), dayValueList);
                     daysRateSum = daysRateSum.add(dayRateSum.divide(BigDecimal.valueOf(dayValueList.size()), 2, BigDecimal.ROUND_HALF_EVEN));
-                    currentDate = dayValues.get(i).getDate();
+                   // currentDate = dayValues.get(i).getDate();
                 }
                     dayRateSum = BigDecimal.valueOf(0);
                     dayValueList = new ArrayList<DayValue>();
@@ -147,7 +147,6 @@ public class DayValueController {
 
 
             }
-
             DayValue preDay = dayValueService.findDayValueByIdAndDate(dayValue.getCompanyCode(), dates.get(dates.indexOf(dayValue.getDate()) + 1));
             DayValue nextDay = dayValueService.findDayValueByIdAndDate(dayValue.getCompanyCode(), dates.get(dates.indexOf(dayValue.getDate()) - 1));
             if(preDay==null){
@@ -160,30 +159,11 @@ public class DayValueController {
                 dayValue.setPreD(preDay.getD());
                 dayValue.setPreJ(preDay.getJ());
             }
-          /*  if(dayValue.getPreD()<40 && dayValue.getPreJ()*2<20 && dayValue.getPreD()>dayValue.getK()){
-                rateTest=rateTest.add(BigDecimal.valueOf(dayValue.getNextRate()));
-            }*/
-
-        /*    if((dayValue.getPreJ()*2)<dayValue.getPreD()  && dayValue.getPreJ()<21 && dayValue.getTotalMoney()<2300){
-                rateTest=rateTest.add(BigDecimal.valueOf(dayValue.getNextRate()));
-            }else{
-                continue;
-            }*/
-
-
-       /*     if( (dayValue.getPreJ()<1 || (dayValue.getPreJ()>2 && dayValue.getPreJ()<6))  &&  dayValue.getPreD()>0 && dayValue.getPreK()>0){
-                rateTest=rateTest.add(BigDecimal.valueOf(dayValue.getNextRate()));
-            }else{
-                continue;
-            }*/
-
             if(  dayValue.getPreJ()<8  &&  dayValue.getPreD()>22 && dayValue.getPreK()>0){
                 rateTest=rateTest.add(BigDecimal.valueOf(dayValue.getNextRate()));
             }else{
                 continue;
             }
-
-
             if(nextDay!=null) {
                 dayRateSum = dayRateSum.add(BigDecimal.valueOf(nextDay.getRate()));
             }
