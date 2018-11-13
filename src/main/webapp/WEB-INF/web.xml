@@ -2,6 +2,7 @@
 <web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
@@ -9,6 +10,9 @@
             classpath:config/spring-mybatis.xml
         </param-value>
     </context-param>
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
 
     <context-param>
         <param-name>log4jConfigLocation</param-name>
@@ -20,6 +24,24 @@
             org.springframework.web.util.Log4jConfigListener
         </listener-class>
     </listener>
+
+
+    <servlet>
+        <servlet-name>dispatcherServlet</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:/config/spring-servlet.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>dispatcherServlet</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+
 
 
     <filter>
@@ -40,27 +62,8 @@
     </filter-mapping>
 
 
-    <servlet>
-        <servlet-name>springDispatcherServlet</servlet-name>
-        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-        <init-param>
-            <param-name>contextConfigLocation</param-name>
-            <param-value>classpath:/config/spring-context.xml</param-value>
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
 
-    <!-- Map all requests to the DispatcherServlet for handling -->
-    <servlet-mapping>
-        <servlet-name>springDispatcherServlet</servlet-name>
-        <url-pattern>/</url-pattern>
-    </servlet-mapping>
 
-    <!--web.xml默认配置-->
-<!--    <welcome-file-list>
-        <welcome-file>/</welcome-file>
-        <welcome-file>/login/</welcome-file>
-    </welcome-file-list>-->
 
     <servlet-mapping>
         <servlet-name>default</servlet-name>
