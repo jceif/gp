@@ -41,7 +41,6 @@
 
     <!--  ================================== import sub-config file  ================================== -->
     <import resource="spring-mybatis.xml" />
-    <import resource="spring-servlet.xml" />
     <!--  ================================== /import sub-config file  ================================== -->
 
 
