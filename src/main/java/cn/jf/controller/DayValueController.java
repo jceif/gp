@@ -3,24 +3,22 @@ package cn.jf.controller;
 import cn.jf.common.FormatDate;
 import cn.jf.common.PageUtil;
 import cn.jf.model.company.Company;
-import cn.jf.model.daygood.DayGood;
 import cn.jf.model.dayvalue.DayValue;
-import cn.jf.model.dayvalue.DayValueVO;
+import cn.jf.model.dayvalue.DayValueVo1;
 import cn.jf.service.company.CompanyService;
 import cn.jf.service.dayvalue.DayValueService;
 import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.druid.util.StringUtils;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/day/")
@@ -42,7 +40,7 @@ public class DayValueController {
         dayValueService.dayValueUpList();
         List<DayValue> dayValues = dayValueService.dayValueUpList();
         request.setAttribute("dayValues", dayValues);
-        return "dayIndex";
+        return "dayvalue/dayIndex";
     }
 
     @RequestMapping("/detail")
@@ -94,7 +92,7 @@ public class DayValueController {
         request.setAttribute("ks", JSONUtils.toJSONString(ks));
         request.setAttribute("ds", JSONUtils.toJSONString(ds));
         request.setAttribute("js", JSONUtils.toJSONString(js));
-        return "dayDetail";
+        return "dayvalue/dayDetail";
     }
 
     @RequestMapping("/topRateList")
@@ -151,15 +149,22 @@ public class DayValueController {
             DayValue nextDay = dayValueService.findDayValueByIdAndDate(dayValue.getCompanyCode(), dates.get(dates.indexOf(dayValue.getDate()) - 1));
             if(preDay==null){
                 System.out.println("----"+dayValue.getCompanyCode()+"-"+dayValue.getDate());
+                continue;
             }
+
             dayValue.setPreRate(preDay==null?0.00:preDay.getRate());
             dayValue.setNextRate(nextDay==null?0.00:nextDay.getRate());
+            //前一天的增长比率小于-4
+            if( preDay.getRate()<-4){
+                continue;
+            }
             if(preDay!=null &&preDay.getMacd()!=0 && preDay.getDiff()!=0 && preDay.getDea()!=0  ) {
                 dayValue.setPreK(preDay.getK());
                 dayValue.setPreD(preDay.getD());
                 dayValue.setPreJ(preDay.getJ());
             }
-            if(  dayValue.getPreJ()<8  &&  dayValue.getPreD()>22 && dayValue.getPreK()>0){
+            /*if(  dayValue.getPreJ()<1   && dayValue.getPreK()>0 ){*/
+            if(  dayValue.getPreJ()<2  &&  dayValue.getPreD()>22 && dayValue.getPreK()>0 ){
                 rateTest=rateTest.add(BigDecimal.valueOf(dayValue.getNextRate()));
             }else{
                 continue;
@@ -182,5 +187,44 @@ public class DayValueController {
     }
 
 
+    @RequestMapping("/topInflowList")
+    public String findByInflowDays(HttpServletRequest request,String dateEnd){
+        int dateCurrent=0;
+        int dateStart=0;
+        Calendar calendar=Calendar.getInstance();
+        if (dateEnd!=null && !StringUtils.isEmpty(dateEnd)) {
+            try {
+                if(calendar.getTime().getDay()==6){
+                    calendar.set(Calendar.HOUR,48);
+                }else if(calendar.getTime().getDay()==0){
+                    calendar.set(Calendar.HOUR,24);
+                }
+                calendar.setTimeInMillis(simpleDateFormat.parse(dateEnd).getTime());
+                calendar.set(Calendar.HOUR,-240);
+                dateCurrent=Integer.parseInt(simpleDateFormat.format(calendar.getTime()));
+                dateCurrent=Integer.parseInt(simpleDateFormat.format(calendar.getTime()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }else{
+            if(calendar.getTime().getDay()==6){
+                calendar.set(Calendar.HOUR,48);
+            }else if(calendar.getTime().getDay()==0){
+                calendar.set(Calendar.HOUR,24);
+            }
+            dateCurrent=Integer.parseInt(simpleDateFormat.format(calendar.getTime()));
+            calendar.set(Calendar.HOUR,-24);
+            dateEnd=simpleDateFormat.format(calendar.getTime());
+            calendar.set(Calendar.HOUR,-7*24);
+            dateStart=Integer.parseInt(simpleDateFormat.format(calendar.getTime()));
+        }
+        List<DayValueVo1> dayValueVo1List=dayValueService.findByInflowDays(dateStart,Integer.parseInt(dateEnd),dateCurrent);
+        request.setAttribute("dateStart", dateStart);
+        request.setAttribute("dateEnd", dateEnd);
+        request.setAttribute("dateCurrent", dateCurrent);
+        request.setAttribute("list", dayValueVo1List);
+        FormatDate.getFormatDates_Day(request);
+        return "dayvalue/topInflow";
+    }
 
 }

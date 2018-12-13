@@ -7,6 +7,7 @@ import java.util.Map;
 import cn.jf.common.PageUtil;
 import cn.jf.db.dao.DayValueMapper;
 import cn.jf.model.dayvalue.DayValue;
+import cn.jf.model.dayvalue.DayValueVo1;
 import cn.jf.service.dayvalue.DayValueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -125,5 +126,11 @@ public class DayValueServiceImpl implements DayValueService {
   public List<DayValue> findDayValueZt(float rate, float totalMoney, int startDate, int endDate) {
     return dayValueMapper.findDayValueZt(rate,totalMoney,startDate,endDate);
   }
+
+  @Override
+  public List<DayValueVo1> findByInflowDays(int startDate, int endDate, int currentDate) {
+    return dayValueMapper.findByInflowDays(startDate,endDate,currentDate);
+  }
+
 
 }

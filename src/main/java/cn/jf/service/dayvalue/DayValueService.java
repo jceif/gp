@@ -2,6 +2,8 @@ package cn.jf.service.dayvalue;
 
 import cn.jf.common.PageUtil;
 import cn.jf.model.dayvalue.DayValue;
+import cn.jf.model.dayvalue.DayValueVo1;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -47,5 +49,7 @@ public interface DayValueService {
   DayValue findByCodeADate(String companyCode, int date);
 
   List<DayValue> findDayValueZt(float rate, float totalMoney,int startDate,int endDate);
+
+  List<DayValueVo1> findByInflowDays( int startDate, int endDate, int currentDate);
 
 }

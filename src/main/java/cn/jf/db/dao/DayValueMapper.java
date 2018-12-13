@@ -5,6 +5,7 @@ package cn.jf.db.dao;
 import java.util.List;
 import java.util.Map;
 import cn.jf.model.dayvalue.DayValue;
+import cn.jf.model.dayvalue.DayValueVo1;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -55,6 +56,10 @@ public interface DayValueMapper {
 
 
 	List<DayValue> findDayValueZt(@Param("rate") float rate, @Param("totalMoney") float totalMoney,@Param("startDate") int startDate,@Param("endDate") int endDate);
+
+	List<DayValueVo1> findByInflowDays(@Param("startDate") int startDate, @Param("endDate") int endDate, @Param("currentDate") int currentDate);
+
+
 
 
 }
