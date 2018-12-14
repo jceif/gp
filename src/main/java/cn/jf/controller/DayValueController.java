@@ -187,11 +187,14 @@ public class DayValueController {
 
 
     @RequestMapping("/topInflowList")
-    public String findByInflowDays(HttpServletRequest request,String dateStart,String dateEnd){
+    public String findByInflowDays(HttpServletRequest request,String dateStart,String dateEnd,String dura){
         int start = 0;
         int current = 0;
         int end = 0;
         int dur=4;//统计多少天的流入
+        if(dura!=null && !StringUtils.isEmpty(dura)){
+            dur=Integer.parseInt(dura);
+        }
         List<Integer> dates = dayValueService.findDays();
         BigDecimal rateSum=BigDecimal.ZERO;
         List<DayValueVo1> dayValueVo1List=new ArrayList<DayValueVo1>();

@@ -39,6 +39,8 @@
                         </c:forEach>
                     </select>
                 </th>
+
+                <th>区间：<input type="number" name="dura" value="${dura}"></th>
                 <th><input type="submit" value="查询">&nbsp;${rateSum}</th>
             </tr>
         </table>
