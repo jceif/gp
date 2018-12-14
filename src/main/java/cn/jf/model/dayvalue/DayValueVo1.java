@@ -10,6 +10,8 @@ public class DayValueVo1 {
     private double inflow;//净流入
     private double rate;//增长率
     private int date;//日期
+    private double preRate;//前一天增长率
+
 
     public String getCompanyName() {
         return companyName;
@@ -49,5 +51,13 @@ public class DayValueVo1 {
 
     public void setDate(int date) {
         this.date = date;
+    }
+
+    public double getPreRate() {
+        return preRate;
+    }
+
+    public void setPreRate(double preRate) {
+        this.preRate = preRate;
     }
 }

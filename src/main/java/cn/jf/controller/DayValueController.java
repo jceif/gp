@@ -11,7 +11,6 @@ import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.druid.util.StringUtils;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
@@ -175,7 +174,7 @@ public class DayValueController {
 
             dayValueList.add(dayValue);
         }
-        FormatDate.getFormatDates(request);
+        FormatDate.getFormatDates_month(request);
         request.setAttribute("rate", rate);
         request.setAttribute("totalMoney", totalMoney);
         request.setAttribute("dateStart", dateStart);
@@ -188,27 +187,56 @@ public class DayValueController {
 
 
     @RequestMapping("/topInflowList")
-    public String findByInflowDays(HttpServletRequest request,String dateEnd){
-        int dateCurrent=0;
-        int dateStart=0;
+    public String findByInflowDays(HttpServletRequest request,String dateStart,String dateEnd){
+        int start = 0;
+        int current = 0;
+        int end = 0;
+        int dur=4;//统计多少天的流入
         List<Integer> dates = dayValueService.findDays();
-        if (dateEnd==null || StringUtils.isEmpty(dateEnd)) {
-            dateCurrent=dates.get(0);
-            dateEnd=dates.get(1)+"";
-            dateStart=dates.get(dates.size()-5);
-        }else{
-            int index=dates.indexOf(Integer.parseInt(dateEnd));
-            if(index>0) {
-                dateCurrent = dates.get(index - 1);
-                dateStart = dates.get(index + 5);
+        BigDecimal rateSum=BigDecimal.ZERO;
+        List<DayValueVo1> dayValueVo1List=new ArrayList<DayValueVo1>();
+        if (dateStart==null || StringUtils.isEmpty(dateStart)) {
+            int month = Calendar.getInstance().get(Calendar.MONTH) + 1;   //获取月份，0表示1月份
+            dateStart = Calendar.getInstance().get(Calendar.YEAR) + "" + (month < 10 ? "0" + month : month) + "01";
+        }
+        if (dateEnd== null || StringUtils.isEmpty(dateEnd)) {
+            dateEnd = simpleDateFormat.format(Calendar.getInstance().getTime());
+        }
+
+        int iStart = dates.indexOf(Integer.parseInt(dateStart));
+        int t=0;
+        while (iStart<0){
+            iStart = dates.indexOf(Integer.parseInt(dateStart)+t);
+            t++;
+        }
+        t=0;
+        int iEnd = dates.indexOf(Integer.parseInt(dateEnd));//
+        while (iEnd<0){
+            iEnd = dates.indexOf(Integer.parseInt(dateEnd)-t);
+            t++;
+        }
+
+        for (int i = iEnd; i < iStart; i++) {
+
+            end = dates.get(i);
+            if(i>0) {
+                current = dates.get(i - 1);
+            }else{
+                current=0;
+            }
+            start = dates.get(i + dur);
+            List<DayValueVo1> list = dayValueService.findByInflowDays(start, end, current);
+            if(list!=null && list.size()>0){
+                dayValueVo1List.add(list.get(0));
+                rateSum=rateSum.add(BigDecimal.valueOf(list.get(0).getRate()));
             }
         }
-        List<DayValueVo1> dayValueVo1List=dayValueService.findByInflowDays(dateStart,Integer.parseInt(dateEnd),dateCurrent);
+
         request.setAttribute("dateStart", dateStart);
         request.setAttribute("dateEnd", dateEnd);
-        request.setAttribute("dateCurrent", dateCurrent);
+        request.setAttribute("rateSum", rateSum);
         request.setAttribute("list", dayValueVo1List);
-        FormatDate.getFormatDates_Day(request);
+        FormatDate.getFormatDates_month(request);
         return "dayvalue/topInflow";
     }
 

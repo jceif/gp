@@ -44,7 +44,7 @@ public class DayGoodController {
             return "redirect:/login";
         }
         //获取日期属性
-        FormatDate.getFormatDates_Day(request);
+        FormatDate.getFormatDates_day(request);
         Map<String, Object> map = new HashMap<String, Object>();
         if (StringUtils.isEmpty(time)) {
             time = "1030";
@@ -223,7 +223,7 @@ public class DayGoodController {
                 listMap.put(date + "_" + dayRateSum+"_"+fztDayRateSum, dayGoodList);
             }
         }
-        FormatDate.getFormatDates(request);
+        FormatDate.getFormatDates_month(request);
         request.setAttribute("dateStart", dateStart);
         request.setAttribute("dateEnd", dateEnd);
         request.setAttribute("timeStart", timeStart);
@@ -267,6 +267,7 @@ public class DayGoodController {
             if (dates.indexOf(dayGood.getDate()) == 0) {
                 continue;
             }
+            DayValue preDay = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), dates.get(dates.indexOf(dayGood.getDate()) + 1));
             DayValue currentDay = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), dayGood.getDate());
             DayValue nextDay = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), dates.get(dates.indexOf(dayGood.getDate()) - 1));
             if (dayGood.getRate() < 9.5) {
@@ -279,10 +280,17 @@ public class DayGoodController {
             dayGoodVo1.setPrePrice(dayGood.getPrice());
             dayGoodVo1.setPreInflow(dayGood.getMainMoney());
             dayGoodVo1.setCompanyCode(dayGood.getCompanyCode());
+            if(preDay!=null) {
+                dayGoodVo1.setPreK(preDay.getK());
+                dayGoodVo1.setPreD(preDay.getD());
+                dayGoodVo1.setPreJ(preDay.getJ());
+            }
+
 
             dayGoodVo1.setLastInflow(currentDay.getTotalMoney());
             dayGoodVo1.setLastPrice(currentDay.getEndPrice());
             dayGoodVo1.setLastRate(currentDay.getRate());
+
 
             dayGoodVo1.setDate(dayGood.getDate());
             if (nextDay != null && nextDay.getId() > 0) {
@@ -342,7 +350,7 @@ public class DayGoodController {
                 dayGoodVo1s.add(dayGoodVo1);
             }
         }
-        FormatDate.getFormatDates(request);
+        FormatDate.getFormatDates_month(request);
         request.setAttribute("time", time);
         request.setAttribute("dateStart", dateStart);
         request.setAttribute("dateEnd", dateEnd);

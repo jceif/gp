@@ -11,7 +11,7 @@ public class FormatDate {
   static  SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
 
   /*日期函数*/
-  public static void getFormatDates(HttpServletRequest request) {
+  public static void getFormatDates_month(HttpServletRequest request) {
     List<String> dateStarts = new ArrayList<String>();
     List<String> dateEnds = new ArrayList<String>();
     Calendar calendar = Calendar.getInstance();
@@ -29,7 +29,7 @@ public class FormatDate {
 
 
   /*日期函数*/
-  public static void getFormatDates_Day(HttpServletRequest request) {
+  public static void getFormatDates_day(HttpServletRequest request) {
     List<String> preDates = new ArrayList<String>();
     List<String> pre1Dates = new ArrayList<String>();
     List<String> pre2Dates = new ArrayList<String>();

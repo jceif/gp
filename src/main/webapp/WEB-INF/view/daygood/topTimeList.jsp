@@ -64,6 +64,7 @@
                 <th>prePrice</th>
                 <th>endPrice</th>
                 <th>nextStartPrice</th>
+                <th>preK/D/J</th>
                 <th>preRate</th>
                 <th>endRate</th>
                 <th>nextRate</th>
@@ -101,6 +102,10 @@
                         </c:when>
                                 </c:choose>">${item.lastPrice}</td>
                 <td >${item.twoStartPrice}</td>
+                <td ><fmt:formatNumber type="number" value="${item.preK}" pattern="0.00" maxFractionDigits="2"/>/
+                        <fmt:formatNumber type="number" value="${item.preD}" pattern="0.00" maxFractionDigits="2"/>/
+                        <fmt:formatNumber type="number" value="${item.preJ}" pattern="0.00" maxFractionDigits="2"/>
+                        </td>
                 <td >${item.preRate}%</td>
                 <td>${item.lastRate}%</td>
                 <td>${item.twoRate}%</td>

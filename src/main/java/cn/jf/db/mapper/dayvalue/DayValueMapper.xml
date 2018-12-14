@@ -35,6 +35,7 @@
         <result property="inflow" column="inflow"/>
         <result property="rate" column="rate"/>
         <result property="date" column="date"/>
+        <result property="preRate" column="preRate"/>
     </resultMap>
 
 
@@ -277,10 +278,10 @@ and (d1.k-d2.k)>=6
 
     <select id="findByInflowDays" resultMap="dayValue1">
         select c.name company_name,d.*,d1.rate rate from
-        (select company_code, sum(total_money) inflow, date from day_value  where date BETWEEN #{startDate} and #{endDate}  GROUP BY  company_code ) d
+        (select company_code, sum(total_money) inflow, rate preRate,`date`  from (select * from  day_value  where date BETWEEN #{startDate} and #{endDate} order by id desc) dd  GROUP BY  company_code ) d
         left JOIN company c on d.company_code=c.code
         LEFT JOIN (select * from day_value where date=#{currentDate}) d1 on d1.company_code=d.company_code
-        ORDER BY inflow desc limit 100
+        ORDER BY inflow desc limit 1
   </select>
 
 </mapper>

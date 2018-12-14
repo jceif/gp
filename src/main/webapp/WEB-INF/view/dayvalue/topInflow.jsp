@@ -21,15 +21,25 @@
     <div style="margin:0 auto; width: 90%;text-align: center;">
         <table style="width: 100%;">
             <tr>
+                <th>开始日期：
+                    <select name="dateStart">
+                        <option value="">请选择</option>
+                        <c:forEach items="${dateStarts}" var="item" varStatus="var">
+                            <option value="${item}"
+                                    <c:if test="${item==dateStart}">selected</c:if>>${item}</option>
+                        </c:forEach>
+                    </select>
+                </th>
+
                 <th>结束日期：
                     <select name="dateEnd">
                         <option value="">请选择</option>
-                        <c:forEach items="${formatDates1}" var="item" varStatus="var">
+                        <c:forEach items="${dateEnds}" var="item" varStatus="var">
                             <option value="${item}" <c:if test="${item==dateEnd}">selected</c:if>>${item}</option>
                         </c:forEach>
                     </select>
                 </th>
-                <th><input type="submit" value="查询"></th>
+                <th><input type="submit" value="查询">&nbsp;${rateSum}</th>
             </tr>
         </table>
 
@@ -40,13 +50,15 @@
                 <th>name</th>
                 <th>code</th>
                 <th>inflow</th>
-                <th>${dateCurrent}rate</th>
+                <th>preRate</th>
+                <th>rate</th>
                 <th>dateStart</th>
+            </tr>
             </tr>
             <c:forEach items="${list}" var="item" varStatus="var">
                 <tr>
                     <td>${var.index+1}</td>
-                    <td><a href="/data/chart?companyCode=${item.companyCode}&date=${dateEnd}" target="_blank">${item.companyCode}</a></td>
+                    <td><a href="/data/chart?companyCode=${item.companyCode}&date=${dateEnd}" target="_blank">${item.companyName}</a></td>
                     <td>
                         <c:choose>
                             <c:when test="${ fn:substring(item.companyCode ,0,3)=='600' or fn:substring(item.companyCode ,0,2)=='60'}">
@@ -60,6 +72,7 @@
                         </c:choose>
                     </td>
                     <td>${item.inflow}</td>
+                    <td>${item.preRate}</td>
                     <td>${item.rate}</td>
                     <td>${item.date}</td>
                 </tr>

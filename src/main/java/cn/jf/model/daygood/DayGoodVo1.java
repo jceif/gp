@@ -31,6 +31,11 @@ public class DayGoodVo1 implements Serializable {
 
   private Double incomeRate;//收益率
 
+  private Float preK;//k
+  private Float preD;//d
+  private Float preJ;//j
+
+
 
 
 
@@ -152,5 +157,30 @@ public class DayGoodVo1 implements Serializable {
 
   public void setIncomeRate(Double incomeRate) {
     this.incomeRate = incomeRate;
+  }
+
+
+  public Float getPreK() {
+    return preK;
+  }
+
+  public void setPreK(Float preK) {
+    this.preK = preK;
+  }
+
+  public Float getPreD() {
+    return preD;
+  }
+
+  public void setPreD(Float preD) {
+    this.preD = preD;
+  }
+
+  public Float getPreJ() {
+    return preJ;
+  }
+
+  public void setPreJ(Float preJ) {
+    this.preJ = preJ;
   }
 }
