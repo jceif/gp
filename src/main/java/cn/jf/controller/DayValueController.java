@@ -191,32 +191,17 @@ public class DayValueController {
     public String findByInflowDays(HttpServletRequest request,String dateEnd){
         int dateCurrent=0;
         int dateStart=0;
-        Calendar calendar=Calendar.getInstance();
-        if (dateEnd!=null && !StringUtils.isEmpty(dateEnd)) {
-            try {
-                if(calendar.getTime().getDay()==6){
-                    calendar.set(Calendar.HOUR,48);
-                }else if(calendar.getTime().getDay()==0){
-                    calendar.set(Calendar.HOUR,24);
-                }
-                calendar.setTimeInMillis(simpleDateFormat.parse(dateEnd).getTime());
-                calendar.set(Calendar.HOUR,-240);
-                dateCurrent=Integer.parseInt(simpleDateFormat.format(calendar.getTime()));
-                dateCurrent=Integer.parseInt(simpleDateFormat.format(calendar.getTime()));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+        List<Integer> dates = dayValueService.findDays();
+        if (dateEnd==null || StringUtils.isEmpty(dateEnd)) {
+            dateCurrent=dates.get(0);
+            dateEnd=dates.get(1)+"";
+            dateStart=dates.get(dates.size()-5);
         }else{
-            if(calendar.getTime().getDay()==6){
-                calendar.set(Calendar.HOUR,48);
-            }else if(calendar.getTime().getDay()==0){
-                calendar.set(Calendar.HOUR,24);
+            int index=dates.indexOf(Integer.parseInt(dateEnd));
+            if(index>0) {
+                dateCurrent = dates.get(index - 1);
+                dateStart = dates.get(index + 5);
             }
-            dateCurrent=Integer.parseInt(simpleDateFormat.format(calendar.getTime()));
-            calendar.set(Calendar.HOUR,-24);
-            dateEnd=simpleDateFormat.format(calendar.getTime());
-            calendar.set(Calendar.HOUR,-7*24);
-            dateStart=Integer.parseInt(simpleDateFormat.format(calendar.getTime()));
         }
         List<DayValueVo1> dayValueVo1List=dayValueService.findByInflowDays(dateStart,Integer.parseInt(dateEnd),dateCurrent);
         request.setAttribute("dateStart", dateStart);
