@@ -297,20 +297,6 @@ public class DayGoodController {
                 dayGoodVo1.setTwoEndPrice(nextDay.getEndPrice());
                 dayGoodVo1.setTwoStartPrice(nextDay.getStartPrice());
                 dayGoodVo1.setTwoRate(nextDay.getRate());
-                //如果跌幅超过-2必须卖掉
-              /*  if (nextDay.getRate() < sellMinPrice) {
-                    if (dayGoodVo1.getPreRate() < 9.5) {
-                        fztRateSum = fztRateSum.add(BigDecimal.valueOf(sellMinPrice - 1));
-                        rateSum = rateSum.add(BigDecimal.valueOf(sellMinPrice - 1));
-                    } else {
-                        rateSum = rateSum.add(BigDecimal.valueOf(sellMinPrice - 3));
-                    }
-                } else {
-                    rateSum = rateSum.add(BigDecimal.valueOf(nextDay.getRate()));
-                    if (dayGoodVo1.getPreRate() < 9.5) {
-                        fztRateSum = fztRateSum.add(BigDecimal.valueOf(nextDay.getRate()));
-                    }
-                }*/
                 if (dayGoodVo1.getPreRate() < 9.5) {
                     fztRateSum = fztRateSum.add(BigDecimal.valueOf(nextDay.getRate()));
                 }
@@ -321,19 +307,6 @@ public class DayGoodController {
                     if (threeDay != null && threeDay.getId() > 0) {
                         //如果第二天的涨幅大于三 留到第二天卖掉
                         if (nextDay.getRate() > 6) {
-                          /*  if (threeDay.getRate() < sellMinPrice) {
-                                if (dayGoodVo1.getPreRate() < 9.5) {
-                                    fztRateSum = fztRateSum.add(BigDecimal.valueOf(sellMinPrice - 1));
-                                    rateSum = rateSum.add(BigDecimal.valueOf(sellMinPrice - 1));
-                                } else {
-                                    rateSum = rateSum.add(BigDecimal.valueOf(sellMinPrice - 2));
-                                }
-                            } else {
-                                rateSum = rateSum.add(BigDecimal.valueOf(threeDay.getRate()));
-                                if (dayGoodVo1.getPreRate() < 9.5) {
-                                    fztRateSum = fztRateSum.add(BigDecimal.valueOf(threeDay.getRate()));
-                                }
-                            }*/
                             if (dayGoodVo1.getPreRate() < 9.5) {
                                 fztRateSum = fztRateSum.add(BigDecimal.valueOf(threeDay.getRate()));
                             }

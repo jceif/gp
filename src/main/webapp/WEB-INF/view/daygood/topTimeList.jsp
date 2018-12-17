@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <title>${rateSum}|${fztRateSum}</title>
+    <title>all:${rateSum}|${fztRateSum}</title>
     <link rel="stylesheet" type="text/css" href="${ctx}assets/css/common/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${ctx}assets/css/common/list.css">
 </head>

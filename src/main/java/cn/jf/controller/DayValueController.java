@@ -116,7 +116,7 @@ public class DayValueController {
         List<Integer> dates = dayValueService.findDays();
         List<DayValue> dayValues = dayValueService.findDayValueZt(Float.parseFloat(rate), Float.parseFloat(totalMoney),Integer.parseInt(dateStart), Integer.parseInt(dateEnd));
         Map<String, List<DayValue>> listMap = new LinkedHashMap<String, List<DayValue>>();
-        BigDecimal dayRateSum = BigDecimal.valueOf(0);//总数据涨幅
+        BigDecimal dayRateSum = BigDecimal.valueOf(0);//一天数据的涨幅
         BigDecimal daysRateSum = BigDecimal.valueOf(0);//总数据涨幅
 
         BigDecimal rateTest = BigDecimal.valueOf(0);//测试
@@ -150,7 +150,6 @@ public class DayValueController {
                 System.out.println("----"+dayValue.getCompanyCode()+"-"+dayValue.getDate());
                 continue;
             }
-
             dayValue.setPreRate(preDay==null?0.00:preDay.getRate());
             dayValue.setNextRate(nextDay==null?0.00:nextDay.getRate());
             //前一天的增长比率小于-4
@@ -238,6 +237,7 @@ public class DayValueController {
         request.setAttribute("dateStart", dateStart);
         request.setAttribute("dateEnd", dateEnd);
         request.setAttribute("rateSum", rateSum);
+        request.setAttribute("dura", dura);
         request.setAttribute("list", dayValueVo1List);
         FormatDate.getFormatDates_month(request);
         return "dayvalue/topInflow";
