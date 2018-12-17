@@ -40,9 +40,6 @@ public class DayGoodController {
     public String index(HttpServletRequest request, String date, String time, String price, String mainMoney,
         String rate,
         String preDate1, String preDate2, String type, String marketWorth1, String marketWorth2) {
-        if (request.getSession().getAttribute("user") == null) {
-            return "redirect:/login";
-        }
         //获取日期属性
         FormatDate.getFormatDates_day(request);
         Map<String, Object> map = new HashMap<String, Object>();
@@ -138,7 +135,6 @@ public class DayGoodController {
         List<Double> prices = new ArrayList<Double>();
         List<Double> rates = new ArrayList<Double>();
         List<Double> moneys = new ArrayList<Double>();
-        double nowPrice = 0;
         if (dayGoods != null && dayGoods.size() > 0) {
             for (DayGood dayGood : dayGoods) {
                 minPrice = dayGood.getPrice();
@@ -175,9 +171,6 @@ public class DayGoodController {
     public String findTotalMoneyTopList(HttpServletRequest request, String dateStart, String dateEnd, String timeStart,
         String timeEnd) {
         List<Integer> dates = dayValueService.findDays();
-        if (request.getSession().getAttribute("user") == null) {
-            return "redirect:/login";
-        }
         if (StringUtils.isEmpty(timeStart)) {
             timeStart="1100";
         }
@@ -238,9 +231,6 @@ public class DayGoodController {
 
     @RequestMapping("/topTimeList")
     public String findTopOneByTime(HttpServletRequest request, String time, String dateStart, String dateEnd) {
-        if (request.getSession().getAttribute("user") == null) {
-            return "redirect:/login";
-        }
         if (StringUtils.isEmpty(time)) {
             time = "1130";
         }

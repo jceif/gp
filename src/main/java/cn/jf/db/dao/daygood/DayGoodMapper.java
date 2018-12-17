@@ -1,4 +1,4 @@
-package cn.jf.db.dao;
+package cn.jf.db.dao.daygood;
 
 import java.util.List;
 import java.util.Map;

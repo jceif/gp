@@ -5,7 +5,7 @@ import cn.jf.model.daygood.DayGoodVo;
 import java.util.List;
 import java.util.Map;
 import cn.jf.common.PageUtil;
-import cn.jf.db.dao.DayGoodMapper;
+import cn.jf.db.dao.daygood.DayGoodMapper;
 import cn.jf.model.daygood.DayGood;
 
 import cn.jf.model.daygood.DayGoodVo1;

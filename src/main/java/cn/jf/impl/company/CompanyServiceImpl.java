@@ -4,7 +4,7 @@ package cn.jf.impl.company;
 import java.util.List;
 import java.util.Map;
 import cn.jf.common.PageUtil;
-import cn.jf.db.dao.CompanyMapper;
+import cn.jf.db.dao.company.CompanyMapper;
 import cn.jf.model.company.Company;
 import cn.jf.service.company.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;

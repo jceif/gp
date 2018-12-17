@@ -1,4 +1,4 @@
-package cn.jf.db.dao;
+package cn.jf.db.dao.dayvalue;
 
 
 

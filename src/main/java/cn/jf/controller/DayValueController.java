@@ -44,9 +44,6 @@ public class DayValueController {
 
     @RequestMapping("/detail")
     public String detail(HttpServletRequest request, String companyCode, String count) {
-        if (request.getSession().getAttribute("user") == null) {
-            return "redirect:/login";
-        }
         Company company = companyService.findCompanyByCode(companyCode);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("companyCode", companyCode);
@@ -96,10 +93,6 @@ public class DayValueController {
 
     @RequestMapping("/topRateList")
     public String findDayValueZt(HttpServletRequest request, String rate,String totalMoney,String dateStart,String dateEnd) {
-        if (request.getSession().getAttribute("user") == null) {
-            return "redirect:/login";
-        }
-
         if (StringUtils.isEmpty(rate)) {
             rate="9";
         }

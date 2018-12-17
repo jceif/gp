@@ -18,7 +18,7 @@
     <!-- 添加注解驱动 -->
     <mvc:annotation-driven />
     <!-- 默认扫描的包路径 -->
-    <context:component-scan base-package="cn.jf.controller,cn.jf.impl.*">
+    <context:component-scan base-package="cn.jf.controller,cn.jf.impl.*,cn.jf.common.*">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Service" />
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Component" />
@@ -30,7 +30,7 @@
     <!-- 只读的SessionFactory -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" scope="singleton">
         <property name="dataSource" ref="dataSourceWrite" />
-        <property name="mapperLocations" value="classpath*:cn/jf/db/mapper/*/*Mapper.xml"/>
+        <property name="mapperLocations" value="classpath*:cn/jf/db/mapping/*/*Mapper.xml"/>
     </bean>
 
 
@@ -39,9 +39,10 @@
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
     </bean>
 
-    <!--  ================================== import sub-config file  ================================== -->
-    <import resource="spring-mybatis.xml" />
-    <!--  ================================== /import sub-config file  ================================== -->
+    <!--&lt;!&ndash;  ================================== import sub-config file  ================================== &ndash;&gt;-->
+    <!--<import resource="spring-mybatis.xml" />-->
+    <!--<import resource="spring-shiro.xml" />-->
+    <!--&lt;!&ndash;  ================================== /import sub-config file  ================================== &ndash;&gt;-->
 
 
 
