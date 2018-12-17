@@ -68,28 +68,27 @@
                 <th>preRate</th>
                 <th>endRate</th>
                 <th>nextRate</th>
-                <th>threeRate</th>
                 <th>incomeRate</th>
+                <th>threeRate</th>
                 <th>date</th>
             </tr>
         <%--item 前，itemOld后--%>
             <c:forEach items="${dayGoodVo1s}" var="item"  step="1"  varStatus="var">
-
             <tr>
                     <%--当前--%>
                 <td style="<c:if test="${item.preRate>=9.5}">background:yellow;</c:if>">${var.count}</td>
                 <td>
-                            <c:choose>
-                                <c:when test="${ fn:substring(item.companyCode ,0,3)=='600' or fn:substring(item.companyCode ,0,2)=='60'}">
-                                    <a href="http://quote.eastmoney.com/concept/sh${item.companyCode}.html?from=classic&eventcode=Web_quote_entrance2"
-                                       target="_blank">${item.companyCode}</a>
-                                </c:when>
-                                <c:otherwise>
-                                    <a href="http://quote.eastmoney.com/concept/sz${item.companyCode}.html?from=classic&eventcode=Web_quote_entrance2"
-                                       target="_blank">${item.companyCode}</a>
-                                </c:otherwise>
-                            </c:choose>
-                        </td>
+                    <c:choose>
+                        <c:when test="${ fn:substring(item.companyCode ,0,3)=='600' or fn:substring(item.companyCode ,0,2)=='60'}">
+                            <a href="http://quote.eastmoney.com/concept/sh${item.companyCode}.html?from=classic&eventcode=Web_quote_entrance2"
+                               target="_blank">${item.companyCode}</a>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="http://quote.eastmoney.com/concept/sz${item.companyCode}.html?from=classic&eventcode=Web_quote_entrance2"
+                               target="_blank">${item.companyCode}</a>
+                        </c:otherwise>
+                    </c:choose>
+                </td>
                 <td>${item.preInflow}</td>
                 <td >${item.lastInflow}</td>
                 <td >${item.prePrice}</td>
@@ -102,25 +101,24 @@
                         </c:when>
                                 </c:choose>">${item.lastPrice}</td>
                 <td >${item.twoStartPrice}</td>
-                <td ><fmt:formatNumber type="number" value="${item.preK}" pattern="0.00" maxFractionDigits="2"/>/
-                        <fmt:formatNumber type="number" value="${item.preD}" pattern="0.00" maxFractionDigits="2"/>/
-                        <fmt:formatNumber type="number" value="${item.preJ}" pattern="0.00" maxFractionDigits="2"/>
-                        </td>
-                <td >${item.preRate}%</td>
+                <td>
+                    <fmt:formatNumber type="number" value="${item.preK}" pattern="0.00" maxFractionDigits="2"/>/
+                    <fmt:formatNumber type="number" value="${item.preD}" pattern="0.00" maxFractionDigits="2"/>/
+                    <fmt:formatNumber type="number" value="${item.preJ}" pattern="0.00" maxFractionDigits="2"/>
+                </td>
+                <td>${item.preRate}%</td>
                 <td>${item.lastRate}%</td>
                 <td>${item.twoRate}%</td>
+                <td style="<c:choose>
+                <c:when test="${item.incomeRate>0}">
+                        color: red;
+                </c:when>
+                </c:choose>">${item.incomeRate}</td>
                 <td>${item.threeRate}%</td>
-<td style="<c:choose>
-<c:when test="${item.incomeRate>0}">
-        color: red;
-</c:when>
-        </c:choose>">${item.incomeRate}</td>
-                        <td><a target="_blank" href="/data/chart?companyCode=${item.companyCode}&date=${item.date}">${item.date}</a></td>
-                </tr>
 
+                <td><a target="_blank" href="/data/chart?companyCode=${item.companyCode}&date=${item.date}">${item.date}</a></td>
+            </tr>
             </c:forEach>
-
-
             </tbody>
         </table><!-- /.table -->
 

@@ -253,10 +253,9 @@ public class DayGoodController {
         }
         List<DayGood> dayGoods = dayGoodService.findTopOneByTime(time, Integer.parseInt(dateStart), Integer.parseInt(dateEnd));
         List<Integer> dates = dayValueService.findDays();
-        double sellMinPrice = -1.5;//最小卖出价格
-        BigDecimal fztRateSum = BigDecimal.valueOf(0);//非涨停收益率
-        BigDecimal rateSum = BigDecimal.valueOf(0);//所有收益率
-        BigDecimal ztRateSum = BigDecimal.valueOf(0);//涨停收益率
+        BigDecimal fztRateSum = BigDecimal.ZERO;//非涨停收益率
+        BigDecimal rateSum = BigDecimal.ZERO;//所有收益率
+        BigDecimal ztRateSum = BigDecimal.ZERO;//涨停收益率
         List<DayGoodVo1> dayGoodVo1s = new ArrayList<DayGoodVo1>();
         for (int i = 1; i < dayGoods.size(); i++) {
             DayGood  dayGood = dayGoods.get(i);
@@ -270,10 +269,6 @@ public class DayGoodController {
             DayValue preDay = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), dates.get(dates.indexOf(dayGood.getDate()) + 1));
             DayValue currentDay = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), dayGood.getDate());
             DayValue nextDay = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), dates.get(dates.indexOf(dayGood.getDate()) - 1));
-            if (dayGood.getRate() < 9.5) {
-                fztRateSum = fztRateSum.add(BigDecimal.valueOf(currentDay.getRate()).subtract(BigDecimal.valueOf(dayGood.getRate())));
-            }
-            rateSum = rateSum.add(BigDecimal.valueOf(currentDay.getRate()).subtract(BigDecimal.valueOf(dayGood.getRate())));
             DayGoodVo1 dayGoodVo1 = new DayGoodVo1();
             dayGoodVo1.setPreTime(Integer.parseInt(time));
             dayGoodVo1.setPreRate(dayGood.getRate());
@@ -285,43 +280,33 @@ public class DayGoodController {
                 dayGoodVo1.setPreD(preDay.getD());
                 dayGoodVo1.setPreJ(preDay.getJ());
             }
-
-
             dayGoodVo1.setLastInflow(currentDay.getTotalMoney());
             dayGoodVo1.setLastPrice(currentDay.getEndPrice());
             dayGoodVo1.setLastRate(currentDay.getRate());
-
-
             dayGoodVo1.setDate(dayGood.getDate());
+            BigDecimal currentIncome=BigDecimal.valueOf(currentDay.getRate()).subtract(BigDecimal.valueOf(dayGood.getRate()));//当天的收益率
             if (nextDay != null && nextDay.getId() > 0) {
                 dayGoodVo1.setTwoEndPrice(nextDay.getEndPrice());
                 dayGoodVo1.setTwoStartPrice(nextDay.getStartPrice());
                 dayGoodVo1.setTwoRate(nextDay.getRate());
-                if (dayGoodVo1.getPreRate() < 9.5) {
-                    fztRateSum = fztRateSum.add(BigDecimal.valueOf(nextDay.getRate()));
-                }
-                rateSum = rateSum.add(BigDecimal.valueOf(nextDay.getRate()));
-
                 if (dates.indexOf(dayGood.getDate()) > 1) {
                     DayValue threeDay = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), dates.get(dates.indexOf(dayGood.getDate()) - 2));
                     if (threeDay != null && threeDay.getId() > 0) {
-                        //如果第二天的涨幅大于三 留到第二天卖掉
-                        if (nextDay.getRate() > 6) {
-                            if (dayGoodVo1.getPreRate() < 9.5) {
-                                fztRateSum = fztRateSum.add(BigDecimal.valueOf(threeDay.getRate()));
-                            }
-                          rateSum = rateSum.add(BigDecimal.valueOf(threeDay.getRate()));
-                        }
                         dayGoodVo1.setThreeRate(threeDay.getRate());
                     }
                 }
-                dayGoodVo1.setIncomeRate(BigDecimal.valueOf(nextDay.getRate()).add(BigDecimal.valueOf(currentDay.getRate()).subtract(BigDecimal.valueOf(dayGood.getRate()))).doubleValue());
-                //统计涨停数据 赔付率
-                if (dayGood.getRate() >= 9.5) {
-                    ztRateSum = ztRateSum.add(BigDecimal.valueOf(dayGoodVo1.getIncomeRate()));
-                }
-                dayGoodVo1s.add(dayGoodVo1);
+                dayGoodVo1.setIncomeRate(BigDecimal.valueOf(nextDay.getRate()).add(currentIncome).doubleValue());
+            }else {
+                dayGoodVo1.setIncomeRate(currentIncome.doubleValue());
             }
+            //统计涨停数据 赔付率
+            if (dayGood.getRate() >= 9.5) {
+                ztRateSum = ztRateSum.add(BigDecimal.valueOf(dayGoodVo1.getIncomeRate()));
+            } else{
+                fztRateSum = fztRateSum.add(BigDecimal.valueOf(dayGoodVo1.getIncomeRate()));
+            }
+            rateSum = rateSum.add(BigDecimal.valueOf(dayGoodVo1.getIncomeRate()));
+            dayGoodVo1s.add(dayGoodVo1);
         }
         FormatDate.getFormatDates_month(request);
         request.setAttribute("time", time);
@@ -331,7 +316,6 @@ public class DayGoodController {
         request.setAttribute("fztRateSum", fztRateSum);
         request.setAttribute("rateSum", rateSum);
         request.setAttribute("ztRateSum", ztRateSum);
-
         return "daygood/topTimeList";
     }
 
