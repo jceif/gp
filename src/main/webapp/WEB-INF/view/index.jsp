@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}/"/>
 <html>
 <head>
@@ -99,9 +100,11 @@
                 <th>价格：<input type="number" name="price" value="${price}"></th>
                 <th>涨跌：<input type="text" name="rate" value="${rate}"></th>
                 <th><input type="submit" value="查询">&nbsp;
+                    <shiro:hasPermission name="select">
                     <a href="/data/topTimeList" target="_blank">tj1</a>&nbsp;
                     <a href="/day/topRateList" target="_blank">tj2</a> &nbsp;
                     <a href="/day/topInflowList" target="_blank">tj3</a> &nbsp;
+                    </shiro:hasPermission>
                 </th>
             </tr>
         </table>
@@ -394,5 +397,34 @@
 <script type="text/javascript"
         src="${ctx}assets/js/common/bootstrap.min.js"></script>
 <script type="text/javascript" src="${ctx}assets/js/dayGood/index.js"></script>
+
+
+
+
+        <%--<!-- 判断当前用户是否已经认证,已认证就可以看到标签中的内容 -->--%>
+        <%--<shiro:authenticated>--%>
+            <%--看到内容就说明你已经认证成功了!--%>
+        <%--</shiro:authenticated>--%>
+
+        <%--<br>--%>
+
+
+
+        <%--<!-- 判断当前用户是否拥有指定的角色 -->--%>
+        <%--<shiro:hasRole name="admin">--%>
+            <%--<input value="这是判断角色的按钮">--%>
+        <%--</shiro:hasRole>--%>
+        <%--<br>--%>
+
+        <%--<!-- 判断当前用户是否拥有指定的权限 -->--%>
+        <%--<shiro:hasPermission name="select">--%>
+            <%--<input value="这是判断资源权限">--%>
+        <%--</shiro:hasPermission>--%>
+
+
+
+
+
+
 </body>
 </html>

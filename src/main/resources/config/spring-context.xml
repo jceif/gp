@@ -39,13 +39,6 @@
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
     </bean>
 
-    <!--&lt;!&ndash;  ================================== import sub-config file  ================================== &ndash;&gt;-->
-    <!--<import resource="spring-mybatis.xml" />-->
-    <!--<import resource="spring-shiro.xml" />-->
-    <!--&lt;!&ndash;  ================================== /import sub-config file  ================================== &ndash;&gt;-->
-
-
-
 
     <mvc:default-servlet-handler/>
 

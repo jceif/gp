@@ -17,22 +17,37 @@ import java.util.Set;
 public class UserRealm extends AuthorizingRealm {
     @Autowired
     private StaffService staffService;
+
+    /**
+     * 权限认证
+     * @param principalCollection
+     * @return
+     */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         String userName = (String)principalCollection.getPrimaryPrincipal();
         Staff staff = staffService.findStaffByPhone(userName);
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         //authorizationInfo.setRoles(userService.findRolesByUserId(user.getId()));
+        //设置角色
         Set<String> roles=new HashSet<>();
-        roles.add("1");
+        roles.add("admin");
         authorizationInfo.setRoles(roles);
+        //设置权限
         Set<String> permissions=new HashSet<>();
-        permissions.add("1");
+        permissions.add("select");
         authorizationInfo.setStringPermissions(permissions);
+
         //authorizationInfo.setStringPermissions(userService.findPermissionsByUserId(user.getId()));
         return authorizationInfo;
     }
 
+    /**
+     * 身份认证
+     * @param authenticationToken
+     * @return
+     * @throws AuthenticationException
+     */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         String userName= (String)authenticationToken.getPrincipal();

@@ -2,15 +2,19 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-    <!--开启shiro的注解-->
+
+    <!-- 基于spring自动代理方式为service创建代理对象,实现权限控制 -->
     <bean id="advisorAutoProxyCreator" class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator">
         <property name="proxyTargetClass" value="true"></property>
     </bean>
-
+    <!-- 配置切面 -->
     <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor"/>
+
 
     <!--注入自定义的Realm-->
     <bean id="userRealm" class="cn.jf.common.shiro.UserRealm"></bean>
+
+    <!-- 配置shiro安全管理器 -->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="userRealm"></property>
     </bean>
@@ -32,6 +36,10 @@
 
         <!--URL的拦截-->
         <property name="filterChainDefinitions" >
+            <!--
+            authc:代表shiro框架提供的一个过滤器，这个过滤器用于判断当前用户是否已经完成认证，如果当前用户已经认证，就放行，如果当前用户没有认证，跳转到登录页面
+            anon:代表shiro框架提供的一个过滤器，允许匿名访问
+            -->
             <value>
                 <!-- 对静态资源设置允许匿名访问 -->
                 /login = anon
@@ -45,6 +53,15 @@
             </value>
         </property>
     </bean>
+
+
+    <!-- 配置凭证算法匹配器 -->
+     <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+         <!-- Md5算法 -->
+         <property name="hashAlgorithmName" value="Md5"></property>
+     </bean>
+
+
     <!--自定义退出LogoutFilter-->
     <bean id="logoutFilter" class="cn.jf.common.shiro.UserLoginOut">
         <property name="redirectUrl" value="/login"/>

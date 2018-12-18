@@ -12,28 +12,12 @@
         http://www.springframework.org/schema/mvc/spring-mvc.xsd"
        default-lazy-init="true">
 
-<!--    <context:component-scan base-package="cn.jf.controller"/>
-    &lt;!&ndash; Spring MVC不处理静态资源 &ndash;&gt;
-    <mvc:default-servlet-handler />
 
-    <mvc:annotation-driven />-->
     <!-- 视图解析器 -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/view/"></property>
         <property name="suffix" value=".jsp"></property>
     </bean>
-
-
-    <!-- 将配置文件读取到容器中，交给Spring管理 -->
-    <!--<bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-        <property name="locations">
-            <list>
-                <value>classpath:properties/file.properties</value>
-            </list>
-        </property>
-    </bean>-->
-
-
 
 
 </beans>
