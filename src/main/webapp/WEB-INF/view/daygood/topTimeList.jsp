@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <title>all:${rateSum}|${fztRateSum}</title>
+    <title>data-topTimeList</title>
     <link rel="stylesheet" type="text/css" href="${ctx}assets/css/common/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${ctx}assets/css/common/list.css">
 </head>
@@ -50,7 +50,7 @@
                         </c:forEach>
                     </select>
                 </th>
-                <th><input type="submit" value="查询">&nbsp;${ztRateSum}</th>
+                <th><input type="submit" value="查询">&nbsp;sum:${rateSum}|fzt:${fztRateSum}|zt:${ztRateSum}</th>
             </tr>
         </table>
 

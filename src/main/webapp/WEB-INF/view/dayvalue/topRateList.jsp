@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <title>${daysRateSum}</title>
+    <title>data-topRateList</title>
     <link rel="stylesheet" type="text/css"
           href="${ctx}assets/css/common/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${ctx}assets/css/common/list.css">
@@ -39,7 +39,7 @@
                         </c:forEach>
                     </select>
                 </th>
-                <th><input type="submit" value="查询">&nbsp;${ztRateSum}</th>
+                <th><input type="submit" value="查询">&nbsp;${daysRateSum}</th>
             </tr>
         </table>
         <table style="width: 100%;">

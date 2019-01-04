@@ -172,7 +172,6 @@ public class DayValueController {
         request.setAttribute("dateStart", dateStart);
         request.setAttribute("dateEnd", dateEnd);
         request.setAttribute("daysRateSum", daysRateSum);
-        //request.setAttribute("rateTest", rateTest);
         request.setAttribute("listMap", listMap);
         return "dayvalue/topRateList";
     }
