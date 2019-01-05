@@ -45,9 +45,9 @@
                 /login = anon
                 /logout = logout
                 /images/** = anon
-                /js/** = anon
-                /css/** = anon
-                /fonts/** = anon
+                /assets/js/** = anon
+                /assets/css/** = anon
+                /assets/fonts/** = anon
                 <!-- 剩余其他路径，必须认证通过才可以访问 -->
                 /** = authc
             </value>
