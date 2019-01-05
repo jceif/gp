@@ -56,6 +56,7 @@
                 <th>preRate</th>
                 <th>rate</th>
                 <th>nextRate</th>
+                <th>threeRate</th>
                 <th>rateSum</th>
             </tr>
         <%--item 前，itemOld后--%>
@@ -75,7 +76,7 @@
                                            target="_blank">${v.companyCode}</a>
                                     </c:otherwise>
                                 </c:choose></td>
-                            <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>"><span style="<c:if test="${v.preJ<30 && v.preD>15}">color:red</c:if>"> ${v.endPrice}</span>  </td>
+                            <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>">${v.endPrice}</td>
                                 <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>">${v.totalMoney}</td>
                             <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>">${v.volume/10000}</td>
                             <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>">${v.preK} / ${v.k}</td>
@@ -83,8 +84,9 @@
                             <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>">${v.preJ} / ${v.j}</td>
 
                             <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>"><span style="<c:if test="${v.preRate<0}">color:green;</c:if>">${v.preRate}%</span></td>
-                            <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>">${v.rate}%</td>
-                            <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>"><a target="_blank" style="<c:if test="${v.nextRate<0}">color:red;</c:if>" href="/data/chart?companyCode=${v.companyCode}&date=${v.date}">${v.nextRate}%</a></td>
+                            <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>"><a target="_blank"  href="/data/chart?companyCode=${v.companyCode}&date=${v.date}">${v.rate}%</a></td>
+                            <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>"><span style="<c:if test="${v.nextRate<0}">color:red;</c:if>" >${v.nextRate}%</span></td>
+                            <td style="<c:if test="${status.index==(fn:length(item.value)-1)}">border-bottom: #1b6d85 solid 1px</c:if>">${v.threeRate}</td>
                             <c:if test="${status.index==0}">
                                 <td style="border-bottom: #1b6d85 solid 1px" rowspan="${fn:length(item.value)}">${fn:split(item.key, '_')[1]}</td>
                             </c:if>

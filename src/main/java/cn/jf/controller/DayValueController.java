@@ -94,10 +94,10 @@ public class DayValueController {
     @RequestMapping("/topRateList")
     public String findDayValueZt(HttpServletRequest request, String rate,String totalMoney,String dateStart,String dateEnd) {
         if (StringUtils.isEmpty(rate)) {
-            rate="9";
+            rate = "9";
         }
         if (StringUtils.isEmpty(totalMoney)) {
-            totalMoney="1000";
+            totalMoney = "1000";
         }
         if (StringUtils.isEmpty(dateStart)) {
             int month = Calendar.getInstance().get(Calendar.MONTH) + 1;   //获取月份，0表示1月份
@@ -107,63 +107,64 @@ public class DayValueController {
             dateEnd = simpleDateFormat.format(Calendar.getInstance().getTime());
         }
         List<Integer> dates = dayValueService.findDays();
-        List<DayValue> dayValues = dayValueService.findDayValueZt(Float.parseFloat(rate), Float.parseFloat(totalMoney),Integer.parseInt(dateStart), Integer.parseInt(dateEnd));
+        List<DayValue> dayValues = dayValueService.findDayValueZt(Float.parseFloat(rate), Float.parseFloat(totalMoney), Integer.parseInt(dateStart), Integer.parseInt(dateEnd));
         Map<String, List<DayValue>> listMap = new LinkedHashMap<String, List<DayValue>>();
         BigDecimal dayRateSum = BigDecimal.valueOf(0);//一天数据的涨幅
         BigDecimal daysRateSum = BigDecimal.valueOf(0);//总数据涨幅
-
         BigDecimal rateTest = BigDecimal.valueOf(0);//测试
-        List<DayValue> dayValueList=new ArrayList<DayValue>();
-        int currentDate=0;
+        List<DayValue> dayValueList = new ArrayList<DayValue>();
+        int currentDate = 0;
         for (int i = 0; i < dayValues.size(); i++) {
-            if(currentDate==0){
-                currentDate=dayValues.get(i).getDate();
+            if (currentDate == 0) {
+                currentDate = dayValues.get(i).getDate();
             }
             DayValue dayValue = dayValues.get(i);
             //创业板
             if (dayValue.getCompanyCode().startsWith("300") || dates.indexOf(dayValue.getDate()) == 0) {
                 continue;
             }
-
             if (currentDate != dayValues.get(i).getDate()) {
-                if(dayValueList.size()>0) {
-                    listMap.put(currentDate + "_" + (dayRateSum.divide(BigDecimal.valueOf(dayValueList.size()), 2, BigDecimal.ROUND_HALF_EVEN)), dayValueList);
-                    daysRateSum = daysRateSum.add(dayRateSum.divide(BigDecimal.valueOf(dayValueList.size()), 2, BigDecimal.ROUND_HALF_EVEN));
-                   // currentDate = dayValues.get(i).getDate();
+                if (dayValueList.size() > 0) {
+                    listMap.put(currentDate + "_" + (dayRateSum
+                        .divide(BigDecimal.valueOf(dayValueList.size()), 2, BigDecimal.ROUND_HALF_EVEN)), dayValueList);
+                    daysRateSum = daysRateSum
+                        .add(dayRateSum.divide(BigDecimal.valueOf(dayValueList.size()), 2, BigDecimal.ROUND_HALF_EVEN));
+                    // currentDate = dayValues.get(i).getDate();
                 }
-                    dayRateSum = BigDecimal.valueOf(0);
-                    dayValueList = new ArrayList<DayValue>();
-                currentDate =dayValue.getDate();
-
-
+                dayRateSum = BigDecimal.valueOf(0);
+                dayValueList = new ArrayList<DayValue>();
+                currentDate = dayValue.getDate();
             }
             DayValue preDay = dayValueService.findDayValueByIdAndDate(dayValue.getCompanyCode(), dates.get(dates.indexOf(dayValue.getDate()) + 1));
             DayValue nextDay = dayValueService.findDayValueByIdAndDate(dayValue.getCompanyCode(), dates.get(dates.indexOf(dayValue.getDate()) - 1));
-            if(preDay==null){
-                System.out.println("----"+dayValue.getCompanyCode()+"-"+dayValue.getDate());
+            if (dates.indexOf(dayValue.getDate()) > 1) {
+                DayValue threeDay = dayValueService.findDayValueByIdAndDate(dayValue.getCompanyCode(), dates.get(dates.indexOf(dayValue.getDate()) - 2));
+                dayValue.setThreeRate(threeDay == null ? 0.0 : threeDay.getRate());
+            }
+            if (preDay == null) {
+                System.out.println("----" + dayValue.getCompanyCode() + "-" + dayValue.getDate());
                 continue;
             }
-            dayValue.setPreRate(preDay==null?0.00:preDay.getRate());
-            dayValue.setNextRate(nextDay==null?0.00:nextDay.getRate());
+            dayValue.setPreRate(preDay == null ? 0.00 : preDay.getRate());
+            dayValue.setNextRate(nextDay == null ? 0.00 : nextDay.getRate());
             //前一天的增长比率小于-4
-            if( preDay.getRate()<-4){
+            if (preDay.getRate() < -4) {
                 continue;
             }
-            if(preDay!=null &&preDay.getMacd()!=0 && preDay.getDiff()!=0 && preDay.getDea()!=0  ) {
+            if (preDay != null && preDay.getMacd() != 0 && preDay.getDiff() != 0 && preDay.getDea() != 0) {
                 dayValue.setPreK(preDay.getK());
                 dayValue.setPreD(preDay.getD());
                 dayValue.setPreJ(preDay.getJ());
             }
             /*if(  dayValue.getPreJ()<1   && dayValue.getPreK()>0 ){*/
-            if( dayValue.getPreJ()<2  &&  dayValue.getPreD()>22 && dayValue.getD()<50 && dayValue.getPreK()>0  ){
-                rateTest=rateTest.add(BigDecimal.valueOf(dayValue.getNextRate()));
-            }else{
+            if (dayValue.getPreJ() < 2 && dayValue.getPreD() > 22 && dayValue.getD() < 50 && dayValue.getPreK() > 0) {
+                rateTest = rateTest.add(BigDecimal.valueOf(dayValue.getNextRate()));
+            } else {
                 continue;
             }
-            if(nextDay!=null) {
+            if (nextDay != null) {
                 dayRateSum = dayRateSum.add(BigDecimal.valueOf(nextDay.getRate()));
             }
-
             dayValueList.add(dayValue);
         }
         FormatDate.getFormatDates_month(request);
@@ -196,7 +197,6 @@ public class DayValueController {
         if (dateEnd== null || StringUtils.isEmpty(dateEnd)) {
             dateEnd = simpleDateFormat.format(Calendar.getInstance().getTime());
         }
-
         int iStart = dates.indexOf(Integer.parseInt(dateStart));
         int t=0;
         while (iStart<0){
@@ -209,9 +209,7 @@ public class DayValueController {
             iEnd = dates.indexOf(Integer.parseInt(dateEnd)-t);
             t++;
         }
-
         for (int i = iEnd; i < iStart; i++) {
-
             end = dates.get(i);
             if(i>0) {
                 current = dates.get(i - 1);
@@ -225,7 +223,6 @@ public class DayValueController {
                 rateSum=rateSum.add(BigDecimal.valueOf(list.get(0).getRate()));
             }
         }
-
         request.setAttribute("dateStart", dateStart);
         request.setAttribute("dateEnd", dateEnd);
         request.setAttribute("rateSum", rateSum);
