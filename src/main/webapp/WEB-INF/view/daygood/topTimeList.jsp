@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <title>data-topTimeList</title>
+    <title>topTimeList</title>
     <link rel="stylesheet" type="text/css" href="${ctx}assets/css/common/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${ctx}assets/css/common/list.css">
 </head>
