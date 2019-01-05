@@ -38,9 +38,11 @@ public class LoginController {
                 token.setRememberMe(true);    // 记住我
             try {
                 subject.login(token);
-            } catch (UnknownAccountException | IncorrectCredentialsException e1) {
+            } catch (UnknownAccountException un) {
                 error = "用户名或密码错误";
-            } catch (ExcessiveAttemptsException e) {
+            } catch (IncorrectCredentialsException e1) {
+                error = "用户名或密码错误";
+            }catch (ExcessiveAttemptsException e) {
                 //userService.lockAccountByNo(no);     // 锁定账户
                 error = "超过了尝试登录的次数，您的账户已经被锁定。";
             } catch (AuthenticationException e) {    // 其他错误

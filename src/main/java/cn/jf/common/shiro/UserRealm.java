@@ -30,11 +30,11 @@ public class UserRealm extends AuthorizingRealm {
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         //authorizationInfo.setRoles(userService.findRolesByUserId(user.getId()));
         //设置角色
-        Set<String> roles=new HashSet<>();
+        Set<String> roles=new HashSet<String>();
         roles.add("admin");
         authorizationInfo.setRoles(roles);
         //设置权限
-        Set<String> permissions=new HashSet<>();
+        Set<String> permissions=new HashSet<String>();
         permissions.add("select");
         authorizationInfo.setStringPermissions(permissions);
 
