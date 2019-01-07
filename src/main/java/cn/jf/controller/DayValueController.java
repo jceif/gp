@@ -3,9 +3,11 @@ package cn.jf.controller;
 import cn.jf.common.FormatDate;
 import cn.jf.common.PageUtil;
 import cn.jf.model.company.Company;
+import cn.jf.model.daygood.DayGood;
 import cn.jf.model.dayvalue.DayValue;
 import cn.jf.model.dayvalue.DayValueVo1;
 import cn.jf.service.company.CompanyService;
+import cn.jf.service.daygood.DayGoodService;
 import cn.jf.service.dayvalue.DayValueService;
 import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.druid.util.StringUtils;
@@ -25,6 +27,9 @@ public class DayValueController {
 
     @Autowired
     private DayValueService dayValueService;
+
+    @Autowired
+    private DayGoodService dayGoodService;
 
     @Autowired
     private CompanyService companyService;
@@ -141,11 +146,14 @@ public class DayValueController {
                 continue;
             }
             //涨幅=(现价-上一个交易日收盘价）/上一个交易日收盘价*100%
-            BigDecimal startRate=BigDecimal.valueOf(dayValue.getStartPrice()-preDay.getEndPrice()).divide(BigDecimal.valueOf(preDay.getEndPrice()),2);
-            if (startRate.compareTo(BigDecimal.valueOf(9))>0) {
+            DayGood dayGood=dayGoodService.findByDateATime(dates.get(dates.indexOf(dayValue.getDate()) - 1),930);
+            //BigDecimal startRate=BigDecimal.valueOf(dayValue.getStartPrice()-preDay.getEndPrice()).divide(BigDecimal.valueOf(preDay.getEndPrice()),2);
+            if (dayGood!=null && dayGood.getRate()>9) {
                 continue;
             }
             DayValue nextDay = dayValueService.findDayValueByIdAndDate(dayValue.getCompanyCode(), dates.get(dates.indexOf(dayValue.getDate()) - 1));
+
+
             if (dates.indexOf(dayValue.getDate()) > 1) {
                 DayValue threeDay = dayValueService.findDayValueByIdAndDate(dayValue.getCompanyCode(), dates.get(dates.indexOf(dayValue.getDate()) - 2));
                 dayValue.setThreeRate(threeDay == null ? 0.0 : threeDay.getRate());
@@ -162,7 +170,7 @@ public class DayValueController {
             //过滤 kdj 条件
             if(isFilter==null || StringUtils.isEmpty(isFilter)) {
                 //前一天的增长比率小于-4
-                if (preDay.getRate() < -4) {
+                if (preDay.getRate() < -1) {
                     continue;
                 }
                 if (dayValue.getPreJ() < 2 && dayValue.getPreD() > 22 && dayValue.getPreD() < 50 && dayValue.getPreK() > 0) {
