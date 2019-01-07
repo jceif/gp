@@ -147,16 +147,16 @@ public class DayValueController {
             }
             dayValue.setPreRate(preDay == null ? 0.00 : preDay.getRate());
             dayValue.setNextRate(nextDay == null ? 0.00 : nextDay.getRate());
-            //前一天的增长比率小于-4
-            if (preDay.getRate() < -4) {
-                continue;
-            }
+
             if (preDay != null && preDay.getMacd() != 0 && preDay.getDiff() != 0 && preDay.getDea() != 0) {
                 dayValue.setPreK(preDay.getK());
                 dayValue.setPreD(preDay.getD());
                 dayValue.setPreJ(preDay.getJ());
             }
-            /*if(  dayValue.getPreJ()<1   && dayValue.getPreK()>0 ){*/
+            //前一天的增长比率小于-4
+            if (preDay.getRate() < -4) {
+                continue;
+            }
             if (dayValue.getPreJ() < 2 && dayValue.getPreD() > 22 && dayValue.getPreD() < 50 && dayValue.getPreK() > 0) {
                 rateTest = rateTest.add(BigDecimal.valueOf(dayValue.getNextRate()));
             } else {
