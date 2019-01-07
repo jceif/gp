@@ -157,7 +157,7 @@ public class DayValueController {
                 dayValue.setPreJ(preDay.getJ());
             }
             /*if(  dayValue.getPreJ()<1   && dayValue.getPreK()>0 ){*/
-            if (dayValue.getPreJ() < 2 && dayValue.getPreD() > 22 && dayValue.getD() < 50 && dayValue.getPreK() > 0) {
+            if (dayValue.getPreJ() < 2 && dayValue.getPreD() > 22 && dayValue.getPreD() < 50 && dayValue.getPreK() > 0) {
                 rateTest = rateTest.add(BigDecimal.valueOf(dayValue.getNextRate()));
             } else {
                 continue;
