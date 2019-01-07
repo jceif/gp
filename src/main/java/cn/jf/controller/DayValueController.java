@@ -92,7 +92,7 @@ public class DayValueController {
     }
 
     @RequestMapping("/topRateList")
-    public String findDayValueZt(HttpServletRequest request, String rate,String totalMoney,String dateStart,String dateEnd) {
+    public String findDayValueZt(HttpServletRequest request, String rate,String totalMoney,String dateStart,String dateEnd,String isFilter) {
         if (StringUtils.isEmpty(rate)) {
             rate = "9";
         }
@@ -153,14 +153,17 @@ public class DayValueController {
                 dayValue.setPreD(preDay.getD());
                 dayValue.setPreJ(preDay.getJ());
             }
-            //前一天的增长比率小于-4
-            if (preDay.getRate() < -4) {
-                continue;
-            }
-            if (dayValue.getPreJ() < 2 && dayValue.getPreD() > 22 && dayValue.getPreD() < 50 && dayValue.getPreK() > 0) {
-                rateTest = rateTest.add(BigDecimal.valueOf(dayValue.getNextRate()));
-            } else {
-                continue;
+            //过滤 kdj 条件
+            if(isFilter==null || StringUtils.isEmpty(isFilter)) {
+                //前一天的增长比率小于-4
+                if (preDay.getRate() < -4) {
+                    continue;
+                }
+                if (dayValue.getPreJ() < 2 && dayValue.getPreD() > 22 && dayValue.getPreD() < 50 && dayValue.getPreK() > 0) {
+                    rateTest = rateTest.add(BigDecimal.valueOf(dayValue.getNextRate()));
+                } else {
+                    continue;
+                }
             }
             if (nextDay != null) {
                 dayRateSum = dayRateSum.add(BigDecimal.valueOf(nextDay.getRate()));
