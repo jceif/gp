@@ -136,15 +136,21 @@ public class DayValueController {
                 currentDate = dayValue.getDate();
             }
             DayValue preDay = dayValueService.findDayValueByIdAndDate(dayValue.getCompanyCode(), dates.get(dates.indexOf(dayValue.getDate()) + 1));
+            if (preDay == null) {
+                System.out.println("----" + dayValue.getCompanyCode() + "-" + dayValue.getDate());
+                continue;
+            }
+            //涨幅=(现价-上一个交易日收盘价）/上一个交易日收盘价*100%
+            BigDecimal startRate=BigDecimal.valueOf(dayValue.getStartPrice()-preDay.getEndPrice()).divide(BigDecimal.valueOf(preDay.getEndPrice()),2);
+            if (startRate.compareTo(BigDecimal.valueOf(9))>0) {
+                continue;
+            }
             DayValue nextDay = dayValueService.findDayValueByIdAndDate(dayValue.getCompanyCode(), dates.get(dates.indexOf(dayValue.getDate()) - 1));
             if (dates.indexOf(dayValue.getDate()) > 1) {
                 DayValue threeDay = dayValueService.findDayValueByIdAndDate(dayValue.getCompanyCode(), dates.get(dates.indexOf(dayValue.getDate()) - 2));
                 dayValue.setThreeRate(threeDay == null ? 0.0 : threeDay.getRate());
             }
-            if (preDay == null) {
-                System.out.println("----" + dayValue.getCompanyCode() + "-" + dayValue.getDate());
-                continue;
-            }
+
             dayValue.setPreRate(preDay == null ? 0.00 : preDay.getRate());
             dayValue.setNextRate(nextDay == null ? 0.00 : nextDay.getRate());
 
