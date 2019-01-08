@@ -145,6 +145,7 @@ public class DayValueController {
                 System.out.println("----" + dayValue.getCompanyCode() + "-" + dayValue.getDate());
                 continue;
             }
+
             //验证开盘是否涨停
             Map<String,Object> searchMap=new HashMap<>();
             searchMap.put("companyCode",dayValue.getCompanyCode());
@@ -167,7 +168,7 @@ public class DayValueController {
                 dayValue.setPreJ(preDay.getJ());
             }
             //过滤 kdj 条件
-            if(isFilter!=null && StringUtils.isEmpty(isFilter) && isFilter.equals("1")) {
+            if(isFilter!=null && !StringUtils.isEmpty(isFilter) && isFilter.equals("1")) {
                 //前一天的增长比率小于-4
                 if (preDay.getRate() < -1) {
                     continue;
