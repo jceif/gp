@@ -39,6 +39,12 @@
                         </c:forEach>
                     </select>
                 </th>
+                <th>验证kdj：
+                    <select name="isFilter">
+                        <option  <c:if test="${empty isFilter}">selected</c:if> value="">否</option>
+                        <option  <c:if test="${!empty isFilter && isFilter=='1'}">selected</c:if> value="1">是</option>
+                    </select>
+                </th>
                 <th><input type="submit" value="查询">&nbsp;${daysRateSum}</th>
             </tr>
         </table>
