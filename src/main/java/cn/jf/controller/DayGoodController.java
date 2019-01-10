@@ -167,6 +167,16 @@ public class DayGoodController {
     }
 
 
+    /**
+     *统计 不同时间点 最高 流入量 收益率
+     *
+     * @param request
+     * @param dateStart 开始日期
+     * @param dateEnd 结束日期
+     * @param timeStart 开始时间
+     * @param timeEnd 结束时间
+     * @return
+     */
     @RequestMapping("/topList")
     public String findTotalMoneyTopList(HttpServletRequest request, String dateStart, String dateEnd, String timeStart,
         String timeEnd) {
@@ -229,6 +239,14 @@ public class DayGoodController {
     }
 
 
+    /**
+     * 按照时间 和 流入量 进行排名统计
+     * @param request
+     * @param time
+     * @param dateStart
+     * @param dateEnd
+     * @return
+     */
     @RequestMapping("/topTimeList")
     public String findTopOneByTime(HttpServletRequest request, String time, String dateStart, String dateEnd) {
         if (StringUtils.isEmpty(time)) {
@@ -327,7 +345,7 @@ public class DayGoodController {
         if (timeValue >= Integer.parseInt(timeStart) && timeValue <= Integer.parseInt(timeEnd)) {
             DayGood dayGood = dayGoodService.findByDateATime(date, timeValue);
             //非创业板
-            if(!dayGood.getCompanyCode().startsWith("300")) {
+            if (!dayGood.getCompanyCode().startsWith("300")) {
                 if (dayGood != null && !companyCodes.contains(dayGood.getCompanyCode())) {
                     DayValue dayValue = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), date);
                     if (dayValue != null) {

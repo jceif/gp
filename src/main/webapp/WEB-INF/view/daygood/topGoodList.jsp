@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <title>${daysRateSum}|${fztDaysRateSum}</title>
+    <title>topGoodList</title>
     <link rel="stylesheet" type="text/css"
           href="${ctx}assets/css/common/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${ctx}assets/css/common/list.css">
@@ -63,7 +63,7 @@
 
                     </select>
                 </th>
-                <th><input type="submit" value="查询"></th>
+                <th><input type="submit" value="查询"> all:${daysRateSum} | fzt:${fztDaysRateSum}</th>
             </tr>
         </table>
 
