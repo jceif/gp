@@ -20,7 +20,8 @@
 
         <table style="width: 100%;">
             <tr>
-                <th>流入：<input type="number" name="totalMoney" value="${totalMoney}"></td>
+                <th>流入：<input type="number" name="totalMoney1" value="${totalMoney1}">-
+               <input type="number" name="totalMoney2" value="${totalMoney2}"></th>
                 <th>rate：<input type="text" name="rate" value="${rate}"></th>
                 <th>开始日期：
                     <select name="dateStart">

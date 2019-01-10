@@ -268,7 +268,7 @@ and (d1.k-d2.k)>=6
 
 
     <select id="findDayValueZt" resultMap="dayValue">
-		select * from day_value where rate>#{rate} and total_money>#{totalMoney} and date BETWEEN #{startDate} and #{endDate}  order by date desc, total_money desc
+		select * from day_value where rate>#{rate} and total_money between #{totalMoney1} and #{totalMoney2} and date BETWEEN #{startDate} and #{endDate}  order by date desc, total_money desc
  	</select>
 
 

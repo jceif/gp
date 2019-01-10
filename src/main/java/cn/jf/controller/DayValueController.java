@@ -97,12 +97,15 @@ public class DayValueController {
     }
 
     @RequestMapping("/topRateList")
-    public String findDayValueZt(HttpServletRequest request, String rate,String totalMoney,String dateStart,String dateEnd,String isFilter) {
+    public String findDayValueZt(HttpServletRequest request, String rate,String totalMoney1,String totalMoney2,String dateStart,String dateEnd,String isFilter) {
         if (StringUtils.isEmpty(rate)) {
             rate = "9";
         }
-        if (StringUtils.isEmpty(totalMoney)) {
-            totalMoney = "1000";
+        if (StringUtils.isEmpty(totalMoney1)) {
+            totalMoney1 = "1700";
+        }
+        if (StringUtils.isEmpty(totalMoney2)) {
+            totalMoney2 = "3300";
         }
         if (StringUtils.isEmpty(dateStart)) {
             int month = Calendar.getInstance().get(Calendar.MONTH) + 1;   //获取月份，0表示1月份
@@ -112,7 +115,7 @@ public class DayValueController {
             dateEnd = simpleDateFormat.format(Calendar.getInstance().getTime());
         }
         List<Integer> dates = dayValueService.findDays();
-        List<DayValue> dayValues = dayValueService.findDayValueZt(Float.parseFloat(rate), Float.parseFloat(totalMoney), Integer.parseInt(dateStart), Integer.parseInt(dateEnd));
+        List<DayValue> dayValues = dayValueService.findDayValueZt(Float.parseFloat(rate), Float.parseFloat(totalMoney1),Float.parseFloat(totalMoney2), Integer.parseInt(dateStart), Integer.parseInt(dateEnd));
         Map<String, List<DayValue>> listMap = new LinkedHashMap<String, List<DayValue>>();
         BigDecimal dayRateSum = BigDecimal.valueOf(0);//一天数据的涨幅
         BigDecimal daysRateSum = BigDecimal.valueOf(0);//总数据涨幅
@@ -170,14 +173,35 @@ public class DayValueController {
             //过滤 kdj 条件
             if(isFilter!=null && !StringUtils.isEmpty(isFilter) && isFilter.equals("1")) {
                 //前一天的增长比率小于-4
-                if (preDay.getRate() < -1) {
+//                if (preDay.getRate() < -1) {
+//                    continue;
+//                }
+//                if (dayValue.getPreJ() < 2 && dayValue.getPreD() > 22 && dayValue.getPreD() < 50 && dayValue.getPreK() > 0) {
+//                    rateTest = rateTest.add(BigDecimal.valueOf(dayValue.getNextRate()));
+//                } else {
+//                    continue;
+//                }
+                int iK=Float.valueOf(dayValue.getPreK()).intValue();
+                int iD=Float.valueOf(dayValue.getPreD()).intValue();
+                int iJ=Float.valueOf(dayValue.getPreJ()).intValue();
+                if (Math.abs(iK-iD)>4 || Math.abs(iK-iJ)>4 || Math.abs(iJ-iD)>4) {
+                   continue;
+                }
+
+                if (iJ>69 && iJ<81) {
                     continue;
                 }
-                if (dayValue.getPreJ() < 2 && dayValue.getPreD() > 22 && dayValue.getPreD() < 50 && dayValue.getPreK() > 0) {
-                    rateTest = rateTest.add(BigDecimal.valueOf(dayValue.getNextRate()));
-                } else {
+
+                // 5.1 119
+                // 4.4
+                if (dayValue.getPreRate()>2.2 || dayValue.getPreRate()<-4.4) {
                     continue;
                 }
+
+                //if
+//                if(dayValue.getPreK()==0){
+//                    continue;
+//                }
             }
             if (nextDay != null) {
                 dayRateSum = dayRateSum.add(BigDecimal.valueOf(nextDay.getRate()));
@@ -186,7 +210,8 @@ public class DayValueController {
         }
         FormatDate.getFormatDates_month(request);
         request.setAttribute("rate", rate);
-        request.setAttribute("totalMoney", totalMoney);
+        request.setAttribute("totalMoney1", totalMoney1);
+        request.setAttribute("totalMoney2", totalMoney2);
         request.setAttribute("dateStart", dateStart);
         request.setAttribute("dateEnd", dateEnd);
         request.setAttribute("daysRateSum", daysRateSum);
@@ -196,6 +221,14 @@ public class DayValueController {
     }
 
 
+    /**
+     * 统计最近4天 净流入量 进行排名
+     * @param request
+     * @param dateStart
+     * @param dateEnd
+     * @param dura
+     * @return
+     */
     @RequestMapping("/topInflowList")
     public String findByInflowDays(HttpServletRequest request,String dateStart,String dateEnd,String dura){
         int start = 0;

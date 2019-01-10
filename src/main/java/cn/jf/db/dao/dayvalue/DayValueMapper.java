@@ -55,7 +55,7 @@ public interface DayValueMapper {
 	DayValue findByCodeADate(@Param("companyCode") String companyCode,@Param("date") int date);
 
 
-	List<DayValue> findDayValueZt(@Param("rate") float rate, @Param("totalMoney") float totalMoney,@Param("startDate") int startDate,@Param("endDate") int endDate);
+	List<DayValue> findDayValueZt(@Param("rate") float rate, @Param("totalMoney1") float totalMoney1, @Param("totalMoney2") float totalMoney2,@Param("startDate") int startDate,@Param("endDate") int endDate);
 
 	List<DayValueVo1> findByInflowDays(@Param("startDate") int startDate, @Param("endDate") int endDate, @Param("currentDate") int currentDate);
 
