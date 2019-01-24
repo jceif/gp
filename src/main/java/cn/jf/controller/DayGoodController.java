@@ -248,9 +248,12 @@ public class DayGoodController {
      * @return
      */
     @RequestMapping("/topTimeList")
-    public String findTopOneByTime(HttpServletRequest request, String time, String dateStart, String dateEnd) {
-        if (StringUtils.isEmpty(time)) {
+    public String findTopOneByTime(HttpServletRequest request, String time,String goTime, String dateStart, String dateEnd) {
+        if (StringUtils.isEmpty(time==null?"":time)) {
             time = "1130";
+        }
+        if (StringUtils.isEmpty(goTime==null?"":goTime)) {
+            goTime = "1500";
         }
         if (StringUtils.isEmpty(dateStart)) {
             int month = Calendar.getInstance().get(Calendar.MONTH) + 1;   //获取月份，0表示1月份
@@ -259,6 +262,7 @@ public class DayGoodController {
         if (StringUtils.isEmpty(dateEnd)) {
             dateEnd = simpleDateFormat.format(Calendar.getInstance().getTime());
         }
+
         List<DayGood> dayGoods = dayGoodService.findTopOneByTime(time, Integer.parseInt(dateStart), Integer.parseInt(dateEnd));
         List<Integer> dates = dayValueService.findDays();
         BigDecimal fztRateSum = BigDecimal.ZERO;//非涨停收益率
@@ -276,7 +280,25 @@ public class DayGoodController {
             }
             DayValue preDay = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), dates.get(dates.indexOf(dayGood.getDate()) + 1));
             DayValue currentDay = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), dayGood.getDate());
-            DayValue nextDay = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), dates.get(dates.indexOf(dayGood.getDate()) - 1));
+            DayValue nextDay =null;
+            if(goTime.equals("1500")){
+                nextDay=dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), dates.get(dates.indexOf(dayGood.getDate()) - 1));
+            }else{
+                nextDay=new DayValue();
+                Map<String,Object> mapSearch=new HashMap<>();
+                mapSearch.put("companyCode",dayGood.getCompanyCode());
+                mapSearch.put("date",dates.get(dates.indexOf(dayGood.getDate()) - 1));
+                mapSearch.put("time",goTime);
+                List<DayGood> goodList=dayGoodService.findDayGoodQuery(mapSearch);
+                if(goodList!=null && goodList.size()>0){
+                    nextDay.setId(100);
+                    nextDay.setEndPrice(goodList.get(0).getPrice());
+                    nextDay.setStartPrice(goodList.get(0).getPrice());//赋值不准确
+                    nextDay.setRate(goodList.get(0).getRate());
+                }
+            }
+
+
             DayGoodVo1 dayGoodVo1 = new DayGoodVo1();
             dayGoodVo1.setPreTime(Integer.parseInt(time));
             dayGoodVo1.setPreRate(dayGood.getRate());
@@ -318,6 +340,7 @@ public class DayGoodController {
         }
         FormatDate.getFormatDates_month(request);
         request.setAttribute("time", time);
+        request.setAttribute("goTime", goTime);
         request.setAttribute("dateStart", dateStart);
         request.setAttribute("dateEnd", dateEnd);
         request.setAttribute("dayGoodVo1s", dayGoodVo1s);

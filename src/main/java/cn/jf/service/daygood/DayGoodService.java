@@ -40,8 +40,6 @@ public interface DayGoodService {
 
  List<DayGood> findTopOneByTime(String time, int dateStart, int dateEnd);
 
-
-
  DayGood findByDateATime(int date,int time);
 
 

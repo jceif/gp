@@ -18,7 +18,7 @@
 
         <table style="width: 100%;">
             <tr>
-                <th>查询时间：
+                <th>买入时间：
                     <select name="time">
                         <option value="">请选择</option>
                         <option value="930" <c:if test="${930==time}">selected</c:if>>930</option>
@@ -33,6 +33,23 @@
                         <option value="1500" <c:if test="${1500==time}">selected</c:if>>1500</option>
                     </select>
                 </th>
+
+                <th>卖出时间：
+                    <select name="goTime">
+                        <option value="">请选择</option>
+                        <option value="930" <c:if test="${930==goTime}">selected</c:if>>930</option>
+                        <option value="1000" <c:if test="${1000==goTime}">selected</c:if>>1000</option>
+                        <option value="1030" <c:if test="${1030==goTime}">selected</c:if>>1030</option>
+                        <option value="1100" <c:if test="${1100==goTime}">selected</c:if>>1100</option>
+                        <option value="1130" <c:if test="${1130==goTime}">selected</c:if>>1130</option>
+                        <option value="1300" <c:if test="${1300==goTime}">selected</c:if>>1300</option>
+                        <option value="1330" <c:if test="${1330==goTime}">selected</c:if>>1330</option>
+                        <option value="1400" <c:if test="${1400==goTime}">selected</c:if>>1400</option>
+                        <option value="1430" <c:if test="${1430==goTime}">selected</c:if>>1430</option>
+                        <option value="1500" <c:if test="${1500==goTime}">selected</c:if>>1500</option>
+                    </select>
+                </th>
+
                 <th>开始日期：
                     <select name="dateStart">
                         <option value="">请选择</option>
