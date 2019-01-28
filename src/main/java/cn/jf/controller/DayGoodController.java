@@ -295,6 +295,8 @@ public class DayGoodController {
                     nextDay.setEndPrice(goodList.get(0).getPrice());
                     nextDay.setStartPrice(goodList.get(0).getPrice());//赋值不准确
                     nextDay.setRate(goodList.get(0).getRate());
+                }else{
+                    System.out.println(dayGood.getCompanyCode()+"-"+dates.get(dates.indexOf(dayGood.getDate()) - 1)+"-"+goTime);
                 }
             }
 
