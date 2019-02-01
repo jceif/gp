@@ -280,6 +280,13 @@ public class DayGoodController {
             }
             DayValue preDay = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), dates.get(dates.indexOf(dayGood.getDate()) + 1));
             DayValue currentDay = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), dayGood.getDate());
+            int dayCount=dayValueService.findCountByCompanyCode(dayGood.getCompanyCode(),currentDay.getDate());
+            //如果是新股 不计算
+            if( dayCount<20&& preDay.getK()==0 && preDay.getD()==0 && preDay.getJ()==0)
+            {
+                continue;
+            }
+
             DayValue nextDay =null;
             if(goTime.equals("1500")){
                 nextDay=dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), dates.get(dates.indexOf(dayGood.getDate()) - 1));
@@ -331,7 +338,7 @@ public class DayGoodController {
             }else {
                 dayGoodVo1.setIncomeRate(currentIncome.doubleValue());
             }
-            //统计涨停数据 赔付率
+
             if (dayGood.getRate() >= 9.5) {
                 ztRateSum = ztRateSum.add(BigDecimal.valueOf(dayGoodVo1.getIncomeRate()));
             } else{
@@ -393,6 +400,10 @@ public class DayGoodController {
         }
         return new BigDecimal[]{value,fztDayRateSum};
     }
+
+
+//    AccessKeyId	AccessKeySecret
+//    LTAIlM5ccmMEMKZr	n5RbdkAGwDSZoy5SwI2WH9byE1V26t
 
 
 }
