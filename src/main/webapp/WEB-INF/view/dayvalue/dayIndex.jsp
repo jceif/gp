@@ -45,7 +45,7 @@
             <tr>
                     <%--当前--%>
                 <td>${var.count}</td>
-                <td><a href="/day/detail?companyCode=${item.companyCode}&count=30" target="_blank">${item.companyCode}</a> </td>
+                <td><a href="/day/detail?companyCode=${item.companyCode}&count=100" target="_blank">${item.companyCode}</a> </td>
                 <td >${item.totalMoney}</td>
                 <td style="
                 <c:choose>

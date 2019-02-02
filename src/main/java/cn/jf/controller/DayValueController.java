@@ -60,6 +60,7 @@ public class DayValueController {
 
         List<Double> rates = new ArrayList<Double>();
         List<Double> inflows = new ArrayList<Double>();
+        List<Double> prices = new ArrayList<Double>();
         List<Float> diffs = new ArrayList<Float>();
         List<Float> deas = new ArrayList<Float>();
         List<Float> macds = new ArrayList<Float>();
@@ -74,6 +75,7 @@ public class DayValueController {
                 dayValue = dayValues.get(i);
                 dates.add(dayValue.getDate());
                 rates.add(dayValue.getRate());
+                prices.add(dayValue.getEndPrice());
                 inflows.add(dayValue.getTotalMoney());
                 diffs.add(dayValue.getDiff());
                 deas.add(dayValue.getDea());
@@ -90,6 +92,7 @@ public class DayValueController {
         request.setAttribute("diffs", JSONUtils.toJSONString(diffs));
         request.setAttribute("deas", JSONUtils.toJSONString(deas));
         request.setAttribute("macds", JSONUtils.toJSONString(macds));
+        request.setAttribute("prices", JSONUtils.toJSONString(prices));
         request.setAttribute("ks", JSONUtils.toJSONString(ks));
         request.setAttribute("ds", JSONUtils.toJSONString(ds));
         request.setAttribute("js", JSONUtils.toJSONString(js));
