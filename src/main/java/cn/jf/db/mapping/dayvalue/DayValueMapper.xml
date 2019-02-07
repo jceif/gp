@@ -225,35 +225,39 @@ insert into day_value
         </where>
     </select>
     <select id="dayValueUpList" resultMap="dayValue">
-        select d3.* from
+        select d3.*  from
         (select * from  day_value WHERE date=#{date1}) d1
         LEFT JOIN
         (select * from day_value WHERE date=#{date2})  d2 on d1.company_code=d2.company_code
         left JOIN
         (select * from day_value WHERE date=#{date3})  d3 on d2.company_code=d3.company_code
-        where d3.dea &lt; 0
+        where d3.dea &lt; -0.43 and d3.macd &lt; 0
         and d3.dea>d2.dea and d1.dea>d2.dea
         and d3.macd>d2.macd and d3.diff>d2.diff
-        and d3.d>d2.d
-        and d3.j  &lt; 90
-        union  all
+        and d3.d>d2.d and d3.j>d2.j
+        and d3.j  &lt; 90 and d3.j>d1.j
+      <!--
+       d3.dea &lt; -0.5 and
+       union  all
          select d3.* from
         (select * from  day_value WHERE date=#{date1}) d1
         LEFT JOIN
         (select * from day_value WHERE date=#{date2})  d2 on d1.company_code=d2.company_code
         left JOIN
         (select * from day_value WHERE date=#{date3})  d3 on d2.company_code=d3.company_code
-        where d2.k &lt; 40 and d2.d &lt; 40 and d2.j &lt; 40
+        where d2.k &lt; 40 and d2.d &lt; 40 and d2.j &lt; 40 and d2.k>0
         and d3.d>d2.d and d1.d>d2.d
         and d3.k>d2.k and d1.k>d2.k
         and d3.j>d2.j and d1.j>d2.j
-        and d3.j &lt; d3.k and d3.k &lt; d3.d
+        and d3.j &lt; d3.k and d3.k &lt; d3.d -->
     </select>
 
-    <select id="dayValueSumRate" resultType="java.lang.Double">
-     select  sum(rate)  from day_value where company_code=#{code} and date >#{date} order by id ASC  limit #{limit}
+    <select id="dayValueSumRate" resultMap="dayValue">
+     select  *  from day_value where company_code=#{code} and date >#{date} order by id ASC  limit #{limit}
     </select>
-
+    <select id="dayValueAagRate" resultType="java.lang.Double">
+      select AVG(dea) avgDea from day_value where company_code=#{code} and dea &lt; 0 and date &lt;= #{date} ORDER BY id desc  limit 50
+    </select>
 
     <select id="findCountByCompanyCode" resultType="java.lang.Integer">
         select count(id) from day_value where company_code=#{companyCode}

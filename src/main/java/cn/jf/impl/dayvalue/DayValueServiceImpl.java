@@ -1,6 +1,8 @@
 package cn.jf.impl.dayvalue;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import cn.jf.common.PageUtil;
@@ -8,6 +10,8 @@ import cn.jf.db.dao.dayvalue.DayValueMapper;
 import cn.jf.model.dayvalue.DayValue;
 import cn.jf.model.dayvalue.DayValueVo1;
 import cn.jf.service.dayvalue.DayValueService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.impl.Log4JLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +23,7 @@ public class DayValueServiceImpl implements DayValueService {
 
 
   SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+
 
   public void insertDayValue(DayValue dayValue) {
     this.dayValueMapper.insertDayValue(dayValue);
@@ -91,17 +96,30 @@ public class DayValueServiceImpl implements DayValueService {
 
 
 
-
-
   @Override
-  public List<DayValue> dayValueUpList(String date1,String date2,String date3) {
+  public List<DayValue> dayValueUpList(String date1,String date2,String date3,int limit) {
+    List<DayValue> dayValueList=new ArrayList<>();
     List<DayValue> dayValues= dayValueMapper.dayValueUpList( date1, date2, date3);
     if(dayValues!=null) {
       for (DayValue dayValue : dayValues) {
-        dayValue.setSumRate(dayValueMapper.dayValueSumRate(dayValue.getCompanyCode(), dayValue.getDate(), 4));
+        if (dayValue.getCompanyCode().startsWith("300")) {
+          continue;
+        }
+        Double avgDea = dayValueMapper.dayValueAagRate(dayValue.getCompanyCode(), dayValue.getDate());
+        if (avgDea > dayValue.getDea()) {
+          List<DayValue> rateList = dayValueMapper.dayValueSumRate(dayValue.getCompanyCode(), dayValue.getDate(), limit);
+          BigDecimal sumRate = BigDecimal.valueOf(0);
+          if (rateList != null) {
+            for (DayValue value : rateList) {
+              sumRate = sumRate.add(BigDecimal.valueOf(value.getRate()));
+            }
+            dayValue.setSumRate(sumRate.doubleValue());
+            dayValueList.add(dayValue);
+          }
+        }
       }
     }
-    return  dayValues;
+    return  dayValueList;
   }
 
 

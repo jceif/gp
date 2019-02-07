@@ -20,37 +20,26 @@
 
         <table style="width: 100%;">
             <tr>
-                <th>当前日期：
-                    <select name="date3">
+                <th>开始日期：
+                    <select name="dateStart">
                         <option value="">请选择</option>
-                        <c:forEach items="${formatDates}" var="item"
-                                   varStatus="var">
+                        <c:forEach items="${dateStarts}" var="item" varStatus="var">
                             <option value="${item}"
-                                    <c:if test="${item==date3}">selected</c:if>>${item}</option>
+                                    <c:if test="${item==dateStart}">selected</c:if>>${item}</option>
                         </c:forEach>
                     </select>
                 </th>
-                <th>前一个交易日期：
-                    <select name="date2">
+                <th>结束日期：
+                    <select name="dateEnd">
                         <option value="">请选择</option>
-                        <c:forEach items="${formatDates1}" var="item"
-                                   varStatus="var">
-                            <option value="${item}"
-                                    <c:if test="${item==date2}">selected</c:if>>${item}</option>
+                        <c:forEach items="${dateEnds}" var="item" varStatus="var">
+                            <option value="${item}" <c:if test="${item==dateEnd}">selected</c:if>>${item}</option>
                         </c:forEach>
                     </select>
                 </th>
-                <th>前二个交易日期：
-                    <select name="date1">
-                        <option value="">请选择</option>
-                        <c:forEach items="${formatDates2}" var="item"
-                                   varStatus="var">
-                            <option value="${item}"
-                                    <c:if test="${item==date1}">selected</c:if>>${item}</option>
-                        </c:forEach>
-                    </select>
-                </th>
-                <th><input type="submit" value="查询">&nbsp;</th>
+
+                <th>持有：<input type="number" name="limit" value="${limit}">天 </th>
+                <th><input type="submit" value="查询">&nbsp; ${allSumRate}</th>
             </tr>
 
         </table>
@@ -80,7 +69,7 @@
 
         <%--item 前，itemOld后--%>
             <c:forEach items="${dayValues}" var="item"  step="1"  varStatus="var">
-                <c:if test="${ fn:substring(item.companyCode ,0,3)!='300'}">
+                <%--<c:if test="${ fn:substring(item.companyCode ,0,3)!='300'}">--%>
                     <tr>
                             <%--当前--%>
                         <td>${var.count}</td>
@@ -186,7 +175,7 @@
                             <%--pattern="yyyy-MM-dd HH:mm:ss"--%>
                             <%--timeZone="0"/>--%>
                     </tr>
-                </c:if>
+                <%--</c:if>--%>
             </c:forEach>
 
 

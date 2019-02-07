@@ -40,23 +40,60 @@ public class DayValueController {
      * 统计最近kdj macd diff dea 连续三天上涨的值
      */
     @RequestMapping("/index")
-    public String index(HttpServletRequest request,String date1,String date2,String date3) {
+    public String index(HttpServletRequest request,String dateStart,String dateEnd,String limit) {
+        if (StringUtils.isEmpty(dateStart)) {
+            int month = Calendar.getInstance().get(Calendar.MONTH) + 1;   //获取月份，0表示1月份
+            dateStart = Calendar.getInstance().get(Calendar.YEAR) + "" + (month < 10 ? "0" + month : month) + "01";
+        }
+        if (StringUtils.isEmpty(dateEnd)) {
+            dateEnd = simpleDateFormat.format(Calendar.getInstance().getTime());
+        }
         //获取日期属性
-        FormatDate.getFormatDates_day(request);
-        if (StringUtils.isEmpty(date3)) {
-            date3 = ((List<String>) request.getAttribute("formatDates")).get(0);
+        if(limit==null || StringUtils.isEmpty(limit)){
+            limit="2";
         }
-        if (StringUtils.isEmpty(date2)) {
-            date2 = ((List<String>) request.getAttribute("formatDates1")).get(0);
+        BigDecimal allSumRate=BigDecimal.valueOf(0);
+        List<Integer> dates = dayValueService.findDays();
+
+        int startIndex=0;
+        int number=1;
+        startIndex=dates.indexOf(Integer.parseInt(dateStart));
+        while (startIndex==-1) {
+            startIndex=dates.indexOf(Integer.parseInt(dateStart)-number);
+            number++;
         }
-        if (StringUtils.isEmpty(date1)) {
-            date1 = ((List<String>) request.getAttribute("formatDates2")).get(0);
+        number=1;
+        int endIndex=0;
+        endIndex=dates.indexOf(Integer.parseInt(dateEnd));
+        while (endIndex==-1) {
+            endIndex=dates.indexOf(Integer.parseInt(dateEnd)-number);
+            number++;
         }
-        List<DayValue> dayValues = dayValueService.dayValueUpList(date1, date2, date3);
-        request.setAttribute("dayValues", dayValues);
-        request.setAttribute("date1", date1);
-        request.setAttribute("date2", date2);
-        request.setAttribute("date3", date3);
+        List<DayValue> dayValueList=new ArrayList<>();
+        String date1, date2, date3="";
+        if(endIndex<2){
+            endIndex=2;
+        }
+        for (int i = endIndex; i <startIndex; i++) {
+            date3 = dates.get(i - 2).toString();
+            date2 = dates.get(i - 1).toString();
+            date1 = dates.get(i).toString();
+            List<DayValue> dayValues = dayValueService.dayValueUpList(date1, date2, date3, Integer.parseInt(limit));
+            if (dayValues != null) {
+                for (DayValue dayValue : dayValues) {
+                    if(!dayValue.getCompanyCode().startsWith("300")) {
+                        dayValueList.add(dayValue);
+                        allSumRate = allSumRate.add(BigDecimal.valueOf(dayValue.getSumRate()));
+                    }
+                }
+            }
+        }
+        FormatDate.getFormatDates_month(request);
+        request.setAttribute("dayValues", dayValueList);
+        request.setAttribute("dateStart", dateStart);
+        request.setAttribute("dateEnd", dateEnd);
+        request.setAttribute("limit", limit);
+        request.setAttribute("allSumRate", allSumRate);
         return "dayvalue/dayIndex";
     }
 
