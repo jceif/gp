@@ -41,7 +41,7 @@ public interface DayValueMapper {
 
 
 
-	List<DayValue> dayValueUpList();
+	List<DayValue> dayValueUpList(@Param("date1") String date1,@Param("date2") String date2,@Param("date3") String date3);
 
 
 

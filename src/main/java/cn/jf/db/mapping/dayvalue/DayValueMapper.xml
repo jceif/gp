@@ -11,7 +11,6 @@
         <result property="totalMoney" column="total_money"/>
         <result property="date" column="date"/>
         <result property="createTime" column="create_time"/>
-
         <result property="circulationMoney" column="circulation_money"/>
         <result property="maxPrice" column="max_price"/>
         <result property="minPrice" column="min_price"/>
@@ -24,11 +23,6 @@
         <result property="d" column="d"/>
         <result property="j" column="j"/>
     </resultMap>
-
-
-
-
-
     <resultMap id="dayValue1" type="cn.jf.model.dayvalue.DayValueVo1">
         <result property="companyCode" column="company_code"/>
         <result property="companyName" column="company_name"/>
@@ -37,10 +31,6 @@
         <result property="date" column="date"/>
         <result property="preRate" column="preRate"/>
     </resultMap>
-
-
-
-
     <insert id="insertDayValue" parameterType="cn.jf.model.dayvalue.DayValue">
 insert into day_value
 (	id,
@@ -66,16 +56,13 @@ insert into day_value
 	delete from day_value
 	where id=#{id}
 </delete>
-
     <select id="findDayValueById" resultMap="dayValue">
 	select * from day_value
 	where id=#{id}
 </select>
-
     <select id="findDayValueByIdAndDate" resultMap="dayValue">
 		select *  from day_value where date=#{date} and company_code=#{companyCode} limit 1
  </select>
-
     <select id="findDayValueList" resultMap="dayValue">
 	select * from day_value
 </select>
@@ -174,7 +161,6 @@ insert into day_value
             </if>
         </where>
     </select>
-
     <select id="findDayValueQueryPage" resultMap="dayValue">
         select * from day_value
         <where>
@@ -238,23 +224,31 @@ insert into day_value
             </if>
         </where>
     </select>
-
-
     <select id="dayValueUpList" resultMap="dayValue">
-        select d.* from day_value d
-LEFT JOIN (select * FROM day_value where `date`=(select date from day_value GROUP BY date order by date desc LIMIT 1,1)) d1 ON d.company_code=d1.company_code
-LEFT JOIN (select * FROM day_value where `date`=(select date from day_value GROUP BY date order by date desc LIMIT 2,1)) d2 ON d.company_code=d2.company_code
- where d.date=(select date from day_value GROUP BY date order by date desc LIMIT 0,1)
-and d.k>d1.k
-and d.d>d1.d
-and d.j>d1.j
-and d1.k>d2.k
-and d1.d>d2.d
-and d1.j>d2.j
-and d.j &lt; 90; and d1.j &lt; 90 and d2.j &lt; 90
-and (d1.k-d2.k)>=6
+        select d3.* from
+        (select * from  day_value WHERE date=#{date1}) d1
+        LEFT JOIN
+        (select * from day_value WHERE date=#{date2})  d2 on d1.company_code=d2.company_code
+        left JOIN
+        (select * from day_value WHERE date=#{date3})  d3 on d2.company_code=d3.company_code
+        where d3.dea &lt; 0
+        and d3.dea>d2.dea and d1.dea>d2.dea
+        and d3.macd>d2.macd and d3.diff>d2.diff
+        and d3.d>d2.d
+        and d3.j  &lt; 90
+        union  all
+         select d3.* from
+        (select * from  day_value WHERE date=#{date1}) d1
+        LEFT JOIN
+        (select * from day_value WHERE date=#{date2})  d2 on d1.company_code=d2.company_code
+        left JOIN
+        (select * from day_value WHERE date=#{date3})  d3 on d2.company_code=d3.company_code
+        where d2.k &lt; 40 and d2.d &lt; 40 and d2.j &lt; 40
+        and d3.d>d2.d and d1.d>d2.d
+        and d3.k>d2.k and d1.k>d2.k
+        and d3.j>d2.j and d1.j>d2.j
+        and d3.j &lt; d3.k and d3.k &lt; d3.d
 </select>
-
 
     <select id="findCountByCompanyCode" resultType="java.lang.Integer">
         select count(id) from day_value where company_code=#{companyCode}
@@ -265,17 +259,12 @@ and (d1.k-d2.k)>=6
     <select id="findDays" resultType="java.lang.Integer">
 		select date from day_value   group  by date order by date desc limit 365
  </select>
-
-
     <select id="findDayValueZt" resultMap="dayValue">
 		select * from day_value where rate>#{rate} and total_money between #{totalMoney1} and #{totalMoney2} and date BETWEEN #{startDate} and #{endDate}  order by date desc, total_money desc
  	</select>
-
-
     <select id="findByCodeADate" resultMap="dayValue">
 		select * FROM day_value where date=#{date} and company_code=#{companyCode}
 	</select>
-
     <select id="findByInflowDays" resultMap="dayValue1">
         select c.name company_name,d.*,d1.rate rate from
         (select company_code, sum(total_money) inflow, rate preRate,`date`  from (select * from  day_value  where date BETWEEN #{startDate} and #{endDate} order by id desc) dd  GROUP BY  company_code ) d

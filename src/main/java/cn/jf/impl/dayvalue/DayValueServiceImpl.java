@@ -94,8 +94,8 @@ public class DayValueServiceImpl implements DayValueService {
 
 
   @Override
-  public List<DayValue> dayValueUpList() {
-    return dayValueMapper.dayValueUpList();
+  public List<DayValue> dayValueUpList(String date1,String date2,String date3) {
+    return dayValueMapper.dayValueUpList( date1, date2, date3);
   }
 
 

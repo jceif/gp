@@ -3,7 +3,6 @@ package cn.jf.service.dayvalue;
 import cn.jf.common.PageUtil;
 import cn.jf.model.dayvalue.DayValue;
 import cn.jf.model.dayvalue.DayValueVo1;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -37,7 +36,7 @@ public interface DayValueService {
   int findCountDayValueQuery(Map map);
 
 
-  List<DayValue> dayValueUpList();
+  List<DayValue> dayValueUpList(String date1,String date2, String date3);
 
 
   DayValue findDayValueByIdAndDate( String companyCode,int date);

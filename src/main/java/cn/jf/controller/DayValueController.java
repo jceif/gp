@@ -40,10 +40,23 @@ public class DayValueController {
      * 统计最近kdj macd diff dea 连续三天上涨的值
      */
     @RequestMapping("/index")
-    public String index(HttpServletRequest request) {
-        dayValueService.dayValueUpList();
-        List<DayValue> dayValues = dayValueService.dayValueUpList();
+    public String index(HttpServletRequest request,String date1,String date2,String date3) {
+        //获取日期属性
+        FormatDate.getFormatDates_day(request);
+        if (StringUtils.isEmpty(date3)) {
+            date3 = ((List<String>) request.getAttribute("formatDates")).get(0);
+        }
+        if (StringUtils.isEmpty(date2)) {
+            date2 = ((List<String>) request.getAttribute("formatDates1")).get(0);
+        }
+        if (StringUtils.isEmpty(date1)) {
+            date1 = ((List<String>) request.getAttribute("formatDates2")).get(0);
+        }
+        List<DayValue> dayValues = dayValueService.dayValueUpList(date1, date2, date3);
         request.setAttribute("dayValues", dayValues);
+        request.setAttribute("date1", date1);
+        request.setAttribute("date2", date2);
+        request.setAttribute("date3", date3);
         return "dayvalue/dayIndex";
     }
 
@@ -223,7 +236,6 @@ public class DayValueController {
         return "dayvalue/topRateList";
     }
 
-
     /**
      * 统计最近4天 净流入量 进行排名
      * @param request
@@ -285,5 +297,8 @@ public class DayValueController {
         FormatDate.getFormatDates_month(request);
         return "dayvalue/topInflow";
     }
+
+
+
 
 }

@@ -17,6 +17,44 @@
 
 <form action="/day/index" method="get">
     <div style="margin:0 auto; width: 90%;text-align: center;">
+
+        <table style="width: 100%;">
+            <tr>
+                <th>当前日期：
+                    <select name="date3">
+                        <option value="">请选择</option>
+                        <c:forEach items="${formatDates}" var="item"
+                                   varStatus="var">
+                            <option value="${item}"
+                                    <c:if test="${item==date3}">selected</c:if>>${item}</option>
+                        </c:forEach>
+                    </select>
+                </th>
+                <th>前一个交易日期：
+                    <select name="date2">
+                        <option value="">请选择</option>
+                        <c:forEach items="${formatDates1}" var="item"
+                                   varStatus="var">
+                            <option value="${item}"
+                                    <c:if test="${item==date2}">selected</c:if>>${item}</option>
+                        </c:forEach>
+                    </select>
+                </th>
+                <th>前二个交易日期：
+                    <select name="date1">
+                        <option value="">请选择</option>
+                        <c:forEach items="${formatDates2}" var="item"
+                                   varStatus="var">
+                            <option value="${item}"
+                                    <c:if test="${item==date1}">selected</c:if>>${item}</option>
+                        </c:forEach>
+                    </select>
+                </th>
+                <th><input type="submit" value="查询">&nbsp;</th>
+            </tr>
+
+        </table>
+
         <table style="width: 100%;">
             <tbody>
             <tr>
@@ -36,7 +74,6 @@
                 <th>k</th>
                 <th>d</th>
                 <th>j</th>
-
                 <th>date</th>
             </tr>
 
