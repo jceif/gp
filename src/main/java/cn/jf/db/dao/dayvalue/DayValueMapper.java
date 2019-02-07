@@ -59,7 +59,7 @@ public interface DayValueMapper {
 
 	List<DayValueVo1> findByInflowDays(@Param("startDate") int startDate, @Param("endDate") int endDate, @Param("currentDate") int currentDate);
 
-
+	Double dayValueSumRate(@Param("code") String code,@Param("date") int date,@Param("limit") int limit);
 
 
 }

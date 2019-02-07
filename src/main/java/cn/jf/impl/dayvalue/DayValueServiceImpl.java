@@ -95,7 +95,13 @@ public class DayValueServiceImpl implements DayValueService {
 
   @Override
   public List<DayValue> dayValueUpList(String date1,String date2,String date3) {
-    return dayValueMapper.dayValueUpList( date1, date2, date3);
+    List<DayValue> dayValues= dayValueMapper.dayValueUpList( date1, date2, date3);
+    if(dayValues!=null) {
+      for (DayValue dayValue : dayValues) {
+        dayValue.setSumRate(dayValueMapper.dayValueSumRate(dayValue.getCompanyCode(), dayValue.getDate(), 4));
+      }
+    }
+    return  dayValues;
   }
 
 

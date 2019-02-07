@@ -248,7 +248,12 @@ insert into day_value
         and d3.k>d2.k and d1.k>d2.k
         and d3.j>d2.j and d1.j>d2.j
         and d3.j &lt; d3.k and d3.k &lt; d3.d
-</select>
+    </select>
+
+    <select id="dayValueSumRate" resultType="java.lang.Double">
+     select  sum(rate)  from day_value where company_code=#{code} and date >#{date} order by id ASC  limit #{limit}
+    </select>
+
 
     <select id="findCountByCompanyCode" resultType="java.lang.Integer">
         select count(id) from day_value where company_code=#{companyCode}
