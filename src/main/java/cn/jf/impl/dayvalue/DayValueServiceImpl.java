@@ -98,16 +98,17 @@ public class DayValueServiceImpl implements DayValueService {
 
   @Override
   public List<DayValue> dayValueUpList(String date1,String date2,String date3,int limit) {
-    List<DayValue> dayValueList=new ArrayList<>();
-    List<DayValue> dayValues= dayValueMapper.dayValueUpList( date1, date2, date3);
-    if(dayValues!=null) {
+    List<DayValue> dayValueList = new ArrayList<>();
+    List<DayValue> dayValues = dayValueMapper.dayValueUpList(date1, date2, date3);
+    if (dayValues != null) {
       for (DayValue dayValue : dayValues) {
         if (dayValue.getCompanyCode().startsWith("300")) {
           continue;
         }
-        Double avgDea = dayValueMapper.dayValueAagRate(dayValue.getCompanyCode(), dayValue.getDate());
-        if (avgDea > dayValue.getDea()) {
-          List<DayValue> rateList = dayValueMapper.dayValueSumRate(dayValue.getCompanyCode(), dayValue.getDate(), limit);
+        Double minK = dayValueMapper.dayValueMinK(dayValue.getCompanyCode(), dayValue.getDate());
+        if (dayValue.getK() < minK) {
+          List<DayValue> rateList = dayValueMapper
+              .dayValueSumRate(dayValue.getCompanyCode(), dayValue.getDate(), limit);
           BigDecimal sumRate = BigDecimal.valueOf(0);
           if (rateList != null) {
             for (DayValue value : rateList) {
@@ -119,7 +120,7 @@ public class DayValueServiceImpl implements DayValueService {
         }
       }
     }
-    return  dayValueList;
+    return dayValueList;
   }
 
 

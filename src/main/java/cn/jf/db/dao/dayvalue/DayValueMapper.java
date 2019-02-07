@@ -61,7 +61,10 @@ public interface DayValueMapper {
 
 	List<DayValue> dayValueSumRate(@Param("code") String code,@Param("date") int date,@Param("limit") int limit);
 
-	Double dayValueAagRate(@Param("code") String code,@Param("date") int date);
+	Double dayValueMinDea(@Param("code") String code,@Param("date") int date);
+
+	Double dayValueMinK(@Param("code") String code,@Param("date") int date);
+
 
 
 }
