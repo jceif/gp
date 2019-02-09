@@ -41,7 +41,7 @@ public interface DayValueMapper {
 
 
 
-	List<DayValue> dayValueUpList(@Param("date1") String date1,@Param("date2") String date2,@Param("date3") String date3);
+	List<DayValue> dayValueUpList(@Param("date1") String date1,@Param("date2") String date2,@Param("date3") String date3,@Param("date4") String date4,@Param("date5") String date5,@Param("inDate") String inDate);
 
 
 
@@ -61,7 +61,7 @@ public interface DayValueMapper {
 
 	List<DayValue> dayValueSumRate(@Param("code") String code,@Param("date") int date,@Param("limit") int limit);
 
-	Double dayValueMinDea(@Param("code") String code,@Param("date") int date);
+	Double dayValuePreSumRate(@Param("code") String code,@Param("date") int date);
 
 	Double dayValueMinK(@Param("code") String code,@Param("date") int date);
 

@@ -43,8 +43,12 @@ public class DayValue implements Serializable {
   private Double preRate;//数据库中无此字段 前一天rate
   private Double nextRate;//数据库中无此字段 后一天rate
   private double threeRate;//数据库中无此字段 第三天rate
-
   private double sumRate;//数据库中无此字段 统计时间点之后的 的 收益率
+
+  private double prePrice1;//
+  private double prePrice2;
+  private double prePrice3;
+  private double prePrice4;
 
   public float getPreK() {
     return preK;

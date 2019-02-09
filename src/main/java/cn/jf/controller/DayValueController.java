@@ -54,31 +54,22 @@ public class DayValueController {
         }
         BigDecimal allSumRate=BigDecimal.valueOf(0);
         List<Integer> dates = dayValueService.findDays();
-
-        int startIndex=0;
-        int number=1;
-        startIndex=dates.indexOf(Integer.parseInt(dateStart));
-        while (startIndex==-1) {
-            startIndex=dates.indexOf(Integer.parseInt(dateStart)-number);
-            number++;
-        }
-        number=1;
-        int endIndex=0;
-        endIndex=dates.indexOf(Integer.parseInt(dateEnd));
-        while (endIndex==-1) {
-            endIndex=dates.indexOf(Integer.parseInt(dateEnd)-number);
-            number++;
-        }
         List<DayValue> dayValueList=new ArrayList<>();
-        String date1, date2, date3="";
-        if(endIndex<2){
-            endIndex=2;
-        }
-        for (int i = endIndex; i <startIndex; i++) {
+        String date1, date2, date3,date4,date5,inDate="";
+        for (int i = 5; i <dates.size(); i++) {
+            inDate = dates.get(i - 5).toString();
+            date5 = dates.get(i - 4).toString();
+            date4 = dates.get(i - 3).toString();
             date3 = dates.get(i - 2).toString();
             date2 = dates.get(i - 1).toString();
             date1 = dates.get(i).toString();
-            List<DayValue> dayValues = dayValueService.dayValueUpList(date1, date2, date3, Integer.parseInt(limit));
+            if(Integer.parseInt(date4)>Integer.parseInt(dateEnd)){
+                continue;
+            }
+            if(Integer.parseInt(date1)<Integer.parseInt(dateStart)){
+                continue;
+            }
+            List<DayValue> dayValues = dayValueService.dayValueUpList(date1, date2, date3, date4,date5,Integer.parseInt(inDate),Integer.parseInt(limit));
             if (dayValues != null) {
                 for (DayValue dayValue : dayValues) {
                     if(!dayValue.getCompanyCode().startsWith("300")) {
