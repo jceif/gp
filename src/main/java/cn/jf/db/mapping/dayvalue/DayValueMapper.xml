@@ -303,7 +303,7 @@ insert into day_value
                and d5.k between 9.9 and 25 and 4>d5.j and d5.d>0
                and d6.rate>0 and d6.end_price>d5.end_price
                and 0>d5.dea
-               and d5.total_money between -550 and 950
+               and d5.total_money!=0 and d5.total_money  between -550 and -33   and   d5.total_money between 33 and 950
         </select>
 
         <select id="dayValueSumRate" resultMap="dayValue">
