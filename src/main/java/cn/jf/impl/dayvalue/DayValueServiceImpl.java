@@ -14,6 +14,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.impl.Log4JLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service("dayValueService")
 public class DayValueServiceImpl implements DayValueService {
@@ -108,9 +109,8 @@ public class DayValueServiceImpl implements DayValueService {
         //如果跌幅达不到4.5，不算收益
         if (preSumRate < -4.49) {
           //inDate 不统计收益
-          if (inDate != null) {
-            List<DayValue> rateList = dayValueMapper
-                .dayValueSumRate(dayValue.getCompanyCode(), Integer.parseInt(inDate), limit);
+          if (inDate != null && !StringUtils.isEmpty(inDate)) {
+            List<DayValue> rateList = dayValueMapper.dayValueSumRate(dayValue.getCompanyCode(), Integer.parseInt(inDate), limit);
             BigDecimal sumRate = BigDecimal.valueOf(0);
             if (rateList != null) {
               for (DayValue value : rateList) {
