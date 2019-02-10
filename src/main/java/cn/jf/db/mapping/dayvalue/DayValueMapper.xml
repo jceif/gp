@@ -225,89 +225,25 @@ insert into day_value
         </where>
     </select>
     <select id="dayValueUpList" resultMap="dayValue">
-
-        <!--
-          select d3.*  from
-          (select * from  day_value WHERE date=#{date1}) d1
-          LEFT JOIN
-          (select * from day_value WHERE date=#{date2})  d2 on d1.company_code=d2.company_code
-          left JOIN
-          (select * from day_value WHERE date=#{date3})  d3 on d2.company_code=d3.company_code
-          where d3.dea &lt; -0.31  and d3.macd &lt; 0
-          and d3.dea>d2.dea and d1.dea>d2.dea
-          and d3.macd>d2.macd and d3.diff>d2.diff
-          and d3.d>d2.d and d3.j>d2.j
-          and d3.j  &lt; 90 and d3.j>d1.j
-
-           select d3.* from
-          (select * from  day_value WHERE date=#{date1}) d1
-          LEFT JOIN
-          (select * from day_value WHERE date=#{date2})  d2 on d1.company_code=d2.company_code
-          left JOIN
-          (select * from day_value WHERE date=#{date3})  d3 on d2.company_code=d3.company_code
-          where d3.j &lt; 5  and d3.k>0 and d3.d between  0 and 20
-          and (d1.d-d2.d-1)>(d2.d-d3.d)
-          and  d3.dea &lt; -0.41 and d3.macd &lt; 0 and d3.diff &lt; 0
-          and d3.d &lt; d2.d and d2.d &lt; d1.d
-
-           and d3.k &lt; d2.k and d2.k &lt; d1.k
-         and d3.dea &lt; d2.dea and d2.dea &lt; d1.dea
-                and d3.dea &lt; d2.macd
-
-                d4.total_money!=0 and d4.total_money>-10000
-
-
-                select d4.* from
-                (select * from day_value WHERE date=#{date1}) d1
-                LEFT JOIN
-                (select * from day_value WHERE date=#{date2}) d2 on d1.company_code=d2.company_code
-                left JOIN
-                (select * from day_value WHERE date=#{date3}) d3 on d2.company_code=d3.company_code
-                left JOIN
-                (select * from day_value WHERE date=#{date4}) d4 on d3.company_code=d4.company_code
-                where d4.end_price>3.5 and  0>d1.rate and 0>d2.rate and 0>d3.rate
-                and 20>d4.k and 4>d4.j and d4.d>0
-                and d4.volume>590000
-                and d4.rate BETWEEN -4 and 4
-      and  170000000>d4.amount  and d4.total_money between  -2000 and -100
-            and d4.dea>(d4.macd*2) and -0.4>d4.dea and 0>d4.macd and d4.diff between -4 and 0
-     and d4.rate>(d3.rate+2) -->
-        <!--
-          select d5.* from
-          (select * from day_value WHERE date=#{date1}) d1
-          LEFT JOIN
-          (select * from day_value WHERE date=#{date2}) d2 on d1.company_code=d2.company_code
-          left JOIN
-          (select * from day_value WHERE date=#{date3}) d3 on d2.company_code=d3.company_code
-          left JOIN
-          (select * from day_value WHERE date=#{date4}) d4 on d3.company_code=d4.company_code
-          left JOIN
-          (select * from day_value WHERE date=#{date5}) d5 on d4.company_code=d5.company_code
-          where d1.rate &lt; 0 and d2.rate &lt; 0 and d3.rate &lt; 0 and d4.rate &lt; 0 and d5.rate &lt; 0
-          and 20>d5.k and 5>d5.j and d5.d>0
-          and -0.4>d5.dea
-          and d5.rate>-6  and d5.rate>(d4.rate+1)
-
-    and -0.4>d5.dea
-     and d5.rate>-6  and d5.rate>(d4.rate+1) -->
-
-
-            select d5.* from
-               (select * from day_value WHERE date=#{date1}) d1
-               LEFT JOIN (select * from day_value WHERE date=#{date2}) d2 on d1.company_code=d2.company_code
-               left JOIN (select * from day_value WHERE date=#{date3}) d3 on d2.company_code=d3.company_code
-               left JOIN (select * from day_value WHERE date=#{date4}) d4 on d3.company_code=d4.company_code
-               left JOIN (select * from day_value WHERE date=#{date5}) d5 on d4.company_code=d5.company_code
-               left JOIN (select * from day_value WHERE date=#{inDate}) d6 on d5.company_code=d6.company_code
-               where d1.end_price>d2.end_price and d2.rate &lt; 0 and d3.rate &lt; 0 and d4.rate &lt; 0 and d5.rate between 0.3 and 3.1
-               and d5.end_price>3.8
-               and d5.k between 9.9 and 20 and (d5.j between 0.69 and 3.7 || d5.j between 0 and 0.69)  and d5.d>0
-               and d6.rate>0 and d6.end_price>d5.end_price
-               and -0.099>d5.dea and -0.099>d5.macd
-               and d5.volume>500000
-               and d5.total_money!=0 and (d5.total_money  between -505 and -99  ||  d5.total_money between 11 and 950)
+        select d5.* from
+        (select * from day_value WHERE date=#{date1}) d1
+        LEFT JOIN (select * from day_value WHERE date=#{date2}) d2 on d1.company_code=d2.company_code
+        left JOIN (select * from day_value WHERE date=#{date3}) d3 on d2.company_code=d3.company_code
+        left JOIN (select * from day_value WHERE date=#{date4}) d4 on d3.company_code=d4.company_code
+        left JOIN (select * from day_value WHERE date=#{date5}) d5 on d4.company_code=d5.company_code
+        <if test="inDate==null and inDate!=''">
+            left JOIN (select * from day_value WHERE date=#{inDate}) d6 on d5.company_code=d6.company_code
+        </if>
+        where d1.end_price>d2.end_price and d2.rate &lt; 0 and d3.rate &lt; 0 and d4.rate &lt; 0 and d5.rate between 0.3 and 3
+        and d5.end_price>3.8
+        and d5.k between 9.9 and 20 and (d5.j between 0.69 and 3.7 || d5.j between 0 and 0.69)  and d5.d>0
+        <if test="inDate==null and inDate!=''">
+            and d6.rate>0 and d6.end_price>d5.end_price
+        </if>
+        and -0.099>d5.dea and -0.099>d5.macd
+        and d5.volume>480000
+        and d5.total_money!=0 and (d5.total_money  between -505 and -99  ||  d5.total_money between 33 and 830)
         </select>
-
         <select id="dayValueSumRate" resultMap="dayValue">
          select  *  from day_value where company_code=#{code} and date >#{date} order by date ASC  limit #{limit}
         </select>

@@ -40,7 +40,7 @@ public class DayValueController {
      * 统计最近kdj macd diff dea 连续三天上涨的值
      */
     @RequestMapping("/index")
-    public String index(HttpServletRequest request,String dateStart,String dateEnd,String limit) {
+    public String index(HttpServletRequest request,String dateStart,String dateEnd,String limit,String isIncome) {
         if (StringUtils.isEmpty(dateStart)) {
             int month = Calendar.getInstance().get(Calendar.MONTH) + 1;   //获取月份，0表示1月份
             dateStart = Calendar.getInstance().get(Calendar.YEAR) + "" + (month < 10 ? "0" + month : month) + "01";
@@ -56,20 +56,26 @@ public class DayValueController {
         List<Integer> dates = dayValueService.findDays();
         List<DayValue> dayValueList=new ArrayList<>();
         String date1, date2, date3,date4,date5,inDate="";
-        for (int i = 5; i <dates.size(); i++) {
-            inDate = dates.get(i - 5).toString();
+        int j=4;
+        if(isIncome!=null && isIncome=="1"){
+            j=5;
+        }
+        for (int i = j; i <dates.size(); i++) {
+            if(isIncome!=null && isIncome=="1") {
+                inDate = dates.get(i - 5).toString();
+            }
             date5 = dates.get(i - 4).toString();
             date4 = dates.get(i - 3).toString();
             date3 = dates.get(i - 2).toString();
             date2 = dates.get(i - 1).toString();
             date1 = dates.get(i).toString();
-            if(Integer.parseInt(date4)>Integer.parseInt(dateEnd)){
+            if(Integer.parseInt(date5)>Integer.parseInt(dateEnd)){
                 continue;
             }
             if(Integer.parseInt(date1)<Integer.parseInt(dateStart)){
                 continue;
             }
-            List<DayValue> dayValues = dayValueService.dayValueUpList(date1, date2, date3, date4,date5,Integer.parseInt(inDate),Integer.parseInt(limit));
+            List<DayValue> dayValues = dayValueService.dayValueUpList(date1, date2, date3, date4,date5,inDate,Integer.parseInt(limit));
             if (dayValues != null) {
                 for (DayValue dayValue : dayValues) {
                     if(!dayValue.getCompanyCode().startsWith("300")) {

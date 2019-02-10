@@ -36,7 +36,7 @@ public interface DayValueService {
   int findCountDayValueQuery(Map map);
 
 
-  List<DayValue> dayValueUpList(String date1,String date2, String date3,String date4,String date5,int inDate,int limit);
+  List<DayValue> dayValueUpList(String date1,String date2, String date3,String date4,String date5,String inDate,int limit);
 
 
   DayValue findDayValueByIdAndDate( String companyCode,int date);

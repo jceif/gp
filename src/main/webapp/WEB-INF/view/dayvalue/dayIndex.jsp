@@ -30,11 +30,18 @@
                     </select>
                 </th>
                 <th>结束日期：
-                    <select name="dateEnd">
-                        <option value="">请选择</option>
-                        <c:forEach items="${dateEnds}" var="item" varStatus="var">
-                            <option value="${item}" <c:if test="${item==dateEnd}">selected</c:if>>${item}</option>
-                        </c:forEach>
+                <select name="dateEnd">
+                    <option value="">请选择</option>
+                    <c:forEach items="${dateEnds}" var="item" varStatus="var">
+                        <option value="${item}" <c:if test="${item==dateEnd}">selected</c:if>>${item}</option>
+                    </c:forEach>
+                </select>
+            </th>
+
+                <th>计算收益：
+                    <select name="isIncome">
+                        <option value="0" <c:if test="${0==isIncome}">selected</c:if>>否</option>
+                        <option value="1" <c:if test="${1==isIncome}">selected</c:if>>是</option>
                     </select>
                 </th>
 

@@ -95,26 +95,32 @@ public class DayValueServiceImpl implements DayValueService {
 
 
   @Override
-  public List<DayValue> dayValueUpList(String date1,String date2,String date3,String date4,String date5,int inDate,int limit) {
+  public List<DayValue> dayValueUpList(String date1,String date2,String date3,String date4,String date5,String inDate,int limit) {
     List<DayValue> dayValueList = new ArrayList<>();
-    List<DayValue> dayValues = dayValueMapper.dayValueUpList(date1, date2, date3,date4,date5,inDate+"");
+    List<DayValue> dayValues = dayValueMapper.dayValueUpList(date1, date2, date3, date4, date5, inDate);
     if (dayValues != null) {
       for (DayValue dayValue : dayValues) {
         if (dayValue.getCompanyCode().startsWith("300")) {
           continue;
         }
-        //Double preSumRate = dayValueMapper.dayValuePreSumRate(dayValue.getCompanyCode(), Integer.parseInt(date5));
-        //if (preSumRate>-20) {
-          List<DayValue> rateList = dayValueMapper.dayValueSumRate(dayValue.getCompanyCode(), inDate, limit);
-          BigDecimal sumRate = BigDecimal.valueOf(0);
-          if (rateList != null) {
-            for (DayValue value : rateList) {
-              sumRate = sumRate.add(BigDecimal.valueOf(value.getRate()));
+        //计算前三天的跌幅之和
+        Double preSumRate = dayValueMapper.dayValuePreSumRate(dayValue.getCompanyCode(), Integer.parseInt(date5));
+        //如果跌幅达不到4.5，不算收益
+        if (preSumRate < -4.49) {
+          //inDate 不统计收益
+          if (inDate != null) {
+            List<DayValue> rateList = dayValueMapper
+                .dayValueSumRate(dayValue.getCompanyCode(), Integer.parseInt(inDate), limit);
+            BigDecimal sumRate = BigDecimal.valueOf(0);
+            if (rateList != null) {
+              for (DayValue value : rateList) {
+                sumRate = sumRate.add(BigDecimal.valueOf(value.getRate()));
+              }
+              dayValue.setSumRate(sumRate.doubleValue());
             }
-            dayValue.setSumRate(sumRate.doubleValue());
-            dayValueList.add(dayValue);
           }
-        //}
+          dayValueList.add(dayValue);
+        }
       }
     }
     return dayValueList;
