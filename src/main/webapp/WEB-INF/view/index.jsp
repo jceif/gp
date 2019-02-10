@@ -103,7 +103,7 @@
                     <shiro:hasPermission name="select">
                     <a href="/data/topTimeList" target="_blank">tj1</a>&nbsp;
                     <a href="/day/topRateList" target="_blank">tj2</a> &nbsp;
-                    <a href="/day/topInflowList" target="_blank">tj3</a> &nbsp;
+                    <a href="/day/index" target="_blank">tj3</a> &nbsp;
                     </shiro:hasPermission>
                 </th>
             </tr>
