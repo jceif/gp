@@ -57,11 +57,13 @@ public class DayValueController {
         List<DayValue> dayValueList=new ArrayList<>();
         String date1, date2, date3,date4,date5,inDate="";
         int j=4;
-        if(isIncome!=null && isIncome=="1"){
+        if(isIncome!=null  && Integer.parseInt(isIncome)==1){
             j=5;
+        }else{
+            isIncome="0";
         }
         for (int i = j; i <dates.size(); i++) {
-            if(isIncome!=null && isIncome=="1") {
+            if(isIncome!=null  && Integer.parseInt(isIncome)==1){
                 inDate = dates.get(i - 5).toString();
             }
             date5 = dates.get(i - 4).toString();
@@ -91,6 +93,7 @@ public class DayValueController {
         request.setAttribute("dateEnd", dateEnd);
         request.setAttribute("limit", limit);
         request.setAttribute("allSumRate", allSumRate);
+        request.setAttribute("isIncome", isIncome);
         return "dayvalue/dayIndex";
     }
 
