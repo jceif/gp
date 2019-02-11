@@ -175,6 +175,7 @@
 
                             <%--kdj 结果分析--%>
 
+
                         <td>${item.date}</td>
                         <td style="
                         <c:choose>
@@ -182,9 +183,9 @@
                             <%--<fmt:formatDate value="${item.date}"--%>
                             <%--pattern="yyyy-MM-dd HH:mm:ss"--%>
                             <%--timeZone="0"/>--%>
-                                <th style="
+                                <td style="
                                 <c:choose>
-                                <c:when test="${item.sumPreRate>-5}">color: red;</c:when></c:choose>">${item.sumPreRate}</th>
+                                <c:when test="${item.sumPreRate>-5}">color: red;</c:when></c:choose>">${item.sumPreRate}</td>
                     </tr>
                 <%--</c:if>--%>
             </c:forEach>

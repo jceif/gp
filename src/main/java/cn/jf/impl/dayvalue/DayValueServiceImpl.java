@@ -114,7 +114,7 @@ public class DayValueServiceImpl implements DayValueService {
 //        }else{
 //          limit=oldLimit;
 //        }
-        //如果跌幅达不到4.5，不算收益
+        //跌幅 在-6.9 和-25之间的 被统计
         if (preSumRate < -6.9 && preSumRate > -25) {
           //inDate 不统计收益
           if (inDate != null && !StringUtils.isEmpty(inDate)) {
