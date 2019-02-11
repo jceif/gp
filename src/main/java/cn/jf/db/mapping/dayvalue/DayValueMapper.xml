@@ -231,13 +231,13 @@ insert into day_value
         left JOIN (select * from day_value WHERE date=#{date3}) d3 on d2.company_code=d3.company_code
         left JOIN (select * from day_value WHERE date=#{date4}) d4 on d3.company_code=d4.company_code
         left JOIN (select * from day_value WHERE date=#{date5}) d5 on d4.company_code=d5.company_code
-        <if test="inDate==null and inDate!=''">
+        <if test="inDate!=null and inDate!=''">
             left JOIN (select * from day_value WHERE date=#{inDate}) d6 on d5.company_code=d6.company_code
         </if>
         where d1.end_price>d2.end_price and d2.rate &lt; 0 and d3.rate &lt; 0 and d4.rate &lt; 0 and d5.rate between 0.3 and 3
         and d5.end_price>3.8
         and d5.k between 9.9 and 20 and (d5.j between 0.69 and 3.7 || d5.j between 0 and 0.69)  and d5.d>0
-        <if test="inDate==null and inDate!=''">
+        <if test="inDate!=null and inDate!=''">
             and d6.rate>0 and d6.end_price>d5.end_price
         </if>
         and -0.099>d5.dea and -0.099>d5.macd
