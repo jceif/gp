@@ -20,7 +20,7 @@
 
 
 
-    <
+
 
     <div id="price" style="height:400px"></div>
     <div id="rate" style="height:400px"></div>
@@ -29,7 +29,7 @@
     <div id="inflow" style="height:400px"></div>
 
 
-    div style="margin:0 auto; width: 90%;text-align: center;">
+    <div style="margin:0 auto; width: 90%;text-align: center;">
     <table style="width: 100%;">
         <tbody>
         <tr>
@@ -176,21 +176,6 @@
     </table><!-- /.table -->
     </div>
 
-    <%--
-
-
-        <p style="color: red">1.当天不能跌</p>
-        <p style="color: red">2.前一天资金流入量 大于-100万</p>
-        <p style="color: red">3.当天资金交易量 大于2亿</p>
-        <p style="color: red">4.dem除了自己前三行必须有一个或者多个up</p>
-        <p style="color: red">5.本行有绿色 坚决不买</p>
-        <p style="color: red">6.当出现 live-80 坚决卖掉</p>
-    --%>
-
-
-
-
-
 </form>
 
 
@@ -224,7 +209,7 @@
             option = {
                 title : {
                     text: 'kdj-value',
-                    subtext: '${companyName}-${companyCode}'
+                    subtext: '${company.name}-${company.code}'
                 },
                 tooltip : {
                     trigger: 'axis'
@@ -303,7 +288,7 @@
             option = {
                 title : {
                     text: 'ddm-value',
-                    subtext: '${companyName}-${companyCode}'
+                    subtext: '${company.name}-${company.code}'
                 },
                 tooltip : {
                     trigger: 'axis'
@@ -382,7 +367,7 @@
             option = {
                 title : {
                     text: 'rate-value',
-                    subtext: '${companyName}-${companyCode}'
+                    subtext: '${company.name}-${company.code}'
                 },
                 tooltip : {
                     trigger: 'axis'
@@ -448,7 +433,7 @@
             option = {
                 title : {
                     text: 'inflow-value',
-                    subtext: '${companyName}-${companyCode}'
+                    subtext: '${company.name}-${company.code}'
                 },
                 tooltip : {
                     trigger: 'axis'
@@ -514,7 +499,7 @@
             option = {
                 title : {
                     text: 'price-value',
-                    subtext: '${companyName}-${companyCode}'
+                    subtext: '${company.name}-${company.code}'
                 },
                 tooltip : {
                     trigger: 'axis'

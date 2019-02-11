@@ -97,6 +97,7 @@ public class DayValueServiceImpl implements DayValueService {
 
   @Override
   public List<DayValue> dayValueUpList(String date1,String date2,String date3,String date4,String date5,String inDate,int limit) {
+    //int oldLimit=limit;
     List<DayValue> dayValueList = new ArrayList<>();
     List<DayValue> dayValues = dayValueMapper.dayValueUpList(date1, date2, date3, date4, date5, inDate);
     if (dayValues != null) {
@@ -106,8 +107,15 @@ public class DayValueServiceImpl implements DayValueService {
         }
         //计算前三天的跌幅之和
         Double preSumRate = dayValueMapper.dayValuePreSumRate(dayValue.getCompanyCode(), Integer.parseInt(date5));
+        dayValue.setSumPreRate(preSumRate);
+        //如果三天跌幅超过-13 可以统计 多五天
+//        if(preSumRate<-13){
+//          limit=oldLimit+1;
+//        }else{
+//          limit=oldLimit;
+//        }
         //如果跌幅达不到4.5，不算收益
-        if (preSumRate < -4.49) {
+        if (preSumRate < -6.9 && preSumRate > -25) {
           //inDate 不统计收益
           if (inDate != null && !StringUtils.isEmpty(inDate)) {
             List<DayValue> rateList = dayValueMapper.dayValueSumRate(dayValue.getCompanyCode(), Integer.parseInt(inDate), limit);

@@ -72,6 +72,7 @@
                 <th>j</th>
                 <th>date</th>
                 <th>sumRate</th>
+                <th>sumPreRate</th>
             </tr>
 
         <%--item 前，itemOld后--%>
@@ -181,6 +182,9 @@
                             <%--<fmt:formatDate value="${item.date}"--%>
                             <%--pattern="yyyy-MM-dd HH:mm:ss"--%>
                             <%--timeZone="0"/>--%>
+                                <th style="
+                                <c:choose>
+                                <c:when test="${item.sumPreRate>-5}">color: red;</c:when></c:choose>">${item.sumPreRate}</th>
                     </tr>
                 <%--</c:if>--%>
             </c:forEach>

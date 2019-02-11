@@ -242,7 +242,7 @@ insert into day_value
         </if>
         and -0.099>d5.dea and -0.099>d5.macd
         and d5.volume>480000
-        and d5.total_money!=0 and (d5.total_money  between -505 and -99  ||  d5.total_money between 33 and 830)
+        and d5.total_money!=0 and (d5.total_money  between -505 and -44  ||  d5.total_money between 44 and 830)
         </select>
         <select id="dayValueSumRate" resultMap="dayValue">
          select  *  from day_value where company_code=#{code} and date >#{date} order by date ASC  limit #{limit}
