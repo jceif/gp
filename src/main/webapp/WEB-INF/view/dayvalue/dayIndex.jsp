@@ -193,7 +193,7 @@
                                 <c:if test="${isIncome==1}">
                                     <td style="
                                     <c:choose>
-                                    <c:when test="${(item.inDateRate+item.Rate)<1.5}">color: red;</c:when></c:choose>">${item.inDateRate}</td>
+                                    <c:when test="${(item.inDateRate+item.rate)<1.5}">color: red;</c:when></c:choose>">${item.inDateRate}</td>
                                 </c:if>
 
                     </tr>

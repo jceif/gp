@@ -243,9 +243,9 @@ insert into day_value
     where d2.rate &lt; 0 and d3.rate &lt; 0 and d4.rate &lt; 0
     and d5.rate between 0.3 and 3
     and -0.099>d5.dea and -0.099>d5.macd
+    and d1.end_price>d2.end_price
     and d5.end_price>3.8
     and d5.volume>480000
-    and d1.end_price>d2.end_price
     and (d6.rate>9 || d6.rate between 0.01 and 5.5)
     and d5.d>0 and d5.k between 9.9 and 20 and (d5.j between 0.69 and 3.7 || d5.j between 0 and 0.69)
     <if test="inDate!=null and inDate!=''">
