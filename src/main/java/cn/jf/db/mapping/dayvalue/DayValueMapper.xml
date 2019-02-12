@@ -246,10 +246,10 @@ insert into day_value
     and d1.end_price>d2.end_price
     and d5.end_price>3.8
     and d5.volume>480000
-    and (d6.rate>9 || d6.rate between 0.01 and 5.5)
     and d5.d>0 and d5.k between 9.9 and 20 and (d5.j between 0.69 and 3.7 || d5.j between 0 and 0.69)
     <if test="inDate!=null and inDate!=''">
-        and d6.rate>0 and d6.end_price>d5.end_price
+        and d6.end_price>d5.end_price
+        and (d6.rate>9 || d6.rate between 0.01 and 5.5)
     </if>
     and (d5.total_money  between -505 and -44  || d5.total_money between 44 and 830)
 </select>

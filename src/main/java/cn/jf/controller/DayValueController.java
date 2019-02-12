@@ -65,6 +65,8 @@ public class DayValueController {
         for (int i = j; i <dates.size(); i++) {
             if(isIncome!=null  && Integer.parseInt(isIncome)==1){
                 inDate = dates.get(i - 5).toString();
+            }else{
+                inDate=null;
             }
             date5 = dates.get(i - 4).toString();
             date4 = dates.get(i - 3).toString();
