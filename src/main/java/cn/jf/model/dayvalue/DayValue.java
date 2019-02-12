@@ -47,6 +47,8 @@ public class DayValue implements Serializable {
   private double sumRate;//数据库中无此字段 统计时间点之后的 的 收益率
   private double sumPreRate;//数据库中无此字段 统计时间点之前 的 收益率
 
+  private double inDateRate;//购买当天的涨幅
+
 
   public float getPreK() {
     return preK;
@@ -268,5 +270,13 @@ public class DayValue implements Serializable {
 
   public void setSumPreRate(double sumPreRate) {
     this.sumPreRate = sumPreRate;
+  }
+
+  public double getInDateRate() {
+    return inDateRate;
+  }
+
+  public void setInDateRate(double inDateRate) {
+    this.inDateRate = inDateRate;
   }
 }

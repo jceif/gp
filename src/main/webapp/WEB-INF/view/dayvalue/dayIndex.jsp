@@ -73,6 +73,7 @@
                 <th>date</th>
                 <th>sumRate</th>
                 <th>sumPreRate</th>
+                <th>inDateRate</th>
             </tr>
 
         <%--item 前，itemOld后--%>
@@ -186,6 +187,15 @@
                                 <td style="
                                 <c:choose>
                                 <c:when test="${item.sumPreRate>-5}">color: red;</c:when></c:choose>">${item.sumPreRate}</td>
+                                <c:if test="${isIncome==0 && item.rate<1.5}">
+                                    <td style="color: red;">${1.5-item.rate}</td>
+                                </c:if>
+                                <c:if test="${isIncome==1}">
+                                    <td style="
+                                    <c:choose>
+                                    <c:when test="${(item.inDateRate+item.Rate)<1.5}">color: red;</c:when></c:choose>">${item.inDateRate}</td>
+                                </c:if>
+
                     </tr>
                 <%--</c:if>--%>
             </c:forEach>

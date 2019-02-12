@@ -1,37 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.jf.db.dao.dayvalue.DayValueMapper">
-    <resultMap id="dayValue" type="cn.jf.model.dayvalue.DayValue">
-        <result property="id" column="id"/>
-        <result property="companyCode" column="company_code"/>
-        <result property="startPrice" column="start_price"/>
-        <result property="endPrice" column="end_price"/>
-        <result property="rate" column="rate"/>
-        <result property="totalMoney" column="total_money"/>
-        <result property="date" column="date"/>
-        <result property="createTime" column="create_time"/>
-        <result property="circulationMoney" column="circulation_money"/>
-        <result property="maxPrice" column="max_price"/>
-        <result property="minPrice" column="min_price"/>
-        <result property="volume" column="volume"/>
-        <result property="amount" column="amount"/>
-        <result property="diff" column="diff"/>
-        <result property="dea" column="dea"/>
-        <result property="macd" column="macd"/>
-        <result property="k" column="k"/>
-        <result property="d" column="d"/>
-        <result property="j" column="j"/>
-    </resultMap>
-    <resultMap id="dayValue1" type="cn.jf.model.dayvalue.DayValueVo1">
-        <result property="companyCode" column="company_code"/>
-        <result property="companyName" column="company_name"/>
-        <result property="inflow" column="inflow"/>
-        <result property="rate" column="rate"/>
-        <result property="date" column="date"/>
-        <result property="preRate" column="preRate"/>
-    </resultMap>
-    <insert id="insertDayValue" parameterType="cn.jf.model.dayvalue.DayValue">
+<resultMap id="dayValue" type="cn.jf.model.dayvalue.DayValue">
+    <result property="id" column="id"/>
+    <result property="companyCode" column="company_code"/>
+    <result property="startPrice" column="start_price"/>
+    <result property="endPrice" column="end_price"/>
+    <result property="rate" column="rate"/>
+    <result property="totalMoney" column="total_money"/>
+    <result property="date" column="date"/>
+    <result property="createTime" column="create_time"/>
+    <result property="circulationMoney" column="circulation_money"/>
+    <result property="maxPrice" column="max_price"/>
+    <result property="minPrice" column="min_price"/>
+    <result property="volume" column="volume"/>
+    <result property="amount" column="amount"/>
+    <result property="diff" column="diff"/>
+    <result property="dea" column="dea"/>
+    <result property="macd" column="macd"/>
+    <result property="k" column="k"/>
+    <result property="d" column="d"/>
+    <result property="j" column="j"/>
+
+    <!--查询买入当天的涨幅-->
+    <result property="inDateRate" column="inDateRate"/>
+
+</resultMap>
+<resultMap id="dayValue1" type="cn.jf.model.dayvalue.DayValueVo1">
+    <result property="companyCode" column="company_code"/>
+    <result property="companyName" column="company_name"/>
+    <result property="inflow" column="inflow"/>
+    <result property="rate" column="rate"/>
+    <result property="date" column="date"/>
+    <result property="preRate" column="preRate"/>
+</resultMap>
+<insert id="insertDayValue" parameterType="cn.jf.model.dayvalue.DayValue">
 insert into day_value
 (	id,
 	company_code,
@@ -52,226 +56,231 @@ insert into day_value
 	#{createTime}
 )
 </insert>
-    <delete id="deleteDayValueById">
+<delete id="deleteDayValueById">
 	delete from day_value
 	where id=#{id}
 </delete>
-    <select id="findDayValueById" resultMap="dayValue">
+<select id="findDayValueById" resultMap="dayValue">
 	select * from day_value
 	where id=#{id}
 </select>
-    <select id="findDayValueByIdAndDate" resultMap="dayValue">
+<select id="findDayValueByIdAndDate" resultMap="dayValue">
 		select *  from day_value where date=#{date} and company_code=#{companyCode} limit 1
  </select>
-    <select id="findDayValueList" resultMap="dayValue">
+<select id="findDayValueList" resultMap="dayValue">
 	select * from day_value
 </select>
-    <update id="updateDayValue" parameterType="cn.jf.model.dayvalue.DayValue">
+<update id="updateDayValue" parameterType="cn.jf.model.dayvalue.DayValue">
+    update day_value
+    <set>
+        id=#{id},
+        company_code=#{companyCode},
+        start_price=#{startPrice},
+        end_price=#{endPrice},
+        rate=#{rate},
+        total_money=#{totalMoney},
+        date=#{date},
+        create_time=#{createTime}
+    </set>
+    <where>
+        id=#{id}
+    </where>
+</update>
+<delete id="deleteDayValueListByIds" parameterType="java.lang.String">
+    delete from day_value
+    where id in
+    <foreach item="idItem" collection="array" open="(" separator="," close=")">#{idItem}</foreach>
+</delete>
+<delete id="deleteDayValueList" parameterType="cn.jf.model.dayvalue.DayValue">
+    delete from day_value
+    where id in
+    <foreach collection="list" item="item" index="index" open="(" separator="," close=")">#{item.id}</foreach>
+</delete>
+<insert id="insertDayValueList" parameterType="java.util.List">
+    insert into day_value
+    ( id,
+    company_code,
+    start_price,
+    end_price,
+    rate,
+    total_money,
+    date,
+    create_time
+    )values
+    <foreach collection="list" item="item" index="index" separator=",">
+        ( #{item.id},
+        #{item.companyCode},
+        #{item.startPrice},
+        #{item.endPrice},
+        #{item.rate},
+        #{item.totalMoney},
+        #{item.date},
+        #{item.createTime}
+        )
+    </foreach>
+</insert>
+<update id="updateDayValueList" parameterType="java.util.List">
+    <foreach collection="list" item="item" index="index" separator=";">
         update day_value
-        <set>
-            id=#{id},
-            company_code=#{companyCode},
-            start_price=#{startPrice},
-            end_price=#{endPrice},
-            rate=#{rate},
-            total_money=#{totalMoney},
-            date=#{date},
-            create_time=#{createTime}
-        </set>
-        <where>
-            id=#{id}
-        </where>
-    </update>
-    <delete id="deleteDayValueListByIds" parameterType="java.lang.String">
-        delete from day_value
-        where id in
-        <foreach item="idItem" collection="array" open="(" separator="," close=")">#{idItem}</foreach>
-    </delete>
-    <delete id="deleteDayValueList" parameterType="cn.jf.model.dayvalue.DayValue">
-        delete from day_value
-        where id in
-        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">#{item.id}</foreach>
-    </delete>
-    <insert id="insertDayValueList" parameterType="java.util.List">
-        insert into day_value
-        ( id,
-        company_code,
-        start_price,
-        end_price,
-        rate,
-        total_money,
-        date,
-        create_time
-        )values
-        <foreach collection="list" item="item" index="index" separator=",">
-            ( #{item.id},
-            #{item.companyCode},
-            #{item.startPrice},
-            #{item.endPrice},
-            #{item.rate},
-            #{item.totalMoney},
-            #{item.date},
-            #{item.createTime}
-            )
-        </foreach>
-    </insert>
-    <update id="updateDayValueList" parameterType="java.util.List">
-        <foreach collection="list" item="item" index="index" separator=";">
-            update day_value
-            set
-            id=#{item.id},
-            company_code=#{item.companyCode},
-            start_price=#{item.startPrice},
-            end_price=#{item.endPrice},
-            rate=#{item.rate},
-            total_money=#{item.totalMoney},
-            date=#{item.date},
-            create_time=#{item.createTime}
+        set
+        id=#{item.id},
+        company_code=#{item.companyCode},
+        start_price=#{item.startPrice},
+        end_price=#{item.endPrice},
+        rate=#{item.rate},
+        total_money=#{item.totalMoney},
+        date=#{item.date},
+        create_time=#{item.createTime}
 
-            where
-            id=#{item.id}
-        </foreach>
-    </update>
-    <select id="findDayValueQuery" resultMap="dayValue">
-        select * from day_value
-        <where>
-            <if test="id!=null and id!=''">
-                AND id=#{id}
-            </if>
-            <if test="companyCode!=null and companyCode!=''">
-                AND company_code=#{companyCode}
-            </if>
-            <if test="startPrice!=null and startPrice!=''">
-                AND start_price=#{startPrice}
-            </if>
-            <if test="endPrice!=null and endPrice!=''">
-                AND end_price=#{endPrice}
-            </if>
-            <if test="rate!=null and rate!=''">
-                AND rate=#{rate}
-            </if>
-            <if test="totalMoney!=null and totalMoney!=''">
-                AND total_money=#{totalMoney}
-            </if>
-            <if test="date!=null and date!=''">
-                AND date=#{date}
-            </if>
-            <if test="createTime!=null and createTime!=''">
-                AND create_time=#{createTime}
-            </if>
-        </where>
-    </select>
-    <select id="findDayValueQueryPage" resultMap="dayValue">
-        select * from day_value
-        <where>
-            <if test="id!=null and id!=''">
-                AND id=#{id}
-            </if>
-            <if test="companyCode!=null and companyCode!=''">
-                AND company_code=#{companyCode}
-            </if>
-            <if test="startPrice!=null and startPrice!=''">
-                AND start_price=#{startPrice}
-            </if>
-            <if test="endPrice!=null and endPrice!=''">
-                AND end_price=#{endPrice}
-            </if>
-            <if test="rate!=null and rate!=''">
-                AND rate=#{rate}
-            </if>
-            <if test="totalMoney!=null and totalMoney!=''">
-                AND total_money=#{totalMoney}
-            </if>
-
-            <if test="date!=null and date!=''">
-                AND date=#{date}
-            </if>
-
-            <if test="createTime!=null and createTime!=''">
-                AND create_time=#{createTime}
-            </if>
-
-        </where>
-        order by date desc limit #{startIndex},#{limit}
-
-    </select>
-    <select id="findCountDayValueQuery" resultType="java.lang.Integer">
-        select count(*) from day_value
-        <where>
-            <if test="id!=null and id!=''">
-                AND id=#{id}
-            </if>
-            <if test="companyCode!=null and companyCode!=''">
-                AND company_code=#{companyCode}
-            </if>
-            <if test="startPrice!=null and startPrice!=''">
-                AND start_price=#{startPrice}
-            </if>
-            <if test="endPrice!=null and endPrice!=''">
-                AND end_price=#{endPrice}
-            </if>
-            <if test="rate!=null and rate!=''">
-                AND rate=#{rate}
-            </if>
-            <if test="totalMoney!=null and totalMoney!=''">
-                AND total_money=#{totalMoney}
-            </if>
-            <if test="date!=null and date!=''">
-                AND date=#{date}
-            </if>
-            <if test="createTime!=null and createTime!=''">
-                AND create_time=#{createTime}
-            </if>
-        </where>
-    </select>
-    <select id="dayValueUpList" resultMap="dayValue">
-        select d5.* from
-        (select * from day_value WHERE date=#{date1}) d1
-        LEFT JOIN (select * from day_value WHERE date=#{date2}) d2 on d1.company_code=d2.company_code
-        left JOIN (select * from day_value WHERE date=#{date3}) d3 on d2.company_code=d3.company_code
-        left JOIN (select * from day_value WHERE date=#{date4}) d4 on d3.company_code=d4.company_code
-        left JOIN (select * from day_value WHERE date=#{date5}) d5 on d4.company_code=d5.company_code
-        <if test="inDate!=null and inDate!=''">
-            left JOIN (select * from day_value WHERE date=#{inDate}) d6 on d5.company_code=d6.company_code
+        where
+        id=#{item.id}
+    </foreach>
+</update>
+<select id="findDayValueQuery" resultMap="dayValue">
+    select * from day_value
+    <where>
+        <if test="id!=null and id!=''">
+            AND id=#{id}
         </if>
-        where d1.end_price>d2.end_price and d2.rate &lt; 0 and d3.rate &lt; 0 and d4.rate &lt; 0 and d5.rate between 0.3 and 3
-        and d5.end_price>3.8
-        and d5.k between 9.9 and 20 and (d5.j between 0.69 and 3.7 || d5.j between 0 and 0.69)  and d5.d>0
-        <if test="inDate!=null and inDate!=''">
-            and d6.rate>0 and d6.end_price>d5.end_price
+        <if test="companyCode!=null and companyCode!=''">
+            AND company_code=#{companyCode}
         </if>
-        and -0.099>d5.dea and -0.099>d5.macd
-        and d5.volume>480000
-        and d5.total_money!=0 and (d5.total_money  between -505 and -44  ||  d5.total_money between 44 and 830)
-        </select>
-        <select id="dayValueSumRate" resultMap="dayValue">
+        <if test="startPrice!=null and startPrice!=''">
+            AND start_price=#{startPrice}
+        </if>
+        <if test="endPrice!=null and endPrice!=''">
+            AND end_price=#{endPrice}
+        </if>
+        <if test="rate!=null and rate!=''">
+            AND rate=#{rate}
+        </if>
+        <if test="totalMoney!=null and totalMoney!=''">
+            AND total_money=#{totalMoney}
+        </if>
+        <if test="date!=null and date!=''">
+            AND date=#{date}
+        </if>
+        <if test="createTime!=null and createTime!=''">
+            AND create_time=#{createTime}
+        </if>
+    </where>
+</select>
+<select id="findDayValueQueryPage" resultMap="dayValue">
+    select * from day_value
+    <where>
+        <if test="id!=null and id!=''">
+            AND id=#{id}
+        </if>
+        <if test="companyCode!=null and companyCode!=''">
+            AND company_code=#{companyCode}
+        </if>
+        <if test="startPrice!=null and startPrice!=''">
+            AND start_price=#{startPrice}
+        </if>
+        <if test="endPrice!=null and endPrice!=''">
+            AND end_price=#{endPrice}
+        </if>
+        <if test="rate!=null and rate!=''">
+            AND rate=#{rate}
+        </if>
+        <if test="totalMoney!=null and totalMoney!=''">
+            AND total_money=#{totalMoney}
+        </if>
+
+        <if test="date!=null and date!=''">
+            AND date=#{date}
+        </if>
+
+        <if test="createTime!=null and createTime!=''">
+            AND create_time=#{createTime}
+        </if>
+
+    </where>
+    order by date desc limit #{startIndex},#{limit}
+
+</select>
+<select id="findCountDayValueQuery" resultType="java.lang.Integer">
+    select count(*) from day_value
+    <where>
+        <if test="id!=null and id!=''">
+            AND id=#{id}
+        </if>
+        <if test="companyCode!=null and companyCode!=''">
+            AND company_code=#{companyCode}
+        </if>
+        <if test="startPrice!=null and startPrice!=''">
+            AND start_price=#{startPrice}
+        </if>
+        <if test="endPrice!=null and endPrice!=''">
+            AND end_price=#{endPrice}
+        </if>
+        <if test="rate!=null and rate!=''">
+            AND rate=#{rate}
+        </if>
+        <if test="totalMoney!=null and totalMoney!=''">
+            AND total_money=#{totalMoney}
+        </if>
+        <if test="date!=null and date!=''">
+            AND date=#{date}
+        </if>
+        <if test="createTime!=null and createTime!=''">
+            AND create_time=#{createTime}
+        </if>
+    </where>
+</select>
+<select id="dayValueUpList" resultMap="dayValue">
+    select d5.*
+    <if test="inDate!=null and inDate!=''">,d6.rate inDateRate </if>
+    from
+    (select * from day_value WHERE date=#{date1}) d1
+    LEFT JOIN (select * from day_value WHERE date=#{date2}) d2 on d1.company_code=d2.company_code
+    left JOIN (select * from day_value WHERE date=#{date3}) d3 on d1.company_code=d3.company_code
+    left JOIN (select * from day_value WHERE date=#{date4}) d4 on d1.company_code=d4.company_code
+    left JOIN (select * from day_value WHERE date=#{date5}) d5 on d1.company_code=d5.company_code
+    <if test="inDate!=null and inDate!=''">
+        left JOIN (select * from day_value WHERE date=#{inDate}) d6 on d1.company_code=d6.company_code
+    </if>
+    where d2.rate &lt; 0 and d3.rate &lt; 0 and d4.rate &lt; 0
+    and d5.rate between 0.3 and 3
+    and -0.099>d5.dea and -0.099>d5.macd
+    and d5.end_price>3.8
+    and d5.volume>480000
+    and d1.end_price>d2.end_price
+    and (d6.rate>9 || d6.rate between 0.01 and 5.5)
+    and d5.d>0 and d5.k between 9.9 and 20 and (d5.j between 0.69 and 3.7 || d5.j between 0 and 0.69)
+    <if test="inDate!=null and inDate!=''">
+        and d6.rate>0 and d6.end_price>d5.end_price
+    </if>
+    and (d5.total_money  between -505 and -44  || d5.total_money between 44 and 830)
+</select>
+<select id="dayValueSumRate" resultMap="dayValue">
          select  *  from day_value where company_code=#{code} and date >#{date} order by date ASC  limit #{limit}
         </select>
 
-      <select id="dayValuePreSumRate"  resultType="java.lang.Double">
+<select id="dayValuePreSumRate"  resultType="java.lang.Double">
          select sum(rate) from (select  *  from day_value where company_code=#{code} and  date &lt; #{date} ORDER BY date desc  limit 3) d
        </select>
 
-      <select id="dayValueMinK" resultType="java.lang.Double">
+<select id="dayValueMinK" resultType="java.lang.Double">
           select min(k) minK from day_value where company_code=#{code} and k > 0 and date &lt; #{date} ORDER BY date desc  limit 20
       </select>
 
-        <select id="findCountByCompanyCode" resultType="java.lang.Integer">
-            select count(id) from day_value where company_code=#{companyCode}
-            <if test="date!=null and date!=''">
-                AND date &lt;= #{date}
-            </if>
-        </select>
-        <select id="findDays" resultType="java.lang.Integer">
+<select id="findCountByCompanyCode" resultType="java.lang.Integer">
+    select count(id) from day_value where company_code=#{companyCode}
+    <if test="date!=null and date!=''">
+        AND date &lt;= #{date}
+    </if>
+</select>
+<select id="findDays" resultType="java.lang.Integer">
         select date from day_value   group  by date order by date desc limit 365
      </select>
-        <select id="findDayValueZt" resultMap="dayValue">
+<select id="findDayValueZt" resultMap="dayValue">
         select * from day_value where rate>#{rate} and total_money between #{totalMoney1} and #{totalMoney2} and date BETWEEN #{startDate} and #{endDate}  order by date desc, total_money desc
        </select>
-        <select id="findByCodeADate" resultMap="dayValue">
+<select id="findByCodeADate" resultMap="dayValue">
         select * FROM day_value where date=#{date} and company_code=#{companyCode}
       </select>
-        <select id="findByInflowDays" resultMap="dayValue1">
+<select id="findByInflowDays" resultMap="dayValue1">
             select c.name company_name,d.*,d1.rate rate from
             (select company_code, sum(total_money) inflow, rate preRate,`date`  from (select * from  day_value  where date BETWEEN #{startDate} and #{endDate} order by id desc) dd  GROUP BY  company_code ) d
             left JOIN company c on d.company_code=c.code
@@ -279,4 +288,4 @@ insert into day_value
             ORDER BY inflow desc limit 1
       </select>
 
-    </mapper>
+</mapper>
