@@ -307,7 +307,6 @@ public class DayGoodController {
                 }
             }
 
-
             DayGoodVo1 dayGoodVo1 = new DayGoodVo1();
             dayGoodVo1.setPreTime(Integer.parseInt(time));
             dayGoodVo1.setPreRate(dayGood.getRate());
@@ -318,7 +317,11 @@ public class DayGoodController {
                 dayGoodVo1.setPreK(preDay.getK());
                 dayGoodVo1.setPreD(preDay.getD());
                 dayGoodVo1.setPreJ(preDay.getJ());
+                dayGoodVo1.setDea(preDay.getDea());
+                dayGoodVo1.setDiff(preDay.getDiff());
+                dayGoodVo1.setMacd(preDay.getMacd());
             }
+
             dayGoodVo1.setLastInflow(currentDay.getTotalMoney());
             dayGoodVo1.setLastPrice(currentDay.getEndPrice());
             dayGoodVo1.setLastRate(currentDay.getRate());

@@ -189,16 +189,18 @@
                                 <c:when test="${item.sumPreRate>-5}">color: red;</c:when></c:choose>">${item.sumPreRate}</td>
                                 <c:if test="${isIncome==0 }">
                                     <c:if test="${item.rate<=1.5}">
-                                    <td style="color: red;">${1.5-item.rate}</td>
+                                    <td style="color: red;"><fmt:formatNumber type="number" value="${1.5-item.rate}" pattern="0.00" maxFractionDigits="2"/></td>
                                     </c:if>
                                     <c:if test="${item.rate>1.5}">
-                                        <td >${1.5-item.rate}</td>
+                                        <td ><fmt:formatNumber type="number" value="${1.5-item.rate}" pattern="0.00" maxFractionDigits="2"/></td>
                                     </c:if>
                                 </c:if>
                                 <c:if test="${isIncome==1}">
                                     <td style="
                                     <c:choose>
-                                    <c:when test="${(item.inDateRate+item.rate)<1.5}">color: red;</c:when></c:choose>">${item.inDateRate}</td>
+                                    <c:when test="${(item.inDateRate+item.rate)<1.5}">color: red;</c:when></c:choose>">
+                                        <fmt:formatNumber type="number" value="${item.inDateRate}" pattern="0.00" maxFractionDigits="2"/>
+                                    </td>
                                 </c:if>
 
                     </tr>

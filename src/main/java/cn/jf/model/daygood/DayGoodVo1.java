@@ -35,9 +35,34 @@ public class DayGoodVo1 implements Serializable {
   private Float preD;//d
   private Float preJ;//j
 
+  private float diff;
+  private float dea;
+  private float macd;
 
 
+  public float getDiff() {
+    return diff;
+  }
 
+  public void setDiff(float diff) {
+    this.diff = diff;
+  }
+
+  public float getDea() {
+    return dea;
+  }
+
+  public void setDea(float dea) {
+    this.dea = dea;
+  }
+
+  public float getMacd() {
+    return macd;
+  }
+
+  public void setMacd(float macd) {
+    this.macd = macd;
+  }
 
   public String getCompanyCode() {
     return companyCode;

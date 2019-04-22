@@ -82,6 +82,7 @@
                 <th>endPrice</th>
                 <th>nextStartPrice</th>
                 <th>preK/D/J</th>
+                <th>preDiff/Dea/M</th>
                 <th>preRate</th>
                 <th>endRate</th>
                 <th>nextRate</th>
@@ -93,7 +94,8 @@
             <c:forEach items="${dayGoodVo1s}" var="item"  step="1"  varStatus="var">
                 <tr>
                         <%--当前--%>
-                    <td style="<c:if test="${item.preRate>=9.5}">background:yellow;</c:if>">${var.count}</td>
+                    <td style="<c:if test="${item.preRate>=9.5}">background:yellow;</c:if>">
+                    <a href="/day/detail?companyCode=${item.companyCode}&count=100"  target="_blank">${var.count}</a></td>
                     <td>
                         <c:choose>
                             <c:when test="${ fn:substring(item.companyCode ,0,3)=='600' or fn:substring(item.companyCode ,0,2)=='60'}">
@@ -123,6 +125,11 @@
                         <fmt:formatNumber type="number" value="${item.preD}" pattern="0.00" maxFractionDigits="2"/>/
                         <fmt:formatNumber type="number" value="${item.preJ}" pattern="0.00" maxFractionDigits="2"/>
                     </td>
+                            <td>
+                                <fmt:formatNumber type="number" value="${item.diff}" pattern="0.00" maxFractionDigits="2"/>/
+                                <fmt:formatNumber type="number" value="${item.dea}" pattern="0.00" maxFractionDigits="2"/>/
+                                <fmt:formatNumber type="number" value="${item.macd}" pattern="0.00" maxFractionDigits="2"/>
+                            </td>
                     <td style="<c:if test="${item.preRate>=9.5}">background:yellow;</c:if>">${item.preRate}%</td>
                     <td style="<c:choose>
                     <c:when test="${item.lastRate<item.preRate}">
