@@ -272,9 +272,9 @@ public class DayGoodController {
         for (int i = 1; i < dayGoods.size(); i++) {
             DayGood  dayGood = dayGoods.get(i);
             //创业板
-            if(dayGood.getCompanyCode().startsWith("300")) {
-                continue;
-            }
+//            if(dayGood.getCompanyCode().startsWith("300")) {
+//                continue;
+//            }
             if (dates.indexOf(dayGood.getDate()) == 0) {
                 continue;
             }
