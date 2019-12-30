@@ -49,6 +49,8 @@ public class DayValue implements Serializable {
 
   private double inDateRate;//购买当天的涨幅
 
+  private double pre10Inflow;//前十天的流入
+
 
   public float getPreK() {
     return preK;
