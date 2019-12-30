@@ -282,7 +282,7 @@ public class DayGoodController {
             DayValue currentDay = dayValueService.findDayValueByIdAndDate(dayGood.getCompanyCode(), dayGood.getDate());
             int dayCount=dayValueService.findCountByCompanyCode(dayGood.getCompanyCode(),currentDay.getDate());
             //如果是新股 不计算
-            if( dayCount<20&& preDay.getK()==0 && preDay.getD()==0 && preDay.getJ()==0)
+            if( preDay==null || (dayCount<20 && preDay.getK()==0 && preDay.getD()==0 && preDay.getJ()==0))
             {
                 continue;
             }
