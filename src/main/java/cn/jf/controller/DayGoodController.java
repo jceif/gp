@@ -405,8 +405,6 @@ public class DayGoodController {
     }
 
 
-//    AccessKeyId	AccessKeySecret
-//    LTAIlM5ccmMEMKZr	n5RbdkAGwDSZoy5SwI2WH9byE1V26t
 
 
 }
